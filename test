@@ -1,0 +1,5 @@
+#!/bin/bash
+sudo rm -rf /usr/lib/tuquito/tuquito-update
+sudo cp -af usr/* /usr/
+sudo cp -R etc/* /etc/
+tuquito-update

@@ -1,0 +1,2 @@
+#!/bin/bash
+xgettext --language=Python --keyword=_ --output=po/tuquito-update.pot usr/lib/tuquito/tuquito-update/update-manager.py

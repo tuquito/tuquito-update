@@ -1,0 +1,15 @@
+Source: tuquito-update
+Section: admin
+Priority: optional
+Maintainer: Mario Colque <mario@tuquito.org.ar>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: tuquito-update
+Architecture: all
+Depends: python (>= 2.4), python (<< 3), python-gtk2, synaptic
+Conflicts: update-manager
+Replaces: update-manager
+Description: Update Manager
+ Helps installing security updates and new versions of packages.
+ * Tuquito Team! - 2010
