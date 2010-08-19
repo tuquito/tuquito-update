@@ -446,7 +446,7 @@ try:
 	glade = gtk.Builder()
 	glade.add_from_file('/usr/lib/tuquito/tuquito-update/update-manager.glade')
 	window = glade.get_object('window')
-	window.set_title(_('Tuquito Update'))
+	window.set_title(_('Update Manager'))
 	dataLabel = glade.get_object('data')
 	treeviewUpdate = glade.get_object('treeview')
 	statusIcon = glade.get_object('statusicon')
