@@ -131,7 +131,7 @@ msgstr "Actualizar"
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:494
 msgid "Package"
-msgstr "Paquetes"
+msgstr "Paquete"
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:498
 msgid "Level"
