@@ -403,7 +403,13 @@ def hide(widget, data=None):
 def quit(widget):
 	gtk.main_quit()
 
-time.sleep(20)
+try:
+	arg = sys.argv[1].strip()
+except Exception, d:
+	arg = False
+
+if arg == 'time':
+	time.sleep(10)
 
 parentPid = '0'
 if len(sys.argv) > 2:
@@ -500,8 +506,6 @@ try:
 	treeviewUpdate.append_column(column1)
 	treeviewUpdate.append_column(column2)
 	treeviewUpdate.append_column(column6)
-#	treeviewUpdate.set_headers_clickable(True)
-#	treeviewUpdate.set_reorderable(False)
 
 #	model = gtk.TreeStore(str, str, gtk.gdk.Pixbuf, str, int)
 #	model.set_sort_column_id( 2, gtk.SORT_ASCENDING )
@@ -511,10 +515,9 @@ try:
 	selection = treeviewUpdate.get_selection()
 	selection.connect('changed', displaySelectedPackage)
 
-	if len(sys.argv) > 1:
-		if sys.argv[1] == 'show':
-			showWindow = True
-			refresh = RefreshThread(True, glade)
+	if len(sys.argv) > 1 and sys.argv[1] == 'show':
+		showWindow = True
+		refresh = RefreshThread(True, glade)
 	else:
 		refresh = RefreshThread(False, glade)
 	refresh.start()

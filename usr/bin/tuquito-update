@@ -1,2 +1,3 @@
 #!/bin/bash
-/usr/lib/tuquito/tuquito-update/update-manager.py
+/usr/lib/tuquito/tuquito-update/update-manager.py &
+
