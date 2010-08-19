@@ -116,7 +116,6 @@
                     <child type="label">
                       <object class="GtkLabel" id="expanderLabel">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Description of update</property>
                       </object>
                     </child>
                   </object>

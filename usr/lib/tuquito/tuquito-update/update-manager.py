@@ -43,7 +43,7 @@ import time
 #	print detail
 
 # i18n
-gettext.install('tuquito-update-manager', '/usr/share/tuquito/locale')
+gettext.install('tuquito-update', '/usr/share/tuquito/locale')
 
 APP_PATH = '/usr/lib/tuquito/tuquito-update/'
 
@@ -105,7 +105,7 @@ class RefreshThread(threading.Thread):
 				log.flush()
 
 		gtk.gdk.threads_enter()
-		self.statusIcon.set_tooltip(_('Checking for Updates...'))
+		self.statusIcon.set_tooltip(_('Checking for updates...'))
 		gtk.gdk.threads_leave()
 
 		try:
@@ -280,7 +280,7 @@ class InstallThread(threading.Thread):
 
 				gtk.gdk.threads_enter()
 				self.statusIcon.set_from_file(busy)
-				self.statusIcon.set_tooltip(_('Checking for updates'))
+				self.statusIcon.set_tooltip(_('Checking for updates...'))
 				self.glade.get_object('window').window.set_cursor(None)
 				self.glade.get_object('window').set_sensitive(True)
 				global showWindow
@@ -450,6 +450,7 @@ try:
 	dataLabel = glade.get_object('data')
 	treeviewUpdate = glade.get_object('treeview')
 	statusIcon = glade.get_object('statusicon')
+	glade.get_object('expanderLabel').set_label(_('Description of package'))
 
 	glade.get_object('refresh').connect('clicked', refresh, True)
 	glade.get_object('apply').connect('clicked', install, treeviewUpdate, glade)
