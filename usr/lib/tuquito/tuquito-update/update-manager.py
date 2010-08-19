@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 0.1
+ Tuquito Update Manager 0.7
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -21,50 +21,45 @@
 
 import os
 import commands
-#import sys
+import sys
 import gtk
 import threading
 import tempfile
-import time
-import gettext, webkit, string
+import gettext
 import apt
 from user import home
 from subprocess import Popen, PIPE
+import time
+
+#try:
+#	tuquitoUpdate = commands.getoutput('ps -A | grep tuquito-update | wc -l')
+#	if tuquitoUpdate != '0':
+#		if os.getuid() == 0:
+#			os.system('killall tuquito-update')
+#		else:
+#			print 'Another tuquito-update is already running, exiting.'
+#			sys.exit(1)
+#except Exception, detail:
+#	print detail
 
 # i18n
 gettext.install('tuquito-update-manager', '/usr/share/tuquito/locale')
 
 APP_PATH = '/usr/lib/tuquito/tuquito-update/'
 
-# icons
-updated = os.path.join(APP_PATH, 'icons/updated.png')
-busy = os.path.join(APP_PATH, 'icons/busy.png')
-error = os.path.join(APP_PATH, 'icons/error.png')
-errorConnecting = os.path.join(APP_PATH, 'icons/errorConnecting.png')
-newUpdates = os.path.join(APP_PATH, 'icons/newUpdates.png')
-newUpgrade = os.path.join(APP_PATH, 'icons/newUpgrade.png')
-
 # Falgs
 ready = False
 showWindow  = False
 
-class RefreshThread(threading.Thread):
-	def __init__(self, statusIcon, window, synaptic=False):
-		threading.Thread.__init__(self)
-		self.synaptic = synaptic
-		self.window = window
-		self.statusIcon = statusIcon
-		self.statusIcon.set_from_file(busy)
+gtk.gdk.threads_init()
 
-	def convert(self, size):
-		strSize = str(size) + _('B')
-		if (size >= 1000):
-			strSize = str(size / 1000) + _('KB')
-		if (size >= 1000000):
-			strSize = str(size / 1000000) + _('MB')
-		if (size >= 1000000000):
-			strSize = str(size / 1000000000) + _('GB')
-		return strSize
+class RefreshThread(threading.Thread):
+	def __init__(self, synaptic, glade=None):
+		threading.Thread.__init__(self)
+		self.synaptic  = synaptic
+		self.glade = glade
+		self.window = self.glade.get_object('window')
+		self.statusIcon = self.glade.get_object('statusicon')
 
 	def checkDependencies(self, changes, cache):
 		foundSomething = False
@@ -88,7 +83,8 @@ class RefreshThread(threading.Thread):
 		return changes
 
 	def run(self):
-		global log, html, totalSize, cant, ready, showWindow
+		global log, showWindow, ready, cant, totalSize
+		global updated, newUpdates, errorConnecting
 		proxy = None
 		try:
 			from urllib import urlopen
@@ -113,22 +109,21 @@ class RefreshThread(threading.Thread):
 		gtk.gdk.threads_leave()
 
 		try:
-			if self.synaptic:
-				print "synaptic"
-				from subprocess import Popen, PIPE
-				cmd = 'gksu "/usr/sbin/synaptic --hide-main-window --update-at-startup --non-interactive" -D "%s"' % _('Tuquito Update')
-				comnd = Popen(cmd, shell=True)
-				returnCode = comnd.wait()
-			else:
-				print "no synaptic"
-				cache = apt.Cache()
-				cache.update()
+			if os.getuid() == 0 :
+				if self.synaptic or showWindow:
+					from subprocess import Popen, PIPE
+					cmd = 'gksu "/usr/sbin/synaptic --hide-main-window --update-at-startup --non-interactive" -D "%s"' % _('Tuquito Update')
+					comnd = Popen(cmd, shell=True)
+					returnCode = comnd.wait()
+				else:
+					cache = apt.Cache()
+					cache.update()
 			cache = apt.Cache()
 			cache.upgrade(True)
 			changes = cache.getChanges()
 		except Exception, detail:
 			print detail
-			#sys.exit(1)
+			sys.exit(1)
 
 		changes = self.checkDependencies(changes, cache)
 		cant = len(changes)
@@ -154,10 +149,11 @@ class RefreshThread(threading.Thread):
 		warning = ''
 		rulesFile = open(os.path.join(APP_PATH, 'rules'), 'r')
 		rules = rulesFile.readlines()
+		rulesFile.close()
 		goOn = True
 		foundPackageRule = False # whether we found a rule with the exact package name or not
-		html = ''
 		totalSize = 0
+		model = gtk.TreeStore(str, str, gtk.gdk.Pixbuf, str, int, str, str, str, int)
 		for pkg in changes:
 			package = pkg.name
 			newVersion = pkg.candidateVersion
@@ -167,14 +163,14 @@ class RefreshThread(threading.Thread):
 			totalSize +=  size
 
 			for rule in rules:
-				if (goOn == True):
-					rule_fields = rule.split('|')
-					if len(rule_fields) == 5:
-						rule_package = rule_fields[0]
-						rule_version = rule_fields[1]
-						rule_level = rule_fields[2]
-						rule_extraInfo = rule_fields[3]
-						rule_warning = rule_fields[4]
+				if goOn:
+					ruleFields = rule.split('|')
+					if len(ruleFields) == 5:
+						rule_package = ruleFields[0]
+						rule_version = ruleFields[1]
+						rule_level = ruleFields[2]
+						rule_extraInfo = ruleFields[3]
+						rule_warning = ruleFields[4]
 						if rule_package == package:
 							foundPackageRule = True
 							level = rule_level
@@ -191,74 +187,114 @@ class RefreshThread(threading.Thread):
 									extraInfo = rule_extraInfo
 									warning = rule_warning
 
-			html = html + '<li class="check level%s" level="%s" size="%d" name="%s"><a>%s</a><div id="data" class="hidden"><u><b>%s</b></u>: %s<br><u><b>%s</b></u>: %s<br><u><b>%s</b></u>: %s<br><u><b>%s</b></u>: %s<br><u><b>%s</b></u>: %s<br></div></li>\n' % (str(level), str(level), size, str(package), str(package), _('Description'), description, _('Safety level'), str(level), _('Size'), self.convert(int(size)), _('Installed version'), oldVersion, _('New Version'), newVersion)
-		rulesFile.close()
+			data = '<b>%s</b>: %s\n<b>%s</b>: %s\n<b>%s</b>: %s\n<b>%s</b>: %s' % (_('Description'), description, _('Size'), convert(size), _('Installed Version'), oldVersion, _('New Version'), newVersion)
+
+			iter = model.insert_before(None, None)
+			model.set_value(iter, 0, 'true')
+			model.set_value(iter, 4, int(level))
+			model.set_value(iter, 5, data)
+			model.set_value(iter, 6, oldVersion)
+			model.set_value(iter, 7, newVersion)
+			model.set_value(iter, 8, size)
+			model.set_value(iter, 1, str(package))
+			model.row_changed(model.get_path(iter), iter)
+			model.set_value(iter, 2, gtk.gdk.pixbuf_new_from_file(APP_PATH + 'icons/' + str(level) + '.png'))
+			model.set_value(iter, 3, convert(size))
+
+		gtk.gdk.threads_enter()
+		treeviewUpdate.set_model(model)
+		del model
+		self.glade.get_object('header').set_markup(_('<big><b>You have %d packages to update</b></big>') % cant)
+		self.glade.get_object('pkgSelected').set_markup(_('Packages selected: <b>%d</b>') % cant)
+		self.glade.get_object('totalSize').set_markup(_('Download size: <b>%s</b>') % convert(totalSize))
+		gtk.gdk.threads_leave()
 		ready = True
 		if self.synaptic:
 			showWindow = True
 			gtk.gdk.threads_enter()
-			self.window.show_all()
+			self.window.show()
 			gtk.gdk.threads_leave()
 
 class InstallThread(threading.Thread):
-	def __init__(self, statusIcon, window, packages):
+	def __init__(self, treeView, glade):
 		threading.Thread.__init__(self)
-		self.statusIcon = statusIcon
-		self.window = window
-		self.packages = packages
+		self.treeView = treeView
+		self.glade = glade
+		self.statusIcon = self.glade.get_object('statusicon')
 
 	def run(self):
+		global busy, error
 		global log
 		try:
 			log.writelines('++ Install requested by user\n')
 			log.flush()
-			history = open(os.path.join(home, '.tuquito/tuquito-update/history'), 'a')
-
 			gtk.gdk.threads_enter()
-			self.statusIcon.set_from_file(busy)
-			self.statusIcon.set_tooltip(_('Installing updates'))
+			self.glade.get_object('window').window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+			self.glade.get_object('window').set_sensitive(False)
+			installNeeded = False
+			packages = []
+			model = self.treeView.get_model()
 			gtk.gdk.threads_leave()
 
-			log.writelines('++ Ready to launch synaptic\n')
-			log.flush()
-			cmd = ['gksu', '"/usr/sbin/synaptic', '--hide-main-window', '--non-interactive']
-			cmd.append('--progress-str')
-			cmd.append('"' + _('Please wait, this can take some time') + '"')
-			cmd.append('--finish-str')
-			cmd.append('"' + _('Update is complete') + '"')
+			iter = model.get_iter_first()
+			while iter != None:
+				checked = model.get_value(iter, 0)
+				if checked == 'true':
+					installNeeded = True
+					package = model.get_value(iter, 1)
+					level = model.get_value(iter, 4)
+					oldVersion = model.get_value(iter, 6)
+					newVersion = model.get_value(iter, 7)
+					packages.append(package)
+					log.writelines('++ Will install ' + str(package) + '\n')
+					log.flush()
+				iter = model.iter_next(iter)
 
-			f = tempfile.NamedTemporaryFile()
-			if f:
-				print "se creo el archivo"
-			time.sleep(100)
+			if installNeeded:
+				gtk.gdk.threads_enter()
+				self.statusIcon.set_from_file(busy)
+				self.statusIcon.set_tooltip(_('Installing updates'))
+				gtk.gdk.threads_leave()
 
-			for pkg in self.packages:
-				f.write("%s\tinstall\n" % pkg)
-				history.write(commands.getoutput('date +"%d %b %Y %H:%M:%S"') + "\t" + pkg + "\n")
-				log.writelines('++ Will install ' + str(pkg) + '\n')
+				log.writelines('++ Ready to launch synaptic\n')
+				log.flush()
+				cmd = ['sudo', '/usr/sbin/synaptic', '--hide-main-window', '--non-interactive']
+				cmd.append('--progress-str')
+        			cmd.append('"' + _('Please wait, this can take some time') + '"')
+				cmd.append('--finish-str')
+				cmd.append('"' + _('Update is complete') + '"')
+				f = tempfile.NamedTemporaryFile()
+
+				for pkg in packages:
+        			    f.write('%s\tinstall\n' % pkg)
+        			cmd.append('--set-selections-file')
+        			cmd.append('%s' % f.name)
+        			f.flush()
+        			comnd = Popen(' '.join(cmd), stdout=log, stderr=log, shell=True)
+				returnCode = comnd.wait()
+				log.writelines('++ Return code: ' + str(returnCode) + '\n')
+			        #sts = os.waitpid(comnd.pid, 0)
+        			f.close()
+				log.writelines('++ Install finished\n')
 				log.flush()
 
-			cmd.append('--set-selections-file')
-			cmd.append('%s' % f.name)
-			cmd.append('" -D "%s"' % _('Tuquito Update'))
-			f.flush()
-			history.close()
-			#comnd = Popen(' '.join(cmd), stdout=log, stderr=log, shell=True)
-			f.close()
-			print ' '.join(cmd)
-			#returnCode = comnd.wait()
-			#log.writelines('++ Return code:' + str(returnCode) + '\n')
-			#sts = os.waitpid(comnd.pid, 0)
-			log.writelines('++ Install finished\n')
-			log.flush()
+				gtk.gdk.threads_enter()
+				self.statusIcon.set_from_file(busy)
+				self.statusIcon.set_tooltip(_('Checking for updates'))
+				self.glade.get_object('window').window.set_cursor(None)
+				self.glade.get_object('window').set_sensitive(True)
+				global showWindow
+				showWindow = False
+				self.glade.get_object('window').hide()
+				gtk.gdk.threads_leave()
 
-			gtk.gdk.threads_enter()
-			self.statusIcon.set_tooltip(_('Checking for updates'))
-			gtk.gdk.threads_leave()
-
-			refresh = RefreshThread(self.statusIcon, self.window, True)
-			refresh.start()
-
+				refresh = RefreshThread(self.treeView, self.glade)
+				refresh.start()
+			else:
+				gtk.gdk.threads_enter()
+				self.glade.get_object('window').window.set_cursor(None)
+				self.glade.get_object('window').set_sensitive(True)
+				gtk.gdk.threads_leave()
 		except Exception, detail:
 			log.writelines('-- Exception occured in the install thread: ' + str(detail) + '\n')
 			log.flush()
@@ -267,167 +303,226 @@ class InstallThread(threading.Thread):
 			self.statusIcon.set_tooltip(_('Could not install the security updates'))
 			log.writelines('-- Could not install security updates\n')
 			log.flush()
+			self.glade.get_object('window').window.set_cursor(None)
+			self.glade.get_object('window').set_sensitive(True)
 			gtk.gdk.threads_leave()
 
-class UpdateManager:
-	def submenu(self, widget, button, time, data=None):
-		if button == 3:
-			if data:
-				data.show_all()
-				data.popup(None, None, None, 3, time)
+def convert(size):
+	strSize = str(size) + _('B')
+	if (size >= 1000):
+		strSize = str(size / 1000) + _('KB')
+	if (size >= 1000000):
+		strSize = str(size / 1000000) + _('MB')
+	if (size >= 1000000000):
+		strSize = str(size / 1000000000) + _('GB')
+	return strSize
 
-	def convert(self, size):
-		strSize = str(size) + _('B')
-		if (size >= 1000):
-			strSize = str(size / 1000) + _('KB')
-		if (size >= 1000000):
-			strSize = str(size / 1000000) + _('MB')
-		if (size >= 1000000000):
-			strSize = str(size / 1000000000) + _('GB')
-		return strSize
+def celldatafunctionCheckbox(column, cell, model, iter):
+        cell.set_property('activatable', True)
+	checked = model.get_value(iter, 0)
+	if checked == 'true':
+		cell.set_property('active', True)
+	else:
+		cell.set_property('active', False)
 
-	def onActivate(self, widget, data=None):
-		global showWindow, ready
-		if ready:
-			if showWindow:
-				self.hide(self)
+def toggled(renderer, path, treeview):
+	global cant, totalSize
+	model = treeview.get_model()
+	iter = model.get_iter(path)
+	if iter != None:
+		checked = model.get_value(iter, 0)
+		sizes = model.get_value(iter, 8)
+		if checked == 'true':
+			model.set_value(iter, 0, 'false')
+			cant -= 1
+			totalSize -= sizes
+		else:
+			model.set_value(iter, 0, 'true')
+			cant += 1
+			totalSize += sizes
+	glade.get_object('pkgSelected').set_markup(_('Packages selected: <b>%d</b>') % cant)
+	glade.get_object('totalSize').set_markup(_('Download size: <b>%s</b>') % convert(totalSize))
+
+def displaySelectedPackage(selection):
+	glade.get_object('expander').set_sensitive(True)
+	(model, iter) = selection.get_selected()
+	if iter != None:
+		dataPackage = model.get_value(iter, 5)
+		dataLabel.set_markup(str(dataPackage))
+
+def submenu(widget, button, time, data=None):
+	if button == 3:
+		if data:
+			data.show_all()
+			data.popup(None, None, None, 3, time)
+
+def onActivate(widget):
+	global showWindow
+	if ready:
+		if showWindow:
+			showWindow = False
+			window.hide_all()
+			return True
+		else:
+			if os.getuid() != 0:
+				try:
+					log.writelines('++ Launching Tuquito Update in root mode, waiting for it to kill us...\n')
+					log.flush()
+					log.close()
+				except:
+					pass #cause we might have closed it already
+				os.system('gksu --message "' + _('Please enter your password to start Tuquito Update') + '" ' + APP_PATH + 'update-manager.py show ' + str(pid) + ' &')
 			else:
 				showWindow = True
-				global html, totalSize, cant
-				self.browser = webkit.WebView()
-				self.scrolled.add(self.browser)
-				self.browser.connect('button-press-event', lambda w, e: e.button == 3)
-				text = {}
+				window.show_all()
 
-				strSize = self.convert(totalSize)
-
-				text['kb'] = _('KB')
-				text['mb'] = _('MB')
-				text['gb'] = _('GB')
-				text['size'] = totalSize
-
-				text['selectAll'] = _('Select all')
-				text['clear'] = _('Clear')
-				text['install'] = _('Install')
-				text['refresh'] = _('Refresh')
-
-				text['header'] = _('<strong>Los siguientes paquetes están disponibles para su actualización.</strong><br><small>You have <strong>%d</strong> packages to update.<br>Download size: <strong id="size">%s</strong></small>') % (cant, strSize)
-				text['list'] = html
-
-				template = open('/usr/lib/tuquito/tuquito-update/frontend/index.html').read()
-				html = string.Template(template).safe_substitute(text)
-				self.browser.load_html_string(html, 'file:/')
-				self.browser.connect('title-changed', self._on_title_changed)
-				self.window.show_all()
-
-	def _on_title_changed(self, view, frame, title):
-		""" no op - needed to reset the title after a action so that the action can be triggered again """
-		if title.startswith('nop'):
-			return
-		""" call directclass InstallThread(threading.Thread):
-		"call:func:arg1,arg2"
-		"call:func" """
-		if title.startswith('call:'):
-			argsStr = ''
-			argsList = []
-			""" try long form (with arguments) first """
-			try:
-				(t,funcname,argsStr) = title.split(':')
-			except ValueError:
-				""" now try short (without arguments) """
-				(t,funcname) = title.split(':')
-			if argsStr:
-				argsList = argsStr.split(',')
-			""" see if we have it and if it can be called """
-			f = getattr(self, funcname)
-			if f and callable(f):
-				f(*argsList)
-			""" now we need to reset the title """
-			self.browser.execute_script('document.title = "nop"')
-
-	def about(self, widget, data=None):
-		os.system('/usr/lib/tuquito/tuquito-update/about.py &')
-
-	def hide(self, widget, data=None):
-		global showWindow
-		showWindow = False
-		self.window.hide_all()
-		return True
-
-	def quit(self, widget, data=None):
-		gtk.main_quit()
-
-	def refresh(self, widget=None, data=None):
-		ready = False
-		if showWindow:
-			self.hide(self)
-			synaptic = True
-		else:
-			synaptic = False
-		refresh = RefreshThread(self.statusIcon, self.window, synaptic)
-		refresh.start()
-
-	def getPackages(self, package):
-		self.packages.append(package)
-
-	def install(self):
-		self.hide(self)
-		install = InstallThread(self.statusIcon, self.window, self.packages)
-		install.start()
-		self.packages = []
-
-	def __init__(self):
-		self.glade = gtk.Builder()
-		self.glade.add_from_file('/usr/lib/tuquito/tuquito-update/update-manager.glade')
-		self.window = self.glade.get_object('window')
-		self.window.set_title(_('Tuquito Update'))
-		self.statusIcon = self.glade.get_object('statusicon')
-		self.scrolled = self.glade.get_object('scrolled')
-
-		menu = self.glade.get_object('menu')
-		self.glade.connect_signals(self)
-
-		self.packages = []
-
-		menuItem=gtk.ImageMenuItem(gtk.STOCK_REFRESH)
-		menuItem.connect('activate', self.refresh)
-		menu.append(menuItem)
-
-		menuItem=gtk.ImageMenuItem(gtk.STOCK_PREFERENCES)
-		#menuItem.connect('activate', self.openURL)
-		menu.append(menuItem)
-
-		menuItem = gtk.ImageMenuItem(gtk.STOCK_ABOUT)
-		menuItem.connect('activate', self.about)
-		menu.append(menuItem)
-
-		separator = gtk.SeparatorMenuItem()
-		menu.append(separator)
-
-		menuItem = gtk.ImageMenuItem(gtk.STOCK_QUIT)
-		menuItem.connect('activate', self.quit, self.statusIcon)
-		menu.append(menuItem)
-
-		self.statusIcon.set_tooltip(_('Connecting...'))
-		self.statusIcon.connect('popup_menu', self.submenu, menu)
-
-		self.refresh(self)
-
-if __name__ == '__main__':
-	gtk.gdk.threads_init()
-	logdir = '/tmp/tuquito-update/'
-	if os.getuid() == 0:
-		mode = 'root'
+def refresh(widget, data=False):
+	ready = False
+	showWindow = False
+	window.hide()
+	statusIcon.set_from_file(busy)
+	if os.getuid() == 0 :
+		refresh = RefreshThread(True, glade)
 	else:
-		mode = 'user'
-	os.system('mkdir -p ' + logdir)
+		refresh = RefreshThread(False, glade)
+	refresh.start()
 
-	if not os.path.exists(os.path.join(home, '.tuquito/tuquito-update/')):
-		os.system('mkdir -p ' + os.path.join(home, '.tuquito/tuquito-update/'))
+def install(widget, treeView, glade):
+	install = InstallThread(treeView, glade)
+	install.start()
 
-	log = tempfile.NamedTemporaryFile(prefix=logdir, delete=False)
-	logFile = log.name
-	log.writelines(_('++ Launching Tuquito Update in %s mode\n') % mode)
-	log.flush()
-	UpdateManager()
+def about(widget):
+	os.system('/usr/lib/tuquito/tuquito-update/about.py &')
+
+def hide(widget, data=None):
+	global showWindow
+	showWindow = False
+	window.hide_all()
+	return True
+
+def quit(widget):
+	gtk.main_quit()
+
+time.sleep(20)
+
+parentPid = '0'
+if len(sys.argv) > 2:
+	parentPid = sys.argv[2]
+	if parentPid != '0':
+		os.system('kill -9 ' + parentPid)
+
+pid = os.getpid()
+logdir = '/tmp/tuquito-update'
+
+if os.getuid() == 0 :
+	mode = 'root'
+else:
+	mode = 'user'
+
+os.system('mkdir -p ' + logdir)
+log = tempfile.NamedTemporaryFile(prefix = logdir, delete=False)
+logFile = log.name
+
+log.writelines('++ Launching Tuquito Update in ' + mode + ' mode\n')
+log.flush()
+
+try:
+	global updated, busy, errorConnecting, error, newUpdates, newUpgrade
+
+	# icons
+	updated = os.path.join(APP_PATH, 'icons/updated.png')
+	busy = os.path.join(APP_PATH, 'icons/busy.png')
+	error = os.path.join(APP_PATH, 'icons/error.png')
+	errorConnecting = os.path.join(APP_PATH, 'icons/errorConnecting.png')
+	newUpdates = os.path.join(APP_PATH, 'icons/newUpdates.png')
+	newUpgrade = os.path.join(APP_PATH, 'icons/newUpgrade.png')
+
+	glade = gtk.Builder()
+	glade.add_from_file('/usr/lib/tuquito/tuquito-update/update-manager.glade')
+	window = glade.get_object('window')
+	window.set_title(_('Tuquito Update'))
+	dataLabel = glade.get_object('data')
+	treeviewUpdate = glade.get_object('treeview')
+	statusIcon = glade.get_object('statusicon')
+
+	glade.get_object('refresh').connect('clicked', refresh, True)
+	glade.get_object('apply').connect('clicked', install, treeviewUpdate, glade)
+
+	menu = glade.get_object('menu')
+	window.connect('delete-event', hide)
+	window.connect('destroy-event', hide)
+
+	menuItem=gtk.ImageMenuItem(gtk.STOCK_REFRESH)
+	menuItem.connect('activate', refresh)
+	menu.append(menuItem)
+
+#	menuItem=gtk.ImageMenuItem(gtk.STOCK_PREFERENCES)
+#	menuItem.connect('activate', self.openURL)
+#	menu.append(menuItem)
+
+	menuItem = gtk.ImageMenuItem(gtk.STOCK_ABOUT)
+	menuItem.connect('activate', about)
+	menu.append(menuItem)
+
+	separator = gtk.SeparatorMenuItem()
+	menu.append(separator)
+
+	menuItem = gtk.ImageMenuItem(gtk.STOCK_QUIT)
+	menuItem.connect('activate', quit)
+	menu.append(menuItem)
+
+	statusIcon.set_tooltip(_('Connecting...'))
+	statusIcon.set_from_file(busy)
+	statusIcon.connect('popup-menu', submenu, menu)
+	statusIcon.connect('activate', onActivate)
+
+	cr = gtk.CellRendererToggle()
+	cr.connect("toggled", toggled, treeviewUpdate)
+
+	column1 = gtk.TreeViewColumn(_('Upgrade'), cr)
+	column1.set_cell_data_func(cr, celldatafunctionCheckbox)
+	column1.set_sort_column_id(2)
+	column1.set_resizable(True)
+
+	column2 = gtk.TreeViewColumn(_('Package'), gtk.CellRendererText(), text=1)
+	column2.set_sort_column_id(1)
+	column2.set_resizable(True)
+
+	column3 = gtk.TreeViewColumn(_('Level'), gtk.CellRendererPixbuf(), pixbuf=2)
+	column3.set_sort_column_id(4)
+	column3.set_resizable(True)
+
+	column6 = gtk.TreeViewColumn(_('Size'), gtk.CellRendererText(), text=3)
+	column6.set_sort_column_id(8)
+	column6.set_resizable(True)
+
+	treeviewUpdate.append_column(column3)
+	treeviewUpdate.append_column(column1)
+	treeviewUpdate.append_column(column2)
+	treeviewUpdate.append_column(column6)
+#	treeviewUpdate.set_headers_clickable(True)
+#	treeviewUpdate.set_reorderable(False)
+
+#	model = gtk.TreeStore(str, str, gtk.gdk.Pixbuf, str, int)
+#	model.set_sort_column_id( 2, gtk.SORT_ASCENDING )
+#	treeviewUpdate.set_model(model)
+#	del model
+
+	selection = treeviewUpdate.get_selection()
+	selection.connect('changed', displaySelectedPackage)
+
+	if len(sys.argv) > 1:
+		if sys.argv[1] == 'show':
+			showWindow = True
+			refresh = RefreshThread(True, glade)
+	else:
+		refresh = RefreshThread(False, glade)
+	refresh.start()
 	gtk.main()
+
+except Exception, detail:
+	print detail
+	log.writelines('-- Exception occured in main thread: ' + str(detail) + '\n')
+	log.flush()
+	log.close()
+
