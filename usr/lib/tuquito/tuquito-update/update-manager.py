@@ -30,6 +30,7 @@ import apt
 from user import home
 from subprocess import Popen, PIPE
 import time
+import ConfigParser
 
 #try:
 #	tuquitoUpdate = commands.getoutput('ps -A | grep tuquito-update | wc -l')
@@ -85,7 +86,20 @@ class RefreshThread(threading.Thread):
 	def run(self):
 		global log, showWindow, ready, cant, totalSize
 		global updated, newUpdates, errorConnecting
-		proxy = None
+		global httpProxy, ftpProxy, gopherProxy
+		global httpProxyPort, ftpProxyPort, gopherProxyPort
+
+		proxy={}
+		if checkEnableProxy == 'True':
+			if httpProxy != '' and httpProxyPort != '':
+				proxy['http'] = httpProxy + ':' + httpProxyPort
+			if ftpProxy != '' and ftpProxyPort != '':
+				proxy['ftp'] = ftpProxy + ':' + ftpProxyPort
+			if gopherProxy != '' and gopherProxyPort != '':
+				proxy['gopher'] = gopherProxy + ':' + gopherProxyPort
+		else:
+			proxy = None
+
 		try:
 			from urllib import urlopen
 			url=urlopen('http://google.com', None, proxy)
@@ -119,7 +133,7 @@ class RefreshThread(threading.Thread):
 					cache = apt.Cache()
 					cache.update()
 			cache = apt.Cache()
-			cache.upgrade(True)
+			cache.upgrade(bool(distUpgrade))
 			changes = cache.getChanges()
 		except Exception, detail:
 			print detail
@@ -371,7 +385,7 @@ def onActivate(widget):
 					log.close()
 				except:
 					pass #cause we might have closed it already
-				os.system('gksu --message "' + _('Please enter your password to start Tuquito Update') + '" ' + APP_PATH + 'update-manager.py show ' + str(pid) + ' &')
+				os.system('gksu --message "' + _('Please enter your password to start Tuquito Update') + '" /media/Datos/Colkito/Tuquito/Tuquito4.0/Desarrollo/tuquito-update-0.1/usr/lib/tuquito/tuquito-update/update-manager.py show ' + str(pid) + ' &')
 			else:
 				showWindow = True
 				window.show_all()
@@ -403,13 +417,174 @@ def hide(widget, data=None):
 def quit(widget):
 	gtk.main_quit()
 
+######### Preferencias
+def openPref(widget):
+	windowPref = glade.get_object('windowPref')
+	windowPref.set_title(_('Tuquito Update preferences'))
+
+	glade.get_object('label2').set_label(_('Update Method'))
+	glade.get_object('label3').set_label(_('Proxy'))
+	glade.get_object('label4').set_label(_('Startup delay (in seconds): '))
+	glade.get_object('label5').set_label(_('Internet check (domain name or IP address): '))
+	glade.get_object('label6').set_label(_('<i>Note: Newer versions of packages can have different dependencies. If an upgrade requires the installation or the removal of another package it will be kept back and not upgraded. If you select this option however, it will be upgraded and all new dependencies will be resolved. Since this can result in the installation of new packages or the removal of some of your packages you should only use this option if you are experienced with APT.</i>'))
+	glade.get_object('check_dist_upgrade').set_label(_('Include dist-upgrade packages?'))
+	glade.get_object('enable_proxy').set_label(_('Manual proxy configuration'))
+	glade.get_object('check_same_proxy').set_label(_('Use the same proxy for all protocols'))
+	glade.get_object('label_http_proxy').set_label(_('HTTP Proxy:'))
+	glade.get_object('label_ftp_proxy').set_label(_('FTP Proxy:'))
+	glade.get_object('label_gopher_proxy').set_label(_('Gopher Proxy:'))
+	glade.get_object('label_port1').set_label(_('Port:'))
+	glade.get_object('label_port2').set_label(_('Port:'))
+	glade.get_object('label_port3').set_label(_('Port:'))
+
+	windowPref.connect('delete-event', hidePref)
+	windowPref.connect('destroy-event', hidePref)
+	glade.get_object('cancel').connect('clicked', hidePref)
+	glade.get_object('enable_proxy').connect('toggled', enableProxy)
+	glade.get_object('check_same_proxy').connect('toggled', setSameProxy)
+	glade.get_object('save_pref').connect('clicked', savePref)
+	glade.get_object('http_proxy').connect('changed', updateProxyHost)
+	glade.get_object('http_proxy_port').connect('changed', updateProxyPort)
+	glade.get_object('url_ping').set_text(urlPing)
+	glade.get_object('spin_delay').set_value(float(delay))
+	if distUpgrade == 'True':
+		glade.get_object('check_dist_upgrade').set_active(True)
+	else:
+		glade.get_object('check_dist_upgrade').set_active(False)
+	if checkEnableProxy == 'True':
+		glade.get_object('enable_proxy').set_active(True)
+		if checkSameProxy == 'True':
+			glade.get_object('check_same_proxy').set_active(True)
+		glade.get_object('http_proxy').set_text(httpProxy)
+		glade.get_object('http_proxy_port').set_text(httpProxyPort)
+		glade.get_object('ftp_proxy').set_text(ftpProxy)
+		glade.get_object('ftp_proxy_port').set_text(ftpProxyPort)
+		glade.get_object('gopher_proxy').set_text(gopherProxy)
+		glade.get_object('gopher_proxy_port').set_text(gopherProxyPort)
+	else:
+		glade.get_object('table1').set_sensitive(False)
+	windowPref.show_all()
+
+def readPref(widget=None):
+	global delay, urlPing, distUpgrade, checkEnableProxy, checkSameProxy
+	global httpProxy, ftpProxy, gopherProxy
+	global httpProxyPort, ftpProxyPort, gopherProxyPort
+	global configFile
+	config = ConfigParser.ConfigParser()
+	configFile =  os.path.join(home, '.tuquito/tuquito-update/tuquito-update.conf')
+	if os.path.exists(configFile):
+		config.read(configFile)
+	else:
+		config.read('/etc/tuquito/tuquito-update.conf')
+	try:
+		delay = config.get('User settings', 'delay')
+		urlPing = config.get('User settings', 'url')
+		distUpgrade = config.get('User settings', 'distUpgrade')
+	except:
+		delay = 30
+		urlPing = 'google.com'
+		distUpgrade = True
+
+	try:
+		checkEnableProxy = config.get('User settings', 'manualProxy')
+		checkSameProxy = config.get('User settings', 'checkSameProxy')
+		httpProxy = config.get('User settings', 'httpProxy')
+		ftpProxy = config.get('User settings', 'ftpProxy')
+		gopherProxy = config.get('User settings', 'gopherProxy')
+		httpProxyPort = config.get('User settings', 'httpProxyPort')
+		ftpProxyPort = config.get('User settings', 'ftpProxyPort')
+		gopherProxyPort = config.get('User settings', 'gopherProxyPort')
+	except:
+		checkEnableProxy = False
+		checkSameProxy = False
+		httpProxy = ''
+		ftpProxy = ''
+		gopherProxy = ''
+		httpProxyPort = ''
+		ftpProxyPort = ''
+		gopherProxyPort = ''
+
+def savePref(widget):
+	global checkEnableProxy
+	config = ConfigParser.ConfigParser()
+	config.add_section('User settings')
+
+	spinDelay = glade.get_object('spin_delay').get_value_as_int()
+	urlPing = glade.get_object('url_ping').get_text().strip()
+	distUpgrade = glade.get_object('check_dist_upgrade').get_active()
+	checkEnableProxy = glade.get_object('enable_proxy').get_active()
+
+	config.set('User settings', 'delay', spinDelay)
+	config.set('User settings', 'url', urlPing)
+	config.set('User settings', 'distUpgrade', distUpgrade)
+	config.set('User settings', 'manualProxy', checkEnableProxy)
+
+	if checkEnableProxy:
+#		checkSameProxy = glade.get_object('check_same_proxy').get_active()
+		httpProxy = glade.get_object('http_proxy').get_text().strip()
+		ftpProxy = glade.get_object('ftp_proxy').get_text().strip()
+		gopherProxy = glade.get_object('gopher_proxy').get_text().strip()
+		port1 = glade.get_object('http_proxy_port').get_text().strip()
+		port2 = glade.get_object('ftp_proxy_port').get_text().strip()
+		port3 = glade.get_object('gopher_proxy_port').get_text().strip()
+
+		config.set('User settings', 'checkSameProxy', checkSameProxy)
+		config.set('User settings', 'httpProxy', httpProxy)
+		config.set('User settings', 'ftpProxy', ftpProxy)
+		config.set('User settings', 'gopherProxy', gopherProxy)
+		config.set('User settings', 'httpProxyPort', port1)
+		config.set('User settings', 'ftpProxyPort', port2)
+		config.set('User settings', 'gopherProxyPort', port3)
+
+	config.write(open(configFile, 'w'))
+
+def setSameProxy(widget):
+	if glade.get_object('check_same_proxy').get_active():
+		glade.get_object('ftp_proxy').set_text(glade.get_object('http_proxy').get_text())
+		glade.get_object('ftp_proxy_port').set_text(glade.get_object('http_proxy_port').get_text())
+		glade.get_object('gopher_proxy').set_text(glade.get_object('http_proxy').get_text())
+		glade.get_object('gopher_proxy_port').set_text(glade.get_object('http_proxy_port').get_text())
+		glade.get_object('ftp_proxy').set_sensitive(False)
+		glade.get_object('ftp_proxy_port').set_sensitive(False)
+		glade.get_object('gopher_proxy').set_sensitive(False)
+		glade.get_object('gopher_proxy_port').set_sensitive(False)
+	else:
+		glade.get_object('ftp_proxy').set_sensitive(True)
+		glade.get_object('ftp_proxy_port').set_sensitive(True)
+		glade.get_object('gopher_proxy').set_sensitive(True)
+		glade.get_object('gopher_proxy_port').set_sensitive(True)
+
+def enableProxy(widget):
+	global checkEnableProxy
+	checkEnableProxy = glade.get_object('enable_proxy').get_active()
+	if checkEnableProxy:
+		glade.get_object('table1').set_sensitive(True)
+	else:
+		glade.get_object('table1').set_sensitive(False)
+
+def updateProxyHost(widget):
+	if glade.get_object('check_same_proxy').get_active():
+		glade.get_object('ftp_proxy').set_text(widget.get_text())
+		glade.get_object('gopher_proxy').set_text(widget.get_text())
+
+def updateProxyPort(widget):
+	if glade.get_object('check_same_proxy').get_active():
+		glade.get_object('ftp_proxy_port').set_text(widget.get_text())
+		glade.get_object('gopher_proxy_port').set_text(widget.get_text())
+
+def hidePref(widget, data=None):
+	glade.get_object('windowPref').hide()
+	return True
+#########
+readPref()
+
 try:
 	arg = sys.argv[1].strip()
 except Exception, d:
 	arg = False
 
 if arg == 'time':
-	time.sleep(10)
+	time.sleep(delay)
 
 parentPid = '0'
 if len(sys.argv) > 2:
@@ -418,7 +593,7 @@ if len(sys.argv) > 2:
 		os.system('kill -9 ' + parentPid)
 
 pid = os.getpid()
-logdir = '/tmp/tuquito-update'
+logdir = '/tmp/tuquito-update/'
 
 if os.getuid() == 0 :
 	mode = 'root'
@@ -444,7 +619,8 @@ try:
 	newUpgrade = os.path.join(APP_PATH, 'icons/newUpgrade.png')
 
 	glade = gtk.Builder()
-	glade.add_from_file('/usr/lib/tuquito/tuquito-update/update-manager.glade')
+#	glade.add_from_file('/usr/lib/tuquito/tuquito-update/update-manager.glade')
+	glade.add_from_file('./update-manager.glade')
 	window = glade.get_object('window')
 	window.set_title(_('Update Manager'))
 	dataLabel = glade.get_object('data')
@@ -452,6 +628,7 @@ try:
 	statusIcon = glade.get_object('statusicon')
 	glade.get_object('expanderLabel').set_label(_('Description of package'))
 
+	glade.get_object('preference').connect('clicked', openPref)
 	glade.get_object('refresh').connect('clicked', refresh, True)
 	glade.get_object('apply').connect('clicked', install, treeviewUpdate, glade)
 
@@ -463,9 +640,9 @@ try:
 	menuItem.connect('activate', refresh)
 	menu.append(menuItem)
 
-#	menuItem=gtk.ImageMenuItem(gtk.STOCK_PREFERENCES)
-#	menuItem.connect('activate', self.openURL)
-#	menu.append(menuItem)
+	menuItem=gtk.ImageMenuItem(gtk.STOCK_PREFERENCES)
+	menuItem.connect('activate', openPref)
+	menu.append(menuItem)
 
 	menuItem = gtk.ImageMenuItem(gtk.STOCK_ABOUT)
 	menuItem.connect('activate', about)
@@ -484,7 +661,7 @@ try:
 	statusIcon.connect('activate', onActivate)
 
 	cr = gtk.CellRendererToggle()
-	cr.connect("toggled", toggled, treeviewUpdate)
+	cr.connect('toggled', toggled, treeviewUpdate)
 
 	column1 = gtk.TreeViewColumn(_('Upgrade'), cr)
 	column1.set_cell_data_func(cr, celldatafunctionCheckbox)
@@ -508,11 +685,6 @@ try:
 	treeviewUpdate.append_column(column2)
 	treeviewUpdate.append_column(column6)
 
-#	model = gtk.TreeStore(str, str, gtk.gdk.Pixbuf, str, int)
-#	model.set_sort_column_id( 2, gtk.SORT_ASCENDING )
-#	treeviewUpdate.set_model(model)
-#	del model
-
 	selection = treeviewUpdate.get_selection()
 	selection.connect('changed', displaySelectedPackage)
 
@@ -523,7 +695,6 @@ try:
 		refresh = RefreshThread(False, glade)
 	refresh.start()
 	gtk.main()
-
 except Exception, detail:
 	print detail
 	log.writelines('-- Exception occured in main thread: ' + str(detail) + '\n')
