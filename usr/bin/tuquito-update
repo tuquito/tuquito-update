@@ -2,7 +2,7 @@
 TUQUITOUPDATE=`ps -A | grep update-manager | wc -l`
 if [ $TUQUITOUPDATE != 0 ]; then
 	if [ "`whoami`" != "root" ]; then
-		echo "Another update-manager is already running, exiting."
+		zenity --error --text="Another update-manager is already running, exiting."
 		exit 1
 	else
 		killall update-manager.py
