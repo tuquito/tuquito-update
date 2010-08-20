@@ -637,7 +637,7 @@ try:
 
 	if os.path.exists('/usr/bin/software-properties-gtk') or os.path.exists('/usr/bin/software-properties-kde'):
 		menuItem=gtk.ImageMenuItem(_('Software sources'))
-		menuItem.set_image(gtk.image_new_from_file(os.path.join(APP_PATH, '/icons/software-properties.png')))
+		menuItem.set_image(gtk.image_new_from_file(os.path.join(APP_PATH, 'icons/software-properties.png')))
 		menuItem.connect('activate', openRepo)
 		menu.append(menuItem)
 
