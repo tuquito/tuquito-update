@@ -46,12 +46,6 @@ import ConfigParser
 # i18n
 gettext.install('tuquito-update', '/usr/share/tuquito/locale')
 
-APP_PATH = '/usr/lib/tuquito/tuquito-update/'
-
-# Falgs
-ready = False
-showWindow  = False
-
 gtk.gdk.threads_init()
 
 class RefreshThread(threading.Thread):
@@ -385,7 +379,7 @@ def onActivate(widget):
 					log.close()
 				except:
 					pass #cause we might have closed it already
-				os.system('gksu --message "' + _('Please enter your password to start Tuquito Update') + '" /media/Datos/Colkito/Tuquito/Tuquito4.0/Desarrollo/tuquito-update-0.1/usr/lib/tuquito/tuquito-update/update-manager.py show ' + str(pid) + ' &')
+				os.system('gksu /media/Datos/Colkito/Tuquito/Tuquito4.0/Desarrollo/tuquito-update-0.1/usr/lib/tuquito/tuquito-update/update-manager.py show ' + str(pid) + ' -D "' + _('Tuquito Update') + '" &')
 			else:
 				showWindow = True
 				window.show_all()
@@ -404,6 +398,12 @@ def refresh(widget, data=False):
 def install(widget, treeView, glade):
 	install = InstallThread(treeView, glade)
 	install.start()
+
+def openRepo(widget):
+	if os.path.exists('/usr/bin/software-properties-gtk'):
+		os.system('gksu /usr/bin/software-properties-gtk -D "%s" &' % _('Software sources'))
+	elif os.path.exists('/usr/bin/software-properties-kde'):
+		os.system('gksu /usr/bin/software-properties-kde -D "%s" &' % _('Software sources'))
 
 def about(widget):
 	os.system('/usr/lib/tuquito/tuquito-update/about.py &')
@@ -435,11 +435,15 @@ def openPref(widget):
 	glade.get_object('label_port1').set_label(_('Port:'))
 	glade.get_object('label_port2').set_label(_('Port:'))
 	glade.get_object('label_port3').set_label(_('Port:'))
-
 	windowPref.connect('delete-event', hidePref)
 	windowPref.connect('destroy-event', hidePref)
 	glade.get_object('cancel').connect('clicked', hidePref)
-
+	if os.path.exists('/usr/bin/software-properties-gtk') or os.path.exists('/usr/bin/software-properties-kde'):
+		glade.get_object('labelSoftwareSources').set_label(_('Software sources'))
+		glade.get_object('buttonSoftwareSources').connect('clicked', openRepo)
+		glade.get_object('buttonSoftwareSources').show()
+	else:
+		glade.get_object('buttonSoftwareSources').hide()
 	glade.get_object('enable_proxy').connect('toggled', enableProxy)
 	glade.get_object('check_same_proxy').connect('toggled', setSameProxy)
 	glade.get_object('save_pref').connect('clicked', savePref)
@@ -463,7 +467,7 @@ def openPref(widget):
 		glade.get_object('gopher_proxy_port').set_text(gopherProxyPort)
 	else:
 		glade.get_object('table1').set_sensitive(False)
-	windowPref.show_all()
+	windowPref.show()
 
 def readPref(widget=None):
 	global delay, urlPing, distUpgrade, checkEnableProxy, checkSameProxy
@@ -484,7 +488,6 @@ def readPref(widget=None):
 		delay = 30
 		urlPing = 'google.com'
 		distUpgrade = True
-
 	try:
 		checkEnableProxy = config.get('User settings', 'manualProxy')
 		checkSameProxy = config.get('User settings', 'checkSameProxy')
@@ -508,26 +511,21 @@ def savePref(widget):
 	global checkEnableProxy
 	config = ConfigParser.ConfigParser()
 	config.add_section('User settings')
-
 	spinDelay = glade.get_object('spin_delay').get_value_as_int()
 	urlPing = glade.get_object('url_ping').get_text().strip()
 	distUpgrade = glade.get_object('check_dist_upgrade').get_active()
 	checkEnableProxy = glade.get_object('enable_proxy').get_active()
-
 	config.set('User settings', 'delay', spinDelay)
 	config.set('User settings', 'url', urlPing)
 	config.set('User settings', 'distUpgrade', distUpgrade)
 	config.set('User settings', 'manualProxy', checkEnableProxy)
-
 	if checkEnableProxy:
-#		checkSameProxy = glade.get_object('check_same_proxy').get_active()
 		httpProxy = glade.get_object('http_proxy').get_text().strip()
 		ftpProxy = glade.get_object('ftp_proxy').get_text().strip()
 		gopherProxy = glade.get_object('gopher_proxy').get_text().strip()
 		port1 = glade.get_object('http_proxy_port').get_text().strip()
 		port2 = glade.get_object('ftp_proxy_port').get_text().strip()
 		port3 = glade.get_object('gopher_proxy_port').get_text().strip()
-
 		config.set('User settings', 'checkSameProxy', checkSameProxy)
 		config.set('User settings', 'httpProxy', httpProxy)
 		config.set('User settings', 'ftpProxy', ftpProxy)
@@ -535,9 +533,9 @@ def savePref(widget):
 		config.set('User settings', 'httpProxyPort', port1)
 		config.set('User settings', 'ftpProxyPort', port2)
 		config.set('User settings', 'gopherProxyPort', port3)
-
 	config.write(open(configFile, 'w'))
 	readPref()
+	hidePref()
 
 def setSameProxy(widget):
 	if glade.get_object('check_same_proxy').get_active():
@@ -573,7 +571,7 @@ def updateProxyPort(widget):
 		glade.get_object('ftp_proxy_port').set_text(widget.get_text())
 		glade.get_object('gopher_proxy_port').set_text(widget.get_text())
 
-def hidePref(widget, data=None):
+def hidePref(widget=None, data=None):
 	glade.get_object('windowPref').hide()
 	return True
 #########
@@ -587,7 +585,14 @@ except Exception, d:
 if arg == 'time':
 	time.sleep(delay)
 
+
+# Flags
+ready = False
+showWindow  = False
+
 parentPid = '0'
+APP_PATH = '/usr/lib/tuquito/tuquito-update/'
+
 if len(sys.argv) > 2:
 	parentPid = sys.argv[2]
 	if parentPid != '0':
@@ -610,8 +615,6 @@ log.flush()
 
 try:
 	global updated, busy, errorConnecting, error, newUpdates, newUpgrade
-
-	# icons
 	updated = os.path.join(APP_PATH, 'icons/updated.png')
 	busy = os.path.join(APP_PATH, 'icons/busy.png')
 	error = os.path.join(APP_PATH, 'icons/error.png')
@@ -644,6 +647,12 @@ try:
 	menuItem=gtk.ImageMenuItem(gtk.STOCK_PREFERENCES)
 	menuItem.connect('activate', openPref)
 	menu.append(menuItem)
+
+	if os.path.exists('/usr/bin/software-properties-gtk') or os.path.exists('/usr/bin/software-properties-kde'):
+		menuItem=gtk.ImageMenuItem(_('Software sources'))
+		menuItem.set_image(gtk.image_new_from_file(os.path.join(APP_PATH, '/icons/software-properties.png')))
+		menuItem.connect('activate', openRepo)
+		menu.append(menuItem)
 
 	menuItem = gtk.ImageMenuItem(gtk.STOCK_ABOUT)
 	menuItem.connect('activate', about)
