@@ -142,10 +142,10 @@ class RefreshThread(threading.Thread):
 		changes = self.checkDependencies(changes, cache)
 		cant = len(changes)
 
-		if cant == 0:
+		if cant == 1:
 			gtk.gdk.threads_enter()
 			self.statusIcon.set_from_file(newUpdates)
-			self.statusIcon.set_tooltip(_('You have %d update available') % cant)
+			self.statusIcon.set_tooltip(_('You have 1 update available'))
 			gtk.gdk.threads_leave()
 		elif cant > 1:
 			gtk.gdk.threads_enter()
@@ -421,7 +421,6 @@ def quit(widget):
 def openPref(widget):
 	windowPref = glade.get_object('windowPref')
 	windowPref.set_title(_('Tuquito Update preferences'))
-
 	glade.get_object('label2').set_label(_('Update Method'))
 	glade.get_object('label3').set_label(_('Proxy'))
 	glade.get_object('label4').set_label(_('Startup delay (in seconds): '))
@@ -440,6 +439,7 @@ def openPref(widget):
 	windowPref.connect('delete-event', hidePref)
 	windowPref.connect('destroy-event', hidePref)
 	glade.get_object('cancel').connect('clicked', hidePref)
+
 	glade.get_object('enable_proxy').connect('toggled', enableProxy)
 	glade.get_object('check_same_proxy').connect('toggled', setSameProxy)
 	glade.get_object('save_pref').connect('clicked', savePref)
