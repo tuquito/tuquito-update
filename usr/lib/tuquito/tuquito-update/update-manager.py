@@ -379,7 +379,7 @@ def onActivate(widget):
 					log.close()
 				except:
 					pass #cause we might have closed it already
-				os.system('gksu /media/Datos/Colkito/Tuquito/Tuquito4.0/Desarrollo/tuquito-update-0.1/usr/lib/tuquito/tuquito-update/update-manager.py show ' + str(pid) + ' -D "' + _('Tuquito Update') + '" &')
+				os.system('gksu ' + APP_PATH + 'update-manager.py show ' + str(pid) + ' -D "' + _('Tuquito Update') + '" &')
 			else:
 				showWindow = True
 				window.show_all()
