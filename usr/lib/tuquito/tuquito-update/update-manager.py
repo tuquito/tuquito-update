@@ -537,6 +537,7 @@ def savePref(widget):
 		config.set('User settings', 'gopherProxyPort', port3)
 
 	config.write(open(configFile, 'w'))
+	readPref()
 
 def setSameProxy(widget):
 	if glade.get_object('check_same_proxy').get_active():
