@@ -426,7 +426,7 @@ def openPref(widget):
 	glade.get_object('http_proxy').connect('changed', updateProxyHost)
 	glade.get_object('http_proxy_port').connect('changed', updateProxyPort)
 	glade.get_object('url_ping').set_text(urlPing)
-	glade.get_object('spin_delay').set_value(float(delay))
+	glade.get_object('spin_delay').set_value(delay)
 	glade.get_object('check_dist_upgrade').set_active(distUpgrade)
 	if checkEnableProxy:
 		glade.get_object('enable_proxy').set_active(True)
@@ -457,7 +457,7 @@ def readPref(widget=None):
 	else:
 		config.read('/etc/tuquito/tuquito-update.conf')
 	try:
-		delay = config.get('User settings', 'delay')
+		delay = config.getfloat('User settings', 'delay')
 		urlPing = config.get('User settings', 'url')
 		distUpgrade = config.getboolean('User settings', 'distUpgrade')
 	except:

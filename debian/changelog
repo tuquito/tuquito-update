@@ -1,3 +1,20 @@
+tuquito-update (0.9) lucid; urgency=low
+
+  * nuevas traducciones
+  * nuevas funciones de preferencias
+  * corrección del color del status icon (verde)
+  * Agregado Orígenes del software como opción en menu y en preferencias
+  * mejoras en el ordenamiento de los paquetes
+
+ -- Mario Colque <mario@tuquito.org.ar>  Fri, 20 Aug 2010 18:21:38 -0300
+
+tuquito-update (0.8) lucid; urgency=low
+
+  * Mejora en la lectura de descripcion del paquete
+  * arreglos mínimos en la interfaz
+
+ -- Mario Colque <mario@tuquito.org.ar>  Fri, 20 Aug 2010 18:17:31 -0300
+
 tuquito-update (0.7) lucid; urgency=low
 
   * traducciones agregadas
@@ -11,3 +28,4 @@ tuquito-update (0.1.0) lucid; urgency=low
   * Versión inicial
 
  -- Mario Colque <mario@tuquito.org.ar>  Tue, 03 Aug 2010 12:48:45 -0300
+
