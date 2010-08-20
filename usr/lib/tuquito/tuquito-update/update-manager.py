@@ -32,17 +32,6 @@ from subprocess import Popen, PIPE
 import time
 import ConfigParser
 
-#try:
-#	tuquitoUpdate = commands.getoutput('ps -A | grep tuquito-update | wc -l')
-#	if tuquitoUpdate != '0':
-#		if os.getuid() == 0:
-#			os.system('killall tuquito-update')
-#		else:
-#			print 'Another tuquito-update is already running, exiting.'
-#			sys.exit(1)
-#except Exception, detail:
-#	print detail
-
 # i18n
 gettext.install('tuquito-update', '/usr/share/tuquito/locale')
 
@@ -417,7 +406,6 @@ def hide(widget, data=None):
 def quit(widget):
 	gtk.main_quit()
 
-######### Preferencias
 def openPref(widget):
 	windowPref = glade.get_object('windowPref')
 	windowPref.set_title(_('Tuquito Update preferences'))
@@ -574,7 +562,7 @@ def updateProxyPort(widget):
 def hidePref(widget=None, data=None):
 	glade.get_object('windowPref').hide()
 	return True
-#########
+
 readPref()
 
 try:
@@ -623,8 +611,7 @@ try:
 	newUpgrade = os.path.join(APP_PATH, 'icons/newUpgrade.png')
 
 	glade = gtk.Builder()
-#	glade.add_from_file('/usr/lib/tuquito/tuquito-update/update-manager.glade')
-	glade.add_from_file('./update-manager.glade')
+	glade.add_from_file('/usr/lib/tuquito/tuquito-update/update-manager.glade')
 	window = glade.get_object('window')
 	window.set_title(_('Update Manager'))
 	dataLabel = glade.get_object('data')
