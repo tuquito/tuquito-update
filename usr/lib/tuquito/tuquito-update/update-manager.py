@@ -63,7 +63,7 @@ class RefreshThread(threading.Thread):
 					except Exception, detail:
 						pass
 		if foundSomething:
-			changes = checkDependencies(changes, cache)
+			changes = self.checkDependencies(changes, cache)
 		return changes
 
 	def run(self):
@@ -73,7 +73,7 @@ class RefreshThread(threading.Thread):
 		global httpProxyPort, ftpProxyPort, gopherProxyPort
 
 		proxy={}
-		if checkEnableProxy == 'True':
+		if checkEnableProxy:
 			if httpProxy != '' and httpProxyPort != '':
 				proxy['http'] = httpProxy + ':' + httpProxyPort
 			if ftpProxy != '' and ftpProxyPort != '':
@@ -89,11 +89,11 @@ class RefreshThread(threading.Thread):
 			url.read()
 			url.close()
 		except Exception, detail:
-			if os.system('ping google.com -c1 -q'):
+			if os.system('ping ' + urlPing + ' -c1 -q'):
 				gtk.gdk.threads_enter()
 				self.statusIcon.set_from_file(errorConnecting)
 				self.statusIcon.set_tooltip(_('Could not connect to the Internet'))
-				log.writelines('-- No connection found (tried to read http://www.google.com and to ping google.com)\n')
+				log.writelines('-- No connection found (tried to read http://google.com and to ' + urlPing + ')\n')
 				log.flush()
 				gtk.gdk.threads_leave()
 				return False
@@ -116,7 +116,7 @@ class RefreshThread(threading.Thread):
 					cache = apt.Cache()
 					cache.update()
 			cache = apt.Cache()
-			cache.upgrade(eval(distUpgrade))
+			cache.upgrade(checkEnableProxy)
 			changes = cache.getChanges()
 		except Exception, detail:
 			print detail
@@ -439,11 +439,10 @@ def openPref(widget):
 	glade.get_object('http_proxy_port').connect('changed', updateProxyPort)
 	glade.get_object('url_ping').set_text(urlPing)
 	glade.get_object('spin_delay').set_value(float(delay))
-	glade.get_object('check_dist_upgrade').set_active(eval(distUpgrade))
-	if checkEnableProxy == 'True':
+	glade.get_object('check_dist_upgrade').set_active(distUpgrade)
+	if checkEnableProxy:
 		glade.get_object('enable_proxy').set_active(True)
-		if checkSameProxy == 'True':
-			glade.get_object('check_same_proxy').set_active(True)
+		glade.get_object('check_same_proxy').set_active(checkSameProxy)
 		glade.get_object('http_proxy').set_text(httpProxy)
 		glade.get_object('http_proxy_port').set_text(httpProxyPort)
 		glade.get_object('ftp_proxy').set_text(ftpProxy)
@@ -472,14 +471,14 @@ def readPref(widget=None):
 	try:
 		delay = config.get('User settings', 'delay')
 		urlPing = config.get('User settings', 'url')
-		distUpgrade = config.get('User settings', 'distUpgrade')
+		distUpgrade = config.getboolean('User settings', 'distUpgrade')
 	except:
 		delay = 30
 		urlPing = 'google.com'
 		distUpgrade = True
 	try:
-		checkEnableProxy = config.get('User settings', 'manualProxy')
-		checkSameProxy = config.get('User settings', 'checkSameProxy')
+		checkEnableProxy = config.getboolean('User settings', 'manualProxy')
+		checkSameProxy = config.getboolean('User settings', 'checkSameProxy')
 		httpProxy = config.get('User settings', 'httpProxy')
 		ftpProxy = config.get('User settings', 'ftpProxy')
 		gopherProxy = config.get('User settings', 'gopherProxy')
@@ -509,6 +508,7 @@ def savePref(widget):
 	config.set('User settings', 'distUpgrade', distUpgrade)
 	config.set('User settings', 'manualProxy', checkEnableProxy)
 	if checkEnableProxy:
+		checkSameProxy = glade.get_object('check_same_proxy').get_active()
 		httpProxy = glade.get_object('http_proxy').get_text().strip()
 		ftpProxy = glade.get_object('ftp_proxy').get_text().strip()
 		gopherProxy = glade.get_object('gopher_proxy').get_text().strip()
@@ -545,10 +545,7 @@ def setSameProxy(widget):
 def enableProxy(widget):
 	global checkEnableProxy
 	checkEnableProxy = glade.get_object('enable_proxy').get_active()
-	if checkEnableProxy:
-		glade.get_object('table1').set_sensitive(True)
-	else:
-		glade.get_object('table1').set_sensitive(False)
+	glade.get_object('table1').set_sensitive(checkEnableProxy)
 
 def updateProxyHost(widget):
 	if glade.get_object('check_same_proxy').get_active():
