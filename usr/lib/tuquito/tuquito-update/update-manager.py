@@ -27,7 +27,6 @@ import threading
 import tempfile
 import gettext
 import apt
-from user import home
 from subprocess import Popen, PIPE
 import time
 import ConfigParser
@@ -141,14 +140,12 @@ class RefreshThread(threading.Thread):
 			self.statusIcon.set_tooltip(_('Your system is up to date!'))
 			gtk.gdk.threads_leave()
 
-		level = 3 # Level 3 by default
-		extraInfo = ''
-		warning = ''
+		level = 3
 		rulesFile = open(os.path.join(APP_PATH, 'rules'), 'r')
 		rules = rulesFile.readlines()
 		rulesFile.close()
 		goOn = True
-		foundPackageRule = False # whether we found a rule with the exact package name or not
+		foundPackageRule = False
 		totalSize = 0
 		model = gtk.TreeStore(str, str, gtk.gdk.Pixbuf, str, int, str, str, str, int)
 		for pkg in changes:
@@ -166,24 +163,17 @@ class RefreshThread(threading.Thread):
 						rule_package = ruleFields[0]
 						rule_version = ruleFields[1]
 						rule_level = ruleFields[2]
-						rule_extraInfo = ruleFields[3]
-						rule_warning = ruleFields[4]
 						if rule_package == package:
 							foundPackageRule = True
 							level = rule_level
-							extraInfo = rule_extraInfo
-							warning = rule_warning
 							if rule_version == newVersion:
-								goOn = False # We found a rule with the exact package name and version, no need to look elsewhere
+								goOn = False
 						else:
 							if rule_package.startswith('*'):
 								keyword = rule_package.replace('*', '')
 								index = package.find(keyword)
 								if (index > -1 and foundPackageRule == False):
 									level = rule_level
-									extraInfo = rule_extraInfo
-									warning = rule_warning
-
 			data = '<b>%s</b>: %s\n<b>%s</b>: %s\n<b>%s</b>: %s\n<b>%s</b>: %s' % (_('Description'), description, _('Size'), convert(size), _('Installed Version'), oldVersion, _('New Version'), newVersion)
 
 			iter = model.insert_before(None, None)
@@ -270,7 +260,6 @@ class InstallThread(threading.Thread):
         			comnd = Popen(' '.join(cmd), stdout=log, stderr=log, shell=True)
 				returnCode = comnd.wait()
 				log.writelines('++ Return code: ' + str(returnCode) + '\n')
-			        #sts = os.waitpid(comnd.pid, 0)
         			f.close()
 				log.writelines('++ Install finished\n')
 				log.flush()
@@ -367,7 +356,7 @@ def onActivate(widget):
 					log.flush()
 					log.close()
 				except:
-					pass #cause we might have closed it already
+					pass
 				os.system('gksu ' + APP_PATH + 'update-manager.py show ' + str(pid) + ' -D "' + _('Tuquito Update') + '" &')
 			else:
 				showWindow = True
