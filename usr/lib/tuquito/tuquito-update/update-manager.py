@@ -413,7 +413,7 @@ def openPref(widget):
 	glade.get_object('label3').set_label(_('Proxy'))
 	glade.get_object('label4').set_label(_('Startup delay (in seconds): '))
 	glade.get_object('label5').set_label(_('Internet check (domain name or IP address): '))
-	glade.get_object('label6').set_label(_('<i>Note: Newer versions of packages can have different dependencies. If an upgrade requires the installation or the removal of another package it will be kept back and not upgraded. If you select this option however, it will be upgraded and all new dependencies will be resolved. Since this can result in the installation of new packages or the removal of some of your packages you should only use this option if you are experienced with APT.</i>'))
+	glade.get_object('label6').set_label(_("<i>Note: The dist-upgrade option, in addition to performing the function of upgrade, also intelligently handles changing dependencies with new versions of packages. Without this option, only the latest versions of any out-of-date packages on your system are installed. Packages that are not yet installed don't get installed automatically and newer versions of packages which dependencies require such installations are simply ignored.</i>"))
 	glade.get_object('check_dist_upgrade').set_label(_('Include dist-upgrade packages?'))
 	glade.get_object('enable_proxy').set_label(_('Manual proxy configuration'))
 	glade.get_object('check_same_proxy').set_label(_('Use the same proxy for all protocols'))
