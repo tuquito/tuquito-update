@@ -1,17 +1,13 @@
 #!/bin/bash
-#TUQUITOUPDATE=`ps -A | grep update-manager.py | wc -l`
-#if [ $TUQUITOUPDATE != 0 ]; then
-#	killall update-manager.py
-#try:
-#	tuquitoUpdate = commands.getoutput('ps -A | grep tuquito-update | wc -l')
-#	if tuquitoUpdate != '0':
-#		if os.getuid() == 0:
-#			os.system('killall tuquito-update')
-#		else:
-#			print 'Another tuquito-update is already running, exiting.'
-#			sys.exit(1)
-#except Exception, detail:
-#	print detail
-
-/usr/lib/tuquito/tuquito-update/update-manager.py &
+TUQUITOUPDATE=`ps -A | grep update-manager.py | wc -l`
+if [ $TUQUITOUPDATE != 0 ]; then
+	if [ "`whoami`" != "root" ]; then
+		echo "Another update-manager.py is already running, exiting."
+		exit 1
+	else
+		killall update-manager.py
+	fi
+else
+	/usr/lib/tuquito/tuquito-update/update-manager.py &
+fi
 
