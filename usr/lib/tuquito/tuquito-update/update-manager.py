@@ -116,7 +116,7 @@ class RefreshThread(threading.Thread):
 					cache = apt.Cache()
 					cache.update()
 			cache = apt.Cache()
-			cache.upgrade(bool(distUpgrade))
+			cache.upgrade(eval(distUpgrade))
 			changes = cache.getChanges()
 		except Exception, detail:
 			print detail
@@ -439,10 +439,7 @@ def openPref(widget):
 	glade.get_object('http_proxy_port').connect('changed', updateProxyPort)
 	glade.get_object('url_ping').set_text(urlPing)
 	glade.get_object('spin_delay').set_value(float(delay))
-	if distUpgrade == 'True':
-		glade.get_object('check_dist_upgrade').set_active(True)
-	else:
-		glade.get_object('check_dist_upgrade').set_active(False)
+	glade.get_object('check_dist_upgrade').set_active(eval(distUpgrade))
 	if checkEnableProxy == 'True':
 		glade.get_object('enable_proxy').set_active(True)
 		if checkSameProxy == 'True':
@@ -463,6 +460,10 @@ def readPref(widget=None):
 	global httpProxyPort, ftpProxyPort, gopherProxyPort
 	global configFile
 	config = ConfigParser.ConfigParser()
+	if os.getuid() == 0 :
+		home = '/home/' + os.environ.get('SUDO_USER') + '/'
+	else:
+		from user import home
 	configFile =  os.path.join(home, '.tuquito/tuquito-update/tuquito-update.conf')
 	if os.path.exists(configFile):
 		config.read(configFile)

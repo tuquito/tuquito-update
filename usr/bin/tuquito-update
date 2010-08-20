@@ -2,12 +2,11 @@
 TUQUITOUPDATE=`ps -A | grep update-manager | wc -l`
 if [ $TUQUITOUPDATE != 0 ]; then
 	if [ "`whoami`" != "root" ]; then
-		zenity --error --text="Another update-manager is already running, exiting."
+		zenity --error --text="Another update-manager is already running.\nTry execute in console: sudo tuquito-update" --title="Tuquito Update - Error" --window-icon=/usr/lib/tuquito/tuquito-update/logo.png
 		exit 1
 	else
 		killall update-manager.py
 	fi
-else
-	/usr/lib/tuquito/tuquito-update/update-manager.py &
 fi
+/usr/lib/tuquito/tuquito-update/update-manager.py &
 
