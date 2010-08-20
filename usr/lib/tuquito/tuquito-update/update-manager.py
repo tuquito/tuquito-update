@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 0.7
+ Tuquito Update Manager 0.9
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -375,8 +375,7 @@ def onActivate(widget):
 
 def refresh(widget, data=False):
 	ready = False
-	showWindow = False
-	window.hide()
+	hide(widget)
 	statusIcon.set_from_file(busy)
 	if os.getuid() == 0 :
 		refresh = RefreshThread(True, glade)
@@ -400,7 +399,7 @@ def about(widget):
 def hide(widget, data=None):
 	global showWindow
 	showWindow = False
-	window.hide_all()
+	window.hide()
 	return True
 
 def quit(widget):
@@ -524,7 +523,7 @@ def savePref(widget):
 		config.set('User settings', 'gopherProxyPort', port3)
 	config.write(open(configFile, 'w'))
 	readPref()
-	hidePref()
+	hidePref(widget)
 
 def setSameProxy(widget):
 	if glade.get_object('check_same_proxy').get_active():
@@ -557,7 +556,7 @@ def updateProxyPort(widget):
 		glade.get_object('ftp_proxy_port').set_text(widget.get_text())
 		glade.get_object('gopher_proxy_port').set_text(widget.get_text())
 
-def hidePref(widget=None, data=None):
+def hidePref(widget, data=None):
 	glade.get_object('windowPref').hide()
 	return True
 
@@ -570,7 +569,6 @@ except Exception, d:
 
 if arg == 'time':
 	time.sleep(delay)
-
 
 # Flags
 ready = False

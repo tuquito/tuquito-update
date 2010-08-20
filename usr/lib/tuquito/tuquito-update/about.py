@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
- Tuquito Update 0.1
+ Tuquito Update 0.9
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -36,3 +36,4 @@ class About:
 if __name__ == '__main__':
 	About()
 	gtk.main()
+
