@@ -214,7 +214,6 @@ class AutomaticRefreshThread(threading.Thread):
 	def run(self):
 		global log, showWindow
 		global timerMin, timerHours, timerDays
-		print "arranco"
 		try:
 			while True:
 				timer = (timerMin * 60) + (timerHours * 60 * 60) + (timerDays * 24 * 60 * 60)
