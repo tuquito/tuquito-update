@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.0-1
+ Tuquito Update Manager 1.0-2
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -202,7 +202,7 @@ class RefreshThread(threading.Thread):
 			gtk.gdk.threads_enter()
 			self.window.show()
 			gtk.gdk.threads_leave()
-		if self.auto:
+		if self.auto and (not showWindow):
 			autoRefresh = AutomaticRefreshThread(self.glade)
 			autoRefresh.start()
 
