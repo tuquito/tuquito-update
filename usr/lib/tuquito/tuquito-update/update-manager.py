@@ -68,10 +68,6 @@ class RefreshThread(threading.Thread):
 
 	def run(self):
 		global log, showWindow, ready, cant, totalSize
-		global updated, newUpdates, errorConnecting
-		global httpProxy, ftpProxy, gopherProxy
-		global httpProxyPort, ftpProxyPort, gopherProxyPort
-
 		proxy={}
 		if checkEnableProxy:
 			if httpProxy != '' and httpProxyPort != '':
@@ -82,7 +78,6 @@ class RefreshThread(threading.Thread):
 				proxy['gopher'] = gopherProxy + ':' + gopherProxyPort
 		else:
 			proxy = None
-
 		try:
 			from urllib import urlopen
 			url=urlopen('http://google.com', None, proxy)
@@ -100,11 +95,9 @@ class RefreshThread(threading.Thread):
 			else:
 				log.writelines('++ Connection found - checking for updates\n')
 				log.flush()
-
 		gtk.gdk.threads_enter()
 		self.statusIcon.set_tooltip(_('Checking for updates...'))
 		gtk.gdk.threads_leave()
-
 		try:
 			if os.getuid() == 0 :
 				if self.synaptic or showWindow:
@@ -121,10 +114,8 @@ class RefreshThread(threading.Thread):
 		except Exception, detail:
 			print detail
 			sys.exit(1)
-
 		changes = self.checkDependencies(changes, cache)
 		cant = len(changes)
-
 		if cant == 1:
 			gtk.gdk.threads_enter()
 			self.statusIcon.set_from_file(newUpdates)
@@ -140,7 +131,6 @@ class RefreshThread(threading.Thread):
 			self.statusIcon.set_from_file(updated)
 			self.statusIcon.set_tooltip(_('Your system is up to date!'))
 			gtk.gdk.threads_leave()
-
 		level = 3
 		rulesFile = open(os.path.join(APP_PATH, 'rules'), 'r')
 		rules = rulesFile.readlines()
@@ -156,7 +146,6 @@ class RefreshThread(threading.Thread):
 			size = pkg.packageSize
 			description = pkg.description
 			totalSize +=  size
-
 			for rule in rules:
 				if goOn:
 					ruleFields = rule.split('|')
@@ -176,7 +165,6 @@ class RefreshThread(threading.Thread):
 								if (index > -1 and foundPackageRule == False):
 									level = rule_level
 			data = '<b>%s</b>: %s\n<b>%s</b>: %s\n<b>%s</b>: %s\n<b>%s</b>: %s' % (_('Description'), description, _('Size'), convert(size), _('Installed Version'), oldVersion, _('New Version'), newVersion)
-
 			iter = model.insert_before(None, None)
 			model.set_value(iter, 0, 'true')
 			model.set_value(iter, 4, int(level))
@@ -188,7 +176,6 @@ class RefreshThread(threading.Thread):
 			model.row_changed(model.get_path(iter), iter)
 			model.set_value(iter, 2, gtk.gdk.pixbuf_new_from_file(APP_PATH + 'icons/' + str(level) + '.png'))
 			model.set_value(iter, 3, convert(size))
-
 		gtk.gdk.threads_enter()
 		treeviewUpdate.set_model(model)
 		del model
@@ -215,8 +202,7 @@ class AutomaticRefreshThread(threading.Thread):
 		self.glade = glade
 
 	def run(self):
-		global log, showWindow
-		global timerMin, timerHours, timerDays
+		global log
 		try:
 			timer = (timerMin * 60) + (timerHours * 60 * 60) + (timerDays * 24 * 60 * 60)
 			try:
@@ -224,7 +210,6 @@ class AutomaticRefreshThread(threading.Thread):
 				log.flush()
 			except:
 				pass
-
 			if int(timer) > 0:
 				time.sleep(int(timer))
 				if showWindow:
@@ -246,7 +231,7 @@ class AutomaticRefreshThread(threading.Thread):
 				log.writelines('-- Exception occured in the auto-refresh thread.. so it\'s probably dead now: ' + str(detail) + '\n')
 				log.flush()
 			except:
-					pass
+				pass
 
 class InstallThread(threading.Thread):
 	def __init__(self, treeView, glade):
@@ -256,7 +241,6 @@ class InstallThread(threading.Thread):
 		self.statusIcon = self.glade.get_object('statusicon')
 
 	def run(self):
-		global busy, error
 		global log
 		try:
 			log.writelines('++ Install requested by user\n')
@@ -268,7 +252,6 @@ class InstallThread(threading.Thread):
 			packages = []
 			model = self.treeView.get_model()
 			gtk.gdk.threads_leave()
-
 			iter = model.get_iter_first()
 			while iter != None:
 				checked = model.get_value(iter, 0)
@@ -282,13 +265,11 @@ class InstallThread(threading.Thread):
 					log.writelines('++ Will install ' + str(package) + '\n')
 					log.flush()
 				iter = model.iter_next(iter)
-
 			if installNeeded:
 				gtk.gdk.threads_enter()
 				self.statusIcon.set_from_file(busy)
 				self.statusIcon.set_tooltip(_('Installing updates'))
 				gtk.gdk.threads_leave()
-
 				log.writelines('++ Ready to launch synaptic\n')
 				log.flush()
 				cmd = ['sudo', '/usr/sbin/synaptic', '--hide-main-window', '--non-interactive']
@@ -297,7 +278,6 @@ class InstallThread(threading.Thread):
 				cmd.append('--finish-str')
 				cmd.append('"' + _('Update is complete') + '"')
 				f = tempfile.NamedTemporaryFile()
-
 				for pkg in packages:
         			    f.write('%s\tinstall\n' % pkg)
         			cmd.append('--set-selections-file')
@@ -309,7 +289,6 @@ class InstallThread(threading.Thread):
         			f.close()
 				log.writelines('++ Install finished\n')
 				log.flush()
-
 				gtk.gdk.threads_enter()
 				self.statusIcon.set_from_file(busy)
 				self.statusIcon.set_tooltip(_('Checking for updates...'))
@@ -319,7 +298,6 @@ class InstallThread(threading.Thread):
 				showWindow = False
 				self.glade.get_object('window').hide()
 				gtk.gdk.threads_leave()
-
 				refresh = RefreshThread(self.treeView, self.glade)
 				refresh.start()
 			else:
@@ -441,7 +419,7 @@ def hide(widget, data=None):
 def quit(widget):
 #	gtk.main_quit()
 #	sys.exit(0)
-	os.system("kill -9 " + str(pid))
+	os.system('kill -9 ' + str(pid))
 
 def openPref(widget):
 	windowPref = glade.get_object('windowPref')
@@ -719,36 +697,31 @@ try:
 	statusIcon.connect('popup-menu', submenu, menu)
 	statusIcon.connect('activate', onActivate)
 
-	cr = gtk.CellRendererToggle()
-	cr.connect('toggled', toggled, treeviewUpdate)
-
-	column1 = gtk.TreeViewColumn(_('Upgrade'), cr)
-	column1.set_cell_data_func(cr, celldatafunctionCheckbox)
-	column1.set_sort_column_id(2)
+	cellRender = gtk.CellRendererToggle()
+	cellRender.connect('toggled', toggled, treeviewUpdate)
+	column1 = gtk.TreeViewColumn(_('Level'), gtk.CellRendererPixbuf(), pixbuf=2)
+	column1.set_sort_column_id(4)
 	column1.set_resizable(True)
-
-	column2 = gtk.TreeViewColumn(_('Package'), gtk.CellRendererText(), text=1)
-	column2.set_sort_column_id(1)
+	column2 = gtk.TreeViewColumn(_('Upgrade'), cellRender)
+	column2.set_cell_data_func(cellRender, celldatafunctionCheckbox)
+	column2.set_sort_column_id(2)
 	column2.set_resizable(True)
-
-	column3 = gtk.TreeViewColumn(_('Level'), gtk.CellRendererPixbuf(), pixbuf=2)
-	column3.set_sort_column_id(4)
+	column3 = gtk.TreeViewColumn(_('Package'), gtk.CellRendererText(), text=1)
+	column3.set_sort_column_id(1)
 	column3.set_resizable(True)
+	column4 = gtk.TreeViewColumn(_('Size'), gtk.CellRendererText(), text=3)
+	column4.set_sort_column_id(8)
+	column4.set_resizable(True)
 
-	column6 = gtk.TreeViewColumn(_('Size'), gtk.CellRendererText(), text=3)
-	column6.set_sort_column_id(8)
-	column6.set_resizable(True)
-
-	treeviewUpdate.append_column(column3)
 	treeviewUpdate.append_column(column1)
 	treeviewUpdate.append_column(column2)
-	treeviewUpdate.append_column(column6)
+	treeviewUpdate.append_column(column3)
+	treeviewUpdate.append_column(column4)
 
 	selection = treeviewUpdate.get_selection()
 	selection.connect('changed', displaySelectedPackage)
 
 	if len(sys.argv) > 1 and sys.argv[1] == 'show':
-#		showWindow = True
 		refresh = RefreshThread(True, glade)
 	else:
 		refresh = RefreshThread(False, glade)
