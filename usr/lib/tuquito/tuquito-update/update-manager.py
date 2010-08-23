@@ -219,10 +219,10 @@ class AutomaticRefreshThread(threading.Thread):
 				except:
 					pass
 
-				if timer == 0:
+				if int(timer) == 0:
 					break
 				else:
-					time.sleep(timer)
+					time.sleep(int(timer))
 					if showWindow:
 						try:
 							log.writelines('++ The Tuquito Update window is open, skipping auto-refresh\n')
@@ -434,16 +434,24 @@ def hide(widget, data=None):
 	return True
 
 def quit(widget):
-	gtk.main_quit()
+#	gtk.main_quit()
+#	sys.exit(0)
+	os.system("kill -9 " + str(pid))
 
 def openPref(widget):
 	windowPref = glade.get_object('windowPref')
 	windowPref.set_title(_('Tuquito Update preferences'))
-	glade.get_object('label2').set_label(_('Update Method'))
-	glade.get_object('label3').set_label(_('Proxy'))
+	glade.get_object('label1').set_label(_('Refresh the list of updates every:'))
+	glade.get_object('label2').set_label(_('Auto Refresh'))
+	glade.get_object('label3').set_label(_('minutes'))
 	glade.get_object('label4').set_label(_('Startup delay (in seconds): '))
 	glade.get_object('label5').set_label(_('Internet check (domain name or IP address): '))
-	glade.get_object('label6').set_label(_("<i>Note: The dist-upgrade option, in addition to performing the function of upgrade, also intelligently handles changing dependencies with new versions of packages. Without this option, only the latest versions of any out-of-date packages on your system are installed. Packages that are not yet installed don't get installed automatically and newer versions of packages which dependencies require such installations are simply ignored.</i>"))
+	glade.get_object('label6').set_markup(_("<i>Note: The dist-upgrade option, in addition to performing the function of upgrade, also intelligently handles changing dependencies with new versions of packages. Without this option, only the latest versions of any out-of-date packages on your system are installed. Packages that are not yet installed don't get installed automatically and newer versions of packages which dependencies require such installations are simply ignored.</i>"))
+	glade.get_object('label7').set_label(_('hours'))
+	glade.get_object('label8').set_label(_('Update Method'))
+	glade.get_object('label9').set_label(_('Proxy'))
+	glade.get_object('label10').set_label(_('days'))
+	glade.get_object('label11').set_markup(_('<i>Note: The list only gets refreshed while the mintUpdate window is closed (system tray mode).</i>'))
 	glade.get_object('check_dist_upgrade').set_label(_('Include dist-upgrade packages?'))
 	glade.get_object('enable_proxy').set_label(_('Manual proxy configuration'))
 	glade.get_object('check_same_proxy').set_label(_('Use the same proxy for all protocols'))
@@ -469,6 +477,11 @@ def openPref(widget):
 	glade.get_object('http_proxy_port').connect('changed', updateProxyPort)
 	glade.get_object('url_ping').set_text(urlPing)
 	glade.get_object('spin_delay').set_value(delay)
+
+	glade.get_object('timer_min').set_value(timerMin)
+	glade.get_object('timer_hours').set_value(timerHours)
+	glade.get_object('timer_days').set_value(timerDays)
+
 	glade.get_object('check_dist_upgrade').set_active(distUpgrade)
 	if checkEnableProxy:
 		glade.get_object('enable_proxy').set_active(True)
@@ -509,9 +522,9 @@ def readPref(widget=None):
 		distUpgrade = True
 
 	try:
-		timerMin = config.getint('User settings', 'timerMin')
-		timerHours = config.getint('User settings', 'timerHours')
-		timerDays = config.getint('User settings', 'timerDays')
+		timerMin = config.getfloat('User settings', 'timerMin')
+		timerHours = config.getfloat('User settings', 'timerHours')
+		timerDays = config.getfloat('User settings', 'timerDays')
 	except:
 		timerMin = 0
 		timerHours = 0
@@ -544,10 +557,16 @@ def savePref(widget):
 	urlPing = glade.get_object('url_ping').get_text().strip()
 	distUpgrade = glade.get_object('check_dist_upgrade').get_active()
 	checkEnableProxy = glade.get_object('enable_proxy').get_active()
+	timerMin = glade.get_object('timer_min').get_value_as_int()
+	timerHours = glade.get_object('timer_hours').get_value_as_int()
+	timerDays = glade.get_object('timer_days').get_value_as_int()
 	config.set('User settings', 'delay', spinDelay)
 	config.set('User settings', 'url', urlPing)
 	config.set('User settings', 'distUpgrade', distUpgrade)
 	config.set('User settings', 'manualProxy', checkEnableProxy)
+	config.set('User settings', 'timerMin', timerMin)
+	config.set('User settings', 'timerHours', timerHours)
+	config.set('User settings', 'timerDays', timerDays)
 	if checkEnableProxy:
 		checkSameProxy = glade.get_object('check_same_proxy').get_active()
 		httpProxy = glade.get_object('http_proxy').get_text().strip()
