@@ -347,7 +347,7 @@ def onActivate(widget):
 	if ready:
 		if showWindow:
 			showWindow = False
-			window.hide_all()
+			window.hide()
 			return True
 		else:
 			if os.getuid() != 0:
