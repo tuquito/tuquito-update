@@ -202,6 +202,48 @@ class RefreshThread(threading.Thread):
 			self.window.show()
 			gtk.gdk.threads_leave()
 
+class AutomaticRefreshThread(threading.Thread):
+	def __init__(self, glade):
+		threading.Thread.__init__(self)
+		self.glade = glade
+
+	def run(self):
+		global log, showWindow
+		global timerMin, timerHours, timerDays
+		try:
+			while True:
+				timer = (timerMin * 60) + (timerHours * 60 * 60) + (timerDays * 24 * 60 * 60)
+				try:
+					log.writelines('++ Auto-refresh timer is going to sleep for ' + str(timerMin) + ' minutes, ' + str(timerHours) + ' hours and ' + str(timerDays) + ' days\n')
+					log.flush()
+				except:
+					pass
+
+				if timer == 0:
+					break
+				else:
+					time.sleep(timer)
+					if showWindow:
+						try:
+							log.writelines('++ The Tuquito Update window is open, skipping auto-refresh\n')
+							log.flush()
+						except:
+							pass
+					else:
+						try:
+							log.writelines('++ Tuquito Update is in tray mode, performing auto-refresh\n')
+							log.flush()
+						except:
+							pass
+						refresh = RefreshThread(False, self.glade)
+						refresh.start()
+		except Exception, detail:
+			try:
+				log.writelines('-- Exception occured in the auto-refresh thread.. so it\'s probably dead now: ' + str(detail) + '\n')
+				log.flush()
+			except:
+					pass
+
 class InstallThread(threading.Thread):
 	def __init__(self, treeView, glade):
 		threading.Thread.__init__(self)
@@ -443,6 +485,7 @@ def openPref(widget):
 
 def readPref(widget=None):
 	global delay, urlPing, distUpgrade, checkEnableProxy, checkSameProxy
+	global timerMin, timerHours, timerDays
 	global httpProxy, ftpProxy, gopherProxy
 	global httpProxyPort, ftpProxyPort, gopherProxyPort
 	global configFile
@@ -464,6 +507,16 @@ def readPref(widget=None):
 		delay = 30
 		urlPing = 'google.com'
 		distUpgrade = True
+
+	try:
+		timerMin = config.getint('User settings', 'timerMin')
+		timerHours = config.getint('User settings', 'timerHours')
+		timerDays = config.getint('User settings', 'timerDays')
+	except:
+		timerMin = 0
+		timerHours = 0
+		timerDays = 0
+
 	try:
 		checkEnableProxy = config.getboolean('User settings', 'manualProxy')
 		checkSameProxy = config.getboolean('User settings', 'checkSameProxy')
@@ -676,6 +729,10 @@ try:
 	else:
 		refresh = RefreshThread(False, glade)
 	refresh.start()
+
+	autoRefresh = AutomaticRefreshThread(glade)
+	autoRefresh.start()
+
 	gtk.main()
 except Exception, detail:
 	print detail
