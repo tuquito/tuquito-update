@@ -37,12 +37,13 @@ gettext.install('tuquito-update', '/usr/share/tuquito/locale')
 gtk.gdk.threads_init()
 
 class RefreshThread(threading.Thread):
-	def __init__(self, synaptic, glade=None):
+	def __init__(self, synaptic, glade=None, auto=True):
 		threading.Thread.__init__(self)
 		self.synaptic  = synaptic
 		self.glade = glade
 		self.window = self.glade.get_object('window')
 		self.statusIcon = self.glade.get_object('statusicon')
+		self.auto = auto
 
 	def checkDependencies(self, changes, cache):
 		foundSomething = False
@@ -201,6 +202,9 @@ class RefreshThread(threading.Thread):
 			gtk.gdk.threads_enter()
 			self.window.show()
 			gtk.gdk.threads_leave()
+		if self.auto:
+			autoRefresh = AutomaticRefreshThread(self.glade)
+			autoRefresh.start()
 
 class AutomaticRefreshThread(threading.Thread):
 	def __init__(self, glade):
@@ -210,6 +214,7 @@ class AutomaticRefreshThread(threading.Thread):
 	def run(self):
 		global log, showWindow
 		global timerMin, timerHours, timerDays
+		print "arranco"
 		try:
 			while True:
 				timer = (timerMin * 60) + (timerHours * 60 * 60) + (timerDays * 24 * 60 * 60)
@@ -409,9 +414,9 @@ def refresh(widget, data=False):
 	hide(widget)
 	statusIcon.set_from_file(busy)
 	if os.getuid() == 0 :
-		refresh = RefreshThread(True, glade)
+		refresh = RefreshThread(True, glade, False)
 	else:
-		refresh = RefreshThread(False, glade)
+		refresh = RefreshThread(False, glade, False)
 	refresh.start()
 
 def install(widget, treeView, glade):
@@ -748,9 +753,6 @@ try:
 	else:
 		refresh = RefreshThread(False, glade)
 	refresh.start()
-
-	autoRefresh = AutomaticRefreshThread(glade)
-	autoRefresh.start()
 
 	gtk.main()
 except Exception, detail:
