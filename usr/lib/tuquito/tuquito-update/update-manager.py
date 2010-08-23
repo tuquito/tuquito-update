@@ -218,32 +218,29 @@ class AutomaticRefreshThread(threading.Thread):
 		global log, showWindow
 		global timerMin, timerHours, timerDays
 		try:
-			while True:
-				timer = (timerMin * 60) + (timerHours * 60 * 60) + (timerDays * 24 * 60 * 60)
-				try:
-					log.writelines('++ Auto-refresh timer is going to sleep for ' + str(timerMin) + ' minutes, ' + str(timerHours) + ' hours and ' + str(timerDays) + ' days\n')
-					log.flush()
-				except:
-					pass
+			timer = (timerMin * 60) + (timerHours * 60 * 60) + (timerDays * 24 * 60 * 60)
+			try:
+				log.writelines('++ Auto-refresh timer is going to sleep for ' + str(timerMin) + ' minutes, ' + str(timerHours) + ' hours and ' + str(timerDays) + ' days\n')
+				log.flush()
+			except:
+				pass
 
-				if int(timer) == 0:
-					break
+			if int(timer) > 0:
+				time.sleep(int(timer))
+				if showWindow:
+					try:
+						log.writelines('++ The Tuquito Update window is open, skipping auto-refresh\n')
+						log.flush()
+					except:
+						pass
 				else:
-					time.sleep(int(timer))
-					if showWindow:
-						try:
-							log.writelines('++ The Tuquito Update window is open, skipping auto-refresh\n')
-							log.flush()
-						except:
-							pass
-					else:
-						try:
-							log.writelines('++ Tuquito Update is in tray mode, performing auto-refresh\n')
-							log.flush()
-						except:
-							pass
-						refresh = RefreshThread(False, self.glade)
-						refresh.start()
+					try:
+						log.writelines('++ Tuquito Update is in tray mode, performing auto-refresh\n')
+						log.flush()
+					except:
+						pass
+					refresh = RefreshThread(False, self.glade)
+					refresh.start()
 		except Exception, detail:
 			try:
 				log.writelines('-- Exception occured in the auto-refresh thread.. so it\'s probably dead now: ' + str(detail) + '\n')
@@ -751,7 +748,7 @@ try:
 	selection.connect('changed', displaySelectedPackage)
 
 	if len(sys.argv) > 1 and sys.argv[1] == 'show':
-		showWindow = True
+#		showWindow = True
 		refresh = RefreshThread(True, glade)
 	else:
 		refresh = RefreshThread(False, glade)
