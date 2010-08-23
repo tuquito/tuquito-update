@@ -1,3 +1,10 @@
+tuquito-update (1.0-3) lucid; urgency=low
+
+  * estado ready solucionado
+  * descripcion por defecto
+
+ -- Mario Colque <mario@tuquito.org.ar>  Mon, 23 Aug 2010 18:02:15 -0300
+
 tuquito-update (1.0-2) lucid; urgency=low
 
   * Función de auto-refresh mejorada
