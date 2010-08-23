@@ -196,12 +196,13 @@ class RefreshThread(threading.Thread):
 		self.glade.get_object('pkgSelected').set_markup(_('Packages selected: <b>%d</b>') % cant)
 		self.glade.get_object('totalSize').set_markup(_('Download size: <b>%s</b>') % convert(totalSize))
 		gtk.gdk.threads_leave()
-		if self.synaptic and cant > 0:
+		if cant > 0:
 			ready = True
-			showWindow = True
-			gtk.gdk.threads_enter()
-			self.window.show()
-			gtk.gdk.threads_leave()
+			if self.synaptic:
+				showWindow = True
+				gtk.gdk.threads_enter()
+				self.window.show()
+				gtk.gdk.threads_leave()
 		if self.auto and (not showWindow):
 			autoRefresh = AutomaticRefreshThread(self.glade)
 			autoRefresh.start()
@@ -409,6 +410,7 @@ def onActivate(widget):
 				window.show_all()
 
 def refresh(widget, data=False):
+	global ready
 	ready = False
 	hide(widget)
 	statusIcon.set_from_file(busy)
