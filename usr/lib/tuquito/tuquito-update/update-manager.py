@@ -195,8 +195,8 @@ class RefreshThread(threading.Thread):
 		self.glade.get_object('pkgSelected').set_markup(_('Packages selected: <b>%d</b>') % cant)
 		self.glade.get_object('totalSize').set_markup(_('Download size: <b>%s</b>') % convert(totalSize))
 		gtk.gdk.threads_leave()
-		ready = True
-		if self.synaptic:
+		if self.synaptic and cant > 0:
+			ready = True
 			showWindow = True
 			gtk.gdk.threads_enter()
 			self.window.show()

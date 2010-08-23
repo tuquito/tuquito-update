@@ -1,29 +1,29 @@
-# Spanish translations for tuquito-update package.
+# Portuguese translations for tuquito-update package.
 # Copyright (C) 2010 THE tuquito-update'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the tuquito-update package.
-# Mario Colque <mario@tuquito.org.ar>, 2010.
+# Mario Colque <carlosfelipe@tuquito.org.ar>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: tuquito-update 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-20 18:11-0300\n"
-"PO-Revision-Date: 2010-08-18 22:54-0300\n"
-"Last-Translator: Mario Colque <mario@tuquito.org.ar>\n"
-"Language-Team: Spanish\n"
+"PO-Revision-Date: 2010-08-20 20:04-0300\n"
+"Last-Translator: Mario Colque <carlosfelipe@tuquito.org.ar>\n"
+"Language-Team: Brazilian Portuguese\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:94
 msgid "Could not connect to the Internet"
-msgstr "No se pudo conectar a Internet"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:104
 #: usr/lib/tuquito/tuquito-update/update-manager.py:269
 msgid "Checking for updates..."
-msgstr "Comprobando actualizaciones..."
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:111
 #: usr/lib/tuquito/tuquito-update/update-manager.py:360
@@ -32,66 +32,66 @@ msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:130
 msgid "You have 1 update available"
-msgstr "Hay 1 actualización disponible"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:135
 #, python-format
 msgid "You have %d updates available"
-msgstr "Hay %d actualizaciones disponibles"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:140
 msgid "Your system is up to date!"
-msgstr "¡Su sistema está al día!"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:177
 msgid "Description"
-msgstr "Descripción"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:177
 #: usr/lib/tuquito/tuquito-update/update-manager.py:661
 msgid "Size"
-msgstr "Tamaño"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:177
 msgid "Installed Version"
-msgstr "Versión Instalada"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:177
 msgid "New Version"
-msgstr "Nueva Versión"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:194
 #, python-format
 msgid "<big><b>You have %d packages to update</b></big>"
-msgstr "<big><b>Tiene %d paquetes para actualizar</b></big>"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:195
 #: usr/lib/tuquito/tuquito-update/update-manager.py:329
 #, python-format
 msgid "Packages selected: <b>%d</b>"
-msgstr "Paquetes seleccionados: <b>%d</b>"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:196
 #: usr/lib/tuquito/tuquito-update/update-manager.py:330
 #, python-format
 msgid "Download size: <b>%s</b>"
-msgstr "Tamaño de la descarga: <b>%s</b>"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:243
 msgid "Installing updates"
-msgstr "Instalando actualizaciones"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:250
 msgid "Please wait, this can take some time"
-msgstr "Por favor espere, esto puede tomar tiempo"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:252
 msgid "Update is complete"
-msgstr "Actualización completa"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:289
 msgid "Could not install the security updates"
-msgstr "No se pudo instalar las actualizaciones de seguridad"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:297
 msgid "B"
@@ -114,15 +114,15 @@ msgstr ""
 #: usr/lib/tuquito/tuquito-update/update-manager.py:418
 #: usr/lib/tuquito/tuquito-update/update-manager.py:624
 msgid "Software sources"
-msgstr "Orígenes del Software"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:399
 msgid "Tuquito Update preferences"
-msgstr "Preferencias de Tuquito Update"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:400
 msgid "Update Method"
-msgstr "Método de actualización"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:401
 msgid "Proxy"
@@ -130,11 +130,11 @@ msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:402
 msgid "Startup delay (in seconds): "
-msgstr "Demora en el inicio (en segundos): "
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:403
 msgid "Internet check (domain name or IP address): "
-msgstr "Verificación de Internet (nombre de dominio o dirección IP): "
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:404
 msgid ""
@@ -145,25 +145,18 @@ msgid ""
 "installed don't get installed automatically and newer versions of packages "
 "which dependencies require such installations are simply ignored.</i>"
 msgstr ""
-"<i>Nota: La opción dist-upgrade, además de desempeñar la función de "
-"actualización, también gestiona inteligentemente las dependencias que "
-"cambian con las nuevas versiones de los paquetes. Sin esta opción, solo se "
-"instalan las últimas versiones de los paquetes desactualizados en tu "
-"sistema. Los paquetes que todavía no están instalados no se instalan "
-"automáticamente y las versiones más recientes de paquetes cuyas dependencias "
-"requieren instalación de este tipo son simplemente ignoradas.</i>"
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:405
 msgid "Include dist-upgrade packages?"
-msgstr "¿Incluir paquetes de dist-upgrade?"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:406
 msgid "Manual proxy configuration"
-msgstr "Configuración manual del proxy"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:407
 msgid "Use the same proxy for all protocols"
-msgstr "Usar el mismo proxy para todos los protocolos"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:408
 msgid "HTTP Proxy:"
@@ -181,29 +174,28 @@ msgstr ""
 #: usr/lib/tuquito/tuquito-update/update-manager.py:412
 #: usr/lib/tuquito/tuquito-update/update-manager.py:413
 msgid "Port:"
-msgstr "Puerto:"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:601
 msgid "Update Manager"
-msgstr "Gestor de actualizaciones"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:605
 msgid "Description of package"
-msgstr "Descripción del paquete"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:640
 msgid "Connecting..."
-msgstr "Conectando..."
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:648
 msgid "Upgrade"
-msgstr "Actualizar"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:653
 msgid "Package"
-msgstr "Paquete"
+msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:657
 msgid "Level"
-msgstr "Nivel"
-
+msgstr ""
