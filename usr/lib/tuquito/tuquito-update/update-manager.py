@@ -68,6 +68,7 @@ class RefreshThread(threading.Thread):
 
 	def run(self):
 		global log, showWindow, ready, cant, totalSize
+		ready = False
 		proxy={}
 		if checkEnableProxy:
 			if httpProxy != '' and httpProxyPort != '':
@@ -91,7 +92,6 @@ class RefreshThread(threading.Thread):
 				log.writelines('-- No connection found (tried to read http://google.com and to ' + urlPing + ')\n')
 				log.flush()
 				gtk.gdk.threads_leave()
-				ready = False
 				autoRefresh = AutomaticRefreshThread(self.glade)
 				autoRefresh.start()
 				return False
@@ -390,8 +390,6 @@ def onActivate(widget):
 				window.show_all()
 
 def refresh(widget, data=False):
-	global ready
-	ready = False
 	hide(widget)
 	statusIcon.set_from_file(busy)
 	if os.getuid() == 0 :
