@@ -91,6 +91,9 @@ class RefreshThread(threading.Thread):
 				log.writelines('-- No connection found (tried to read http://google.com and to ' + urlPing + ')\n')
 				log.flush()
 				gtk.gdk.threads_leave()
+				ready = False
+				autoRefresh = AutomaticRefreshThread(self.glade)
+				autoRefresh.start()
 				return False
 			else:
 				log.writelines('++ Connection found - checking for updates\n')
