@@ -3,6 +3,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window">
+    <property name="width_request">500</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Tuquito Update</property>
     <property name="resizable">False</property>
@@ -83,7 +84,7 @@
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTreeView" id="treeview">
-                    <property name="height_request">300</property>
+                    <property name="height_request">320</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                   </object>
@@ -152,6 +153,8 @@
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
+            <property name="spacing">6</property>
+            <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="preference">
                 <property name="label">gtk-preferences</property>
@@ -168,11 +171,33 @@
             </child>
             <child>
               <object class="GtkButton" id="refresh">
-                <property name="label">gtk-refresh</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
+                <child>
+                  <object class="GtkHBox" id="hbox5">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkImage" id="image2">
+                        <property name="visible">True</property>
+                        <property name="stock">gtk-refresh</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="labelRefresh">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Check</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -377,6 +402,7 @@
                             <property name="xalign">0</property>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -386,6 +412,7 @@
                             <property name="n_rows">3</property>
                             <property name="n_columns">2</property>
                             <property name="column_spacing">6</property>
+                            <property name="row_spacing">5</property>
                             <child>
                               <object class="GtkSpinButton" id="timer_min">
                                 <property name="visible">True</property>
@@ -459,6 +486,7 @@
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
                             <property name="position">1</property>
                           </packing>
                         </child>

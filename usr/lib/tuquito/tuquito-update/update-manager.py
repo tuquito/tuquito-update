@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.0-3
+ Tuquito Update Manager 1.0-4
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -657,6 +657,7 @@ try:
 	dataLabel = glade.get_object('data')
 	treeviewUpdate = glade.get_object('treeview')
 	statusIcon = glade.get_object('statusicon')
+	glade.get_object('labelRefresh').set_label(_('Check'))
 	glade.get_object('expanderLabel').set_label(_('Description of package'))
 
 	glade.get_object('preference').connect('clicked', openPref)
