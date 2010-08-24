@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.0-4
+ Tuquito Update Manager 1.0-5
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -436,6 +436,7 @@ def openPref(widget):
 	glade.get_object('label10').set_label(_('days'))
 	glade.get_object('label11').set_markup(_('<i>Note: The list only gets refreshed while the mintUpdate window is closed (system tray mode).</i>'))
 	glade.get_object('check_dist_upgrade').set_label(_('Include dist-upgrade packages?'))
+	glade.get_object('check_auto_start').set_label(_('Auto start'))
 	glade.get_object('enable_proxy').set_label(_('Manual proxy configuration'))
 	glade.get_object('check_same_proxy').set_label(_('Use the same proxy for all protocols'))
 	glade.get_object('label_http_proxy').set_label(_('HTTP Proxy:'))
@@ -460,12 +461,11 @@ def openPref(widget):
 	glade.get_object('http_proxy_port').connect('changed', updateProxyPort)
 	glade.get_object('url_ping').set_text(urlPing)
 	glade.get_object('spin_delay').set_value(delay)
-
 	glade.get_object('timer_min').set_value(timerMin)
 	glade.get_object('timer_hours').set_value(timerHours)
 	glade.get_object('timer_days').set_value(timerDays)
-
 	glade.get_object('check_dist_upgrade').set_active(distUpgrade)
+	glade.get_object('check_auto_start').set_active(autoStart)
 	if checkEnableProxy:
 		glade.get_object('enable_proxy').set_active(True)
 		glade.get_object('check_same_proxy').set_active(checkSameProxy)
@@ -484,7 +484,7 @@ def readPref(widget=None):
 	global timerMin, timerHours, timerDays
 	global httpProxy, ftpProxy, gopherProxy
 	global httpProxyPort, ftpProxyPort, gopherProxyPort
-	global configFile
+	global configFile, autoStart
 	config = ConfigParser.ConfigParser()
 	if os.getuid() == 0 :
 		home = '/home/' + os.environ.get('SUDO_USER') + '/'
@@ -499,11 +499,12 @@ def readPref(widget=None):
 		delay = config.getfloat('User settings', 'delay')
 		urlPing = config.get('User settings', 'url')
 		distUpgrade = config.getboolean('User settings', 'distUpgrade')
+		autoStart = config.getboolean('User settings', 'autoStart')
 	except:
 		delay = 30
 		urlPing = 'google.com'
 		distUpgrade = True
-
+		autoStart = True
 	try:
 		timerMin = config.getfloat('User settings', 'timerMin')
 		timerHours = config.getfloat('User settings', 'timerHours')
@@ -539,6 +540,7 @@ def savePref(widget):
 	spinDelay = glade.get_object('spin_delay').get_value_as_int()
 	urlPing = glade.get_object('url_ping').get_text().strip()
 	distUpgrade = glade.get_object('check_dist_upgrade').get_active()
+	autoStart = glade.get_object('check_auto_start').get_active()
 	checkEnableProxy = glade.get_object('enable_proxy').get_active()
 	timerMin = glade.get_object('timer_min').get_value_as_int()
 	timerHours = glade.get_object('timer_hours').get_value_as_int()
@@ -546,6 +548,7 @@ def savePref(widget):
 	config.set('User settings', 'delay', spinDelay)
 	config.set('User settings', 'url', urlPing)
 	config.set('User settings', 'distUpgrade', distUpgrade)
+	config.set('User settings', 'autoStart', autoStart)
 	config.set('User settings', 'manualProxy', checkEnableProxy)
 	config.set('User settings', 'timerMin', timerMin)
 	config.set('User settings', 'timerHours', timerHours)
@@ -611,8 +614,12 @@ try:
 except Exception, d:
 	arg = False
 
-if arg == 'time':
-	time.sleep(delay)
+if arg != False:
+	if autoStart or os.getuid() == 0:
+		if arg == 'time':
+			time.sleep(delay)
+	else:
+		sys.exit(0)
 
 # Flags
 ready = False

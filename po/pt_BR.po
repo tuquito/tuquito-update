@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tuquito-update 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-23 21:26-0300\n"
+"POT-Creation-Date: 2010-08-23 22:34-0300\n"
 "PO-Revision-Date: 2010-08-20 20:04-0300\n"
 "Last-Translator: Mario Colque <carlosfelipe@tuquito.org.ar>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -48,7 +48,7 @@ msgid "Description"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:167
-#: usr/lib/tuquito/tuquito-update/update-manager.py:713
+#: usr/lib/tuquito/tuquito-update/update-manager.py:720
 msgid "Size"
 msgstr ""
 
@@ -115,8 +115,8 @@ msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:406
 #: usr/lib/tuquito/tuquito-update/update-manager.py:408
-#: usr/lib/tuquito/tuquito-update/update-manager.py:451
-#: usr/lib/tuquito/tuquito-update/update-manager.py:680
+#: usr/lib/tuquito/tuquito-update/update-manager.py:452
+#: usr/lib/tuquito/tuquito-update/update-manager.py:687
 msgid "Software sources"
 msgstr ""
 
@@ -181,55 +181,59 @@ msgid "Include dist-upgrade packages?"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:439
-msgid "Manual proxy configuration"
+msgid "Auto start"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:440
-msgid "Use the same proxy for all protocols"
+msgid "Manual proxy configuration"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:441
-msgid "HTTP Proxy:"
+msgid "Use the same proxy for all protocols"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:442
-msgid "FTP Proxy:"
+msgid "HTTP Proxy:"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:443
-msgid "Gopher Proxy:"
+msgid "FTP Proxy:"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:444
+msgid "Gopher Proxy:"
+msgstr ""
+
 #: usr/lib/tuquito/tuquito-update/update-manager.py:445
 #: usr/lib/tuquito/tuquito-update/update-manager.py:446
+#: usr/lib/tuquito/tuquito-update/update-manager.py:447
 msgid "Port:"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:656
+#: usr/lib/tuquito/tuquito-update/update-manager.py:663
 msgid "Update Manager"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:660
+#: usr/lib/tuquito/tuquito-update/update-manager.py:667
 msgid "Check"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:661
+#: usr/lib/tuquito/tuquito-update/update-manager.py:668
 msgid "Description of package"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:696
+#: usr/lib/tuquito/tuquito-update/update-manager.py:703
 msgid "Connecting..."
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:703
+#: usr/lib/tuquito/tuquito-update/update-manager.py:710
 msgid "Level"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:706
+#: usr/lib/tuquito/tuquito-update/update-manager.py:713
 msgid "Upgrade"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:710
+#: usr/lib/tuquito/tuquito-update/update-manager.py:717
 msgid "Package"
 msgstr ""
