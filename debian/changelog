@@ -1,3 +1,12 @@
+tuquito-update (1.0-4) lucid; urgency=low
+
+  * mejoras en glade
+  * variables globlales eliminadas
+  * conflicto con update-manager eliminado
+  * bucle infinito eliminado
+
+ -- Mario Colque <mario@tuquito.org.ar>  Mon, 23 Aug 2010 21:24:50 -0300
+
 tuquito-update (1.0-3) lucid; urgency=low
 
   * estado ready solucionado
