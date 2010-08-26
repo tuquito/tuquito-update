@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Tuquito Update
-Comment=Tuquito Update Manager
-Icon=stock_lock
-Exec=/usr/lib/tuquito/tuquito-update/update-manager.py time
-Terminal=false
-Type=Application
-
