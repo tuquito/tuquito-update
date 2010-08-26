@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.0-5
+ Tuquito Update Manager 1.0-7
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -207,7 +207,7 @@ class AutomaticRefreshThread(threading.Thread):
 	def run(self):
 		global log
 		try:
-			timer = (timerMin * 60) + (timerHours * 60 * 60) + (timerDays * 24 * 60 * 60)
+			timer = (int(timerMin) * 60) + (int(timerHours) * 60 * 60) + (int(timerDays) * 24 * 60 * 60)
 			try:
 				log.writelines('++ Auto-refresh timer is going to sleep for ' + str(timerMin) + ' minutes, ' + str(timerHours) + ' hours and ' + str(timerDays) + ' days\n')
 				log.flush()
@@ -485,17 +485,22 @@ def readPref(widget=None):
 	global timerMin, timerHours, timerDays
 	global httpProxy, ftpProxy, gopherProxy
 	global httpProxyPort, ftpProxyPort, gopherProxyPort
-	global configFile, autoStart
+	global configFile, autoStart, home
 	config = ConfigParser.ConfigParser()
 	if os.getuid() == 0 :
-		home = '/home/' + os.environ.get('SUDO_USER') + '/'
+		home = '/home/' + os.environ.get('SUDO_USER')
 	else:
 		from user import home
-	configFile =  os.path.join(home, '.tuquito/tuquito-update/tuquito-update.conf')
-	if os.path.exists(configFile):
-		config.read(configFile)
+	configDir = os.path.join(home, '.tuquito/tuquito-update')
+	configFile =  os.path.join(configDir, 'tuquito-update.conf')
+	if os.path.exists(configDir):
+		if os.path.exists(configFile):
+			config.read(configFile)
+		else:
+			config.read('/etc/tuquito/tuquito-update.conf')
 	else:
 		config.read('/etc/tuquito/tuquito-update.conf')
+		os.mkdir(configDir)
 	try:
 		delay = config.getfloat('User settings', 'delay')
 		urlPing = config.get('User settings', 'url')

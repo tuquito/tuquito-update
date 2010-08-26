@@ -1,3 +1,9 @@
+tuquito-update (1.0-7) lucid; urgency=low
+
+  * new version
+
+ -- Mario Colque <mario@tuquito.org.ar>  Wed, 25 Aug 2010 21:47:37 -0300
+
 tuquito-update (1.0-6) lucid; urgency=low
 
   * altura de glade arreglada para netbooks
