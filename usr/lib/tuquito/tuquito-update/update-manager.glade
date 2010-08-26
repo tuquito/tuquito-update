@@ -84,7 +84,7 @@
                 <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkTreeView" id="treeview">
-                    <property name="height_request">320</property>
+                    <property name="height_request">290</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                   </object>
