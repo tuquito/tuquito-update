@@ -651,6 +651,8 @@ os.system('mkdir -p ' + logdir)
 log = tempfile.NamedTemporaryFile(prefix = logdir, delete=False)
 logFile = log.name
 
+log.writelines('++ Launching Tuquito Update whith uid: ' + os.getuid() + '\n')
+log.flush()
 log.writelines('++ Launching Tuquito Update in ' + mode + ' mode\n')
 log.flush()
 

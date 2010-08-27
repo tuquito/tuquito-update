@@ -1,3 +1,9 @@
+tuquito-update (1.0-8) lucid; urgency=low
+
+  * nuevo inicio con permisos
+
+ -- Mario Colque <mario@tuquito.org.ar>  Thu, 26 Aug 2010 22:30:02 -0300
+
 tuquito-update (1.0-7) lucid; urgency=low
 
   * new version

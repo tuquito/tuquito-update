@@ -3,15 +3,15 @@ set -e
 
 case "$1" in
 	configure)
-		update-rc.d tuquito-update start 52 S .
+		update-rc.d tuquitoUpdate start 51 S .
 	;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 	;;
 	triggered)
-		/usr/lib/tuquito/tuquito-update/update-manager.py time
+		/usr/lib/tuquito/tuquito-update/tuquito-update.py
 	;;
 	*)
-		echo "postinst called with unknown argument '$1'" >&2
+		echo "postinst called with unknown argument \`$1'" >&2
 		exit 1
 	;;
 esac
