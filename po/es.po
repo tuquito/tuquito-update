@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tuquito-update 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-28 21:15-0300\n"
+"POT-Creation-Date: 2010-08-28 21:51-0300\n"
 "PO-Revision-Date: 2010-08-18 22:54-0300\n"
 "Last-Translator: Mario Colque <mario@tuquito.org.ar>\n"
 "Language-Team: Spanish\n"
@@ -47,7 +47,7 @@ msgid "Description"
 msgstr "Descripción"
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:185
-#: usr/lib/tuquito/tuquito-update/update-manager.py:748
+#: usr/lib/tuquito/tuquito-update/update-manager.py:744
 msgid "Size"
 msgstr "Tamaño"
 
@@ -216,35 +216,35 @@ msgid "Port:"
 msgstr "Puerto:"
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:475
-#: usr/lib/tuquito/tuquito-update/update-manager.py:715
+#: usr/lib/tuquito/tuquito-update/update-manager.py:711
 msgid "Software sources"
 msgstr "Orígenes del Software"
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:691
+#: usr/lib/tuquito/tuquito-update/update-manager.py:687
 msgid "Update Manager"
 msgstr "Gestor de actualizaciones"
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:695
+#: usr/lib/tuquito/tuquito-update/update-manager.py:691
 msgid "Check"
 msgstr "Comprobar"
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:696
+#: usr/lib/tuquito/tuquito-update/update-manager.py:692
 msgid "Description of package"
 msgstr "Descripción del paquete"
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:731
+#: usr/lib/tuquito/tuquito-update/update-manager.py:727
 msgid "Connecting..."
 msgstr "Conectando..."
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:738
+#: usr/lib/tuquito/tuquito-update/update-manager.py:734
 msgid "Level"
 msgstr "Nivel"
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:741
+#: usr/lib/tuquito/tuquito-update/update-manager.py:737
 msgid "Upgrade"
 msgstr "Actualizar"
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:745
+#: usr/lib/tuquito/tuquito-update/update-manager.py:741
 msgid "Package"
 msgstr "Paquete"
 
@@ -253,6 +253,5 @@ msgid ""
 "Another update-manager is already running.\\nTry running on the console: "
 "sudo tuquito-update"
 msgstr ""
-"Otro update-manager ya se está ejecutando.\\nPruebe ejecutando en la consola: "
-"sudo tuquito-update"
-
+"Otro update-manager ya se está ejecutando.\\nPruebe ejecutando en la "
+"consola: sudo tuquito-update"
