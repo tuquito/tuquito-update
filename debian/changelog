@@ -6,6 +6,7 @@ tuquito-update (1.0-9) lucid; urgency=low
   * inicio normal
   * archivo .desktop en --description de gksu
   * apertura de ventana principal aún sin actualizaciones
+  * limpieza
 
  -- Mario Colque <mario@tuquito.org.ar>  Sat, 28 Aug 2010 21:32:50 -0300
 

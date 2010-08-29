@@ -399,7 +399,7 @@ def onActivate(widget):
 					log.close()
 				except:
 					pass
-				os.system('gksu ' + APP_PATH + 'tuquito-update.py show ' + str(pid) + ' -D /usr/share/applications/tuquito-update.desktop &')
+				os.system('gksu ' + APP_PATH + 'update-manager.py show ' + str(pid) + ' -D /usr/share/applications/tuquito-update.desktop &')
 			else:
 				showWindow = True
 				window.show()
@@ -635,7 +635,6 @@ def hidePref(widget, data=None):
 	glade.get_object('windowPref').hide()
 	return True
 
-## Inicio ##
 readPref()
 
 try:
@@ -659,10 +658,8 @@ if len(sys.argv) > 2:
 	parentPid = sys.argv[2]
 	if parentPid != '0':
 		os.system('kill -9 ' + parentPid)
-
 pid = os.getpid()
 logdir = '/tmp/tuquito-update/'
-
 if os.getuid() == 0 :
 	mode = 'root'
 else:
@@ -670,7 +667,6 @@ else:
 os.system('mkdir -p ' + logdir)
 log = tempfile.NamedTemporaryFile(prefix = logdir, delete=False)
 logFile = log.name
-
 log.writelines('++ Launching Tuquito Update whith uid: ' + str(os.getuid()) + '\n')
 log.flush()
 log.writelines('++ Launching Tuquito Update in ' + mode + ' mode\n')
@@ -757,7 +753,6 @@ try:
 	selection = treeviewUpdate.get_selection()
 	selection.connect('changed', displaySelectedPackage)
 
-	#RefreshThread(synaptic , glade)
 	if len(sys.argv) > 1 and sys.argv[1] == 'show':
 		refresh = RefreshThread(True, glade)
 	else:
