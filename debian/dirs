@@ -1,3 +1,4 @@
-usr/lib/tuquito
 usr/lib/tuquito/tuquito-update
-etc/xdg/autostart
+usr/lib/tuquito/tuquito-update/icons
+etc
+

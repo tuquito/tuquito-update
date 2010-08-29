@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: tuquito-update
 Architecture: all
-Depends: python (>= 2.4), python (<< 3), python-gtk2, synaptic
+Depends: python (>= 2.4), python (<< 3), python-gtk2, synaptic, python-apt
 Description: Update Manager
  Helps installing security updates and new versions of packages.
  * Tuquito Team! - 2010

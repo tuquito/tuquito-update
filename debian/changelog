@@ -1,8 +1,13 @@
-tuquito-update (1.0-8) lucid; urgency=low
+tuquito-update (1.0-9) lucid; urgency=low
 
-  * nuevo inicio con permisos
+  * traducciones en launcher
+  * about integrado al programa principal
+  * nuevo tiempo de espera para auto-refresh
+  * inicio normal
+  * archivo .desktop en --description de gksu
+  * apertura de ventana principal aún sin actualizaciones
 
- -- Mario Colque <mario@tuquito.org.ar>  Thu, 26 Aug 2010 22:30:02 -0300
+ -- Mario Colque <mario@tuquito.org.ar>  Sat, 28 Aug 2010 21:32:50 -0300
 
 tuquito-update (1.0-7) lucid; urgency=low
 
