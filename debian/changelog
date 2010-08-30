@@ -1,3 +1,9 @@
+tuquito-update (1.0-10) lucid; urgency=low
+
+  * new time for auto-refresh when no connect
+
+ -- Mario Colque <mario@tuquito.org.ar>  Sun, 29 Aug 2010 21:44:51 -0300
+
 tuquito-update (1.0-9) lucid; urgency=low
 
   * traducciones en launcher
