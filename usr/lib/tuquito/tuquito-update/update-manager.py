@@ -107,7 +107,7 @@ class RefreshThread(threading.Thread):
 				log.writelines('-- No connection found (tried to read http://google.com and to ' + urlPing + ')\n')
 				log.flush()
 				gtk.gdk.threads_leave()
-				autoRefresh = AutomaticRefreshThread(self.glade)
+				autoRefresh = AutomaticRefreshThread(self.glade, False)
 				autoRefresh.start()
 				return False
 			else:
@@ -215,14 +215,18 @@ class RefreshThread(threading.Thread):
 			autoRefresh.start()
 
 class AutomaticRefreshThread(threading.Thread):
-	def __init__(self, glade):
+	def __init__(self, glade, connectStatus=True):
 		threading.Thread.__init__(self)
 		self.glade = glade
+		self.connectStatus = connectStatus
 
 	def run(self):
 		global log
 		try:
-			timer = (int(timerMin) * 60) + (int(timerHours) * 60 * 60) + (int(timerDays) * 24 * 60 * 60)
+			if self.connectStatus:
+				timer = (int(timerMin) * 60) + (int(timerHours) * 60 * 60) + (int(timerDays) * 24 * 60 * 60)
+			else:
+				timer = 60
 			try:
 				log.writelines('++ Auto-refresh timer is going to sleep for ' + str(timerMin) + ' minutes, ' + str(timerHours) + ' hours and ' + str(timerDays) + ' days\n')
 				log.flush()
