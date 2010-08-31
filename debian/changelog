@@ -1,3 +1,11 @@
+tuquito-update (1.0-11) lucid; urgency=low
+
+  * Método de inicio actualizado, mejorado :D
+  * Corrección en creación de directorios en /home
+  * Optimización en rendimiento
+
+ -- Mario Colque <mario@tuquito.org.ar>  Tue, 31 Aug 2010 00:40:33 -0300
+
 tuquito-update (1.0-10) lucid; urgency=low
 
   * new time for auto-refresh when no connect

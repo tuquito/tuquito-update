@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tuquito-update 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-29 21:44-0300\n"
+"POT-Creation-Date: 2010-08-31 00:39-0300\n"
 "PO-Revision-Date: 2010-08-20 20:04-0300\n"
 "Last-Translator: Mario Colque <carlosfelipe@tuquito.org.ar>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -47,7 +47,7 @@ msgid "Description"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:185
-#: usr/lib/tuquito/tuquito-update/update-manager.py:748
+#: usr/lib/tuquito/tuquito-update/update-manager.py:753
 msgid "Size"
 msgstr ""
 
@@ -207,35 +207,35 @@ msgid "Port:"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:479
-#: usr/lib/tuquito/tuquito-update/update-manager.py:715
+#: usr/lib/tuquito/tuquito-update/update-manager.py:720
 msgid "Software sources"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:691
+#: usr/lib/tuquito/tuquito-update/update-manager.py:696
 msgid "Update Manager"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:695
+#: usr/lib/tuquito/tuquito-update/update-manager.py:700
 msgid "Check"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:696
+#: usr/lib/tuquito/tuquito-update/update-manager.py:701
 msgid "Description of package"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:731
+#: usr/lib/tuquito/tuquito-update/update-manager.py:736
 msgid "Connecting..."
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:738
+#: usr/lib/tuquito/tuquito-update/update-manager.py:743
 msgid "Level"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:741
+#: usr/lib/tuquito/tuquito-update/update-manager.py:746
 msgid "Upgrade"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:745
+#: usr/lib/tuquito/tuquito-update/update-manager.py:750
 msgid "Package"
 msgstr ""
 
