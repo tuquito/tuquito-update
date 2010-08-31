@@ -1,0 +1,57 @@
+#!/usr/bin/python
+
+"""
+ Tuquito Update Manager 1.0-11
+ Copyright (C) 2010
+ Author: Mario Colque <mario@tuquito.org.ar>
+ Tuquito Team! - www.tuquito.org.ar
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; version 3 of the License.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+"""
+
+import os
+import sys
+import time
+import apt
+import ConfigParser
+
+try:
+	home = '/home/' + os.getenv('SUDO_USER')
+	configDir = os.path.join(home, '.tuquito/tuquito-update')
+	configFile =  os.path.join(configDir, 'tuquito-update.conf')
+	config = ConfigParser.ConfigParser()
+	if os.path.exists(configDir):
+		if os.path.exists(configFile):
+			config.read(configFile)
+		else:
+			config.read('/etc/tuquito/tuquito-update.conf')
+	else:
+		config.read('/etc/tuquito/tuquito-update.conf')
+		os.mkdir(configDir)
+	try:
+		delay = config.getfloat('User settings', 'delay')
+		distUpgrade = config.getboolean('User settings', 'distUpgrade')
+		autoStart = config.getboolean('User settings', 'autoStart')
+	except:
+		delay = 30
+		distUpgrade = True
+		autoStart = True
+	time.sleep(delay)
+	if autoStart:
+		cache = apt.Cache()
+		cache.update()
+		cache.upgrade(distUpgrade)
+	os.system('touch /tmp/tuquito-update.tmp')
+	sys.exit(0)
+except Exception, detail:
+	sys.exit(1)
+
