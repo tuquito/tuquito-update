@@ -526,7 +526,7 @@ def readPref(widget=None):
 			config.read('/etc/tuquito/tuquito-update.conf')
 	else:
 		config.read('/etc/tuquito/tuquito-update.conf')
-		os.mkdir(configDir)
+		os.system('mkdir -p ' + configDir)
 	try:
 		delay = config.getfloat('User settings', 'delay')
 		urlPing = config.get('User settings', 'url')
@@ -652,6 +652,11 @@ if arg != False:
 			time.sleep(delay)
 	else:
 		sys.exit(0)
+
+while not os.path.exists('/tmp/tuquito-update.tmp'):
+	time.sleep(10)
+	if os.path.exists('/tmp/tuquito-update.error'):
+		break
 
 # Flags
 ready = False
