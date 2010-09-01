@@ -23,37 +23,39 @@ import sys
 import time
 import apt
 import ConfigParser
+import commands
 
-try:
-	config = ConfigParser.ConfigParser()
+if commands.getoutput('mount | grep "aufs"') == '':
 	try:
-		while os.getenv('SUDO_USER') == '':
-			time.sleep(10)
-		home = '/home/' + os.getenv('SUDO_USER')
-		configDir = os.path.join(home, '.tuquito/tuquito-update')
-		configFile =  os.path.join(configDir, 'tuquito-update.conf')
-		if os.path.exists(configDir):
-			if os.path.exists(configFile):
-				config.read(configFile)
+		config = ConfigParser.ConfigParser()
+		try:
+			while os.getenv('SUDO_USER') == '':
+				time.sleep(10)
+			home = '/home/' + os.getenv('SUDO_USER')
+			configDir = os.path.join(home, '.tuquito/tuquito-update')
+			configFile =  os.path.join(configDir, 'tuquito-update.conf')
+			if os.path.exists(configDir):
+				if os.path.exists(configFile):
+					config.read(configFile)
+				else:
+					config.read('/etc/tuquito/tuquito-update.conf')
 			else:
 				config.read('/etc/tuquito/tuquito-update.conf')
-		else:
-			config.read('/etc/tuquito/tuquito-update.conf')
-		delay = config.getfloat('User settings', 'delay')
-		distUpgrade = config.getboolean('User settings', 'distUpgrade')
-		autoStart = config.getboolean('User settings', 'autoStart')
-	except:
-		delay = 30
-		distUpgrade = True
-		autoStart = True
-	time.sleep(delay)
-	if autoStart:
-		cache = apt.Cache()
-		cache.update()
-		cache.upgrade(distUpgrade)
-except Exception, detail:
-	os.system('touch /tmp/tuquito-update.error')
-	sys.exit(1)
+			delay = config.getfloat('User settings', 'delay')
+			distUpgrade = config.getboolean('User settings', 'distUpgrade')
+			autoStart = config.getboolean('User settings', 'autoStart')
+		except:
+			delay = 30
+			distUpgrade = True
+			autoStart = True
+		time.sleep(delay)
+		if autoStart:
+			cache = apt.Cache()
+			cache.update()
+			cache.upgrade(distUpgrade)
+	except Exception, detail:
+		os.system('touch /tmp/tuquito-update.error')
+		sys.exit(1)
 
 os.system('touch /tmp/tuquito-update.tmp')
 sys.exit(0)

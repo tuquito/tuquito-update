@@ -653,9 +653,11 @@ if arg != False:
 	else:
 		sys.exit(0)
 
-while not os.path.exists('/tmp/tuquito-update.tmp'):
+while True:
 	time.sleep(10)
-	if os.path.exists('/tmp/tuquito-update.error'):
+	a = os.path.exists('/tmp/tuquito-update.tmp')
+	b = os.path.exists('/tmp/tuquito-update.error')
+	if a or b:
 		break
 
 # Flags
