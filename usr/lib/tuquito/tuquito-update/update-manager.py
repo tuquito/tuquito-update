@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.0-13
+ Tuquito Update Manager 1.0-14
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -86,7 +86,7 @@ class RefreshThread(threading.Thread):
 		gtk.gdk.threads_leave()
 		try:
 			from urllib import urlopen
-			url=urlopen('http://google.com', None, proxy)
+			url = urlopen('http://google.com', None, proxy)
 			url.read()
 			url.close()
 		except Exception, detail:
@@ -94,15 +94,21 @@ class RefreshThread(threading.Thread):
 				gtk.gdk.threads_enter()
 				self.statusIcon.set_from_file(errorConnecting)
 				self.statusIcon.set_tooltip(_('Could not connect to the Internet'))
-				log.writelines('-- No connection found (tried to read http://google.com and to ' + urlPing + ')\n')
-				log.flush()
+				try:
+					log.writelines('-- No connection found (tried to read http://google.com and to ' + urlPing + ')\n')
+					log.flush()
+				except:
+					pass
 				gtk.gdk.threads_leave()
 				autoRefresh = AutomaticRefreshThread(self.glade, False)
 				autoRefresh.start()
 				return False
 			else:
-				log.writelines('++ Connection found - checking for updates\n')
-				log.flush()
+				try:
+					log.writelines('++ Connection found - checking for updates\n')
+					log.flush()
+				except:
+					pass
 		gtk.gdk.threads_enter()
 		self.statusIcon.set_tooltip(_('Checking for updates...'))
 		gtk.gdk.threads_leave()
@@ -644,9 +650,9 @@ if arg != False:
 		sys.exit(0)
 
 while True:
-	time.sleep(10)
 	if os.path.exists('/tmp/tuquito-update.tmp'):
 		break
+	time.sleep(10)
 
 # Flags
 ready = False
@@ -664,7 +670,7 @@ if os.getuid() == 0 :
 else:
 	mode = 'user'
 os.system('mkdir -p ' + logdir)
-log = tempfile.NamedTemporaryFile(prefix = logdir, delete=False)
+log = tempfile.NamedTemporaryFile(prefix=logdir, delete=False)
 logFile = log.name
 log.writelines('++ Launching Tuquito Update whith uid: ' + str(os.getuid()) + '\n')
 log.flush()
@@ -760,7 +766,6 @@ try:
 
 	gtk.main()
 except Exception, detail:
-	print detail
 	log.writelines('-- Exception occured in main thread: ' + str(detail) + '\n')
 	log.flush()
 	log.close()
