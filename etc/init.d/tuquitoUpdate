@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
- Tuquito Update Manager 1.0-11
+ Tuquito Update Manager 1.0-13
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -32,16 +32,12 @@ if commands.getoutput('mount | grep "aufs"') == '':
 			while os.getenv('SUDO_USER') == '':
 				time.sleep(10)
 			home = '/home/' + os.getenv('SUDO_USER')
-			configDir = os.path.join(home, '.tuquito/tuquito-update')
-			configFile =  os.path.join(configDir, 'tuquito-update.conf')
-			if os.path.exists(configDir):
-				if os.path.exists(configFile):
-					config.read(configFile)
-				else:
-					config.read('/etc/tuquito/tuquito-update.conf')
+			configFile =  os.path.join(home, '.tuquito/tuquito-update/tuquito-update.conf')
+			if os.path.exists(configFile):
+				config.read(configFile)
 			else:
 				config.read('/etc/tuquito/tuquito-update.conf')
-			delay = config.getfloat('User settings', 'delay')
+			delay = config.getint('User settings', 'delay')
 			distUpgrade = config.getboolean('User settings', 'distUpgrade')
 			autoStart = config.getboolean('User settings', 'autoStart')
 		except:
@@ -54,9 +50,8 @@ if commands.getoutput('mount | grep "aufs"') == '':
 			cache.update()
 			cache.upgrade(distUpgrade)
 	except Exception, detail:
-		os.system('touch /tmp/tuquito-update.error')
+		os.system('touch /tmp/tuquito-update.tmp')
 		sys.exit(1)
-
 os.system('touch /tmp/tuquito-update.tmp')
 sys.exit(0)
 

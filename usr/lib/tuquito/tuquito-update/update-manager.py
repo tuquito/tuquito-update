@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.0-11
+ Tuquito Update Manager 1.0-13
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -30,16 +30,6 @@ import apt
 from subprocess import Popen, PIPE
 import time
 import ConfigParser
-
-arch = commands.getoutput('arch')
-if arch == 'x86_64':
-	import ctypes
-	libc = ctypes.CDLL('libc.so.6')
-	libc.prctl(15, 'update-manager', 0, 0, 0)
-else:
-	import dl
-	libc = dl.open('/lib/libc.so.6')
-	libc.call('prctl', 15, 'update-manager', 0, 0, 0)
 
 APP_PATH = '/usr/lib/tuquito/tuquito-update/'
 
@@ -655,9 +645,7 @@ if arg != False:
 
 while True:
 	time.sleep(10)
-	a = os.path.exists('/tmp/tuquito-update.tmp')
-	b = os.path.exists('/tmp/tuquito-update.error')
-	if a or b:
+	if os.path.exists('/tmp/tuquito-update.tmp'):
 		break
 
 # Flags
