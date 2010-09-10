@@ -10,5 +10,5 @@ if [ $TUQUITOUPDATE != 0 ]; then
 		killall update-manager.py
 	fi
 fi
-gksu --desktop /usr/share/applications/tuquito-update.desktop /usr/lib/tuquito/tuquito-update/update-manager.py show 0 &
+gksu --desktop /usr/share/applications/tuquito-update.desktop /usr/lib/tuquito/tuquito-update/update-manager.py show &
 

@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.0-14
+ Tuquito Update Manager 1.0-15
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -82,6 +82,7 @@ class RefreshThread(threading.Thread):
 		else:
 			proxy = None
 		gtk.gdk.threads_enter()
+		self.statusIcon.set_visible(showIcon)
 		self.statusIcon.set_tooltip(_('Checking connection...'))
 		gtk.gdk.threads_leave()
 		try:
@@ -132,11 +133,13 @@ class RefreshThread(threading.Thread):
 		cant = len(changes)
 		if cant == 1:
 			gtk.gdk.threads_enter()
+			self.statusIcon.set_visible(True)
 			self.statusIcon.set_from_file(newUpdates)
 			self.statusIcon.set_tooltip(_('You have 1 update available'))
 			gtk.gdk.threads_leave()
 		elif cant > 1:
 			gtk.gdk.threads_enter()
+			self.statusIcon.set_visible(True)
 			self.statusIcon.set_from_file(newUpdates)
 			self.statusIcon.set_tooltip(_('You have %d updates available') % cant)
 			gtk.gdk.threads_leave()
@@ -327,6 +330,7 @@ class InstallThread(threading.Thread):
 			log.writelines('-- Exception occured in the install thread: ' + str(detail) + '\n')
 			log.flush()
 			gtk.gdk.threads_enter()
+			self.statusIcon.set_visible(True)
 			self.statusIcon.set_from_file(error)
 			self.statusIcon.set_tooltip(_('Could not install the security updates'))
 			log.writelines('-- Could not install security updates\n')
@@ -407,6 +411,7 @@ def onActivate(widget):
 def refresh(widget, data=False):
 	hide(widget)
 	statusIcon.set_from_file(busy)
+	statusIcon.set_visible(showIcon)
 	if os.getuid() == 0 and showWindow:
 		refresh = RefreshThread(True, glade, False)
 	else:
@@ -454,12 +459,13 @@ def openPref(widget):
 	glade.get_object('label5').set_label(_('Internet check (domain name or IP address): '))
 	glade.get_object('label6').set_markup(_("<i>Note: The dist-upgrade option, in addition to performing the function of upgrade, also intelligently handles changing dependencies with new versions of packages. Without this option, only the latest versions of any out-of-date packages on your system are installed. Packages that are not yet installed don't get installed automatically and newer versions of packages which dependencies require such installations are simply ignored.</i>"))
 	glade.get_object('label7').set_label(_('hours'))
-	glade.get_object('label8').set_label(_('Update Method'))
+	glade.get_object('label8').set_label(_('General'))
 	glade.get_object('label9').set_label(_('Proxy'))
 	glade.get_object('label10').set_label(_('days'))
 	glade.get_object('label11').set_markup(_('<i>Note: The list only gets refreshed while the mintUpdate window is closed (system tray mode).</i>'))
 	glade.get_object('check_dist_upgrade').set_label(_('Include dist-upgrade packages?'))
 	glade.get_object('check_auto_start').set_label(_('Auto start'))
+	glade.get_object('check_show_icon').set_label(_('Show icon only when updates are available'))
 	glade.get_object('enable_proxy').set_label(_('Manual proxy configuration'))
 	glade.get_object('check_same_proxy').set_label(_('Use the same proxy for all protocols'))
 	glade.get_object('label_http_proxy').set_label(_('HTTP Proxy:'))
@@ -489,6 +495,7 @@ def openPref(widget):
 	glade.get_object('timer_days').set_value(timerDays)
 	glade.get_object('check_dist_upgrade').set_active(distUpgrade)
 	glade.get_object('check_auto_start').set_active(autoStart)
+	glade.get_object('check_show_icon').set_active(not showIcon)
 	if checkEnableProxy:
 		glade.get_object('enable_proxy').set_active(True)
 		glade.get_object('check_same_proxy').set_active(checkSameProxy)
@@ -503,7 +510,7 @@ def openPref(widget):
 	windowPref.show()
 
 def readPref(widget=None):
-	global delay, urlPing, distUpgrade, checkEnableProxy, checkSameProxy
+	global delay, urlPing, distUpgrade, checkEnableProxy, checkSameProxy, showIcon
 	global timerMin, timerHours, timerDays
 	global httpProxy, ftpProxy, gopherProxy
 	global httpProxyPort, ftpProxyPort, gopherProxyPort
@@ -528,11 +535,13 @@ def readPref(widget=None):
 		urlPing = config.get('User settings', 'url')
 		distUpgrade = config.getboolean('User settings', 'distUpgrade')
 		autoStart = config.getboolean('User settings', 'autoStart')
+		showIcon = not config.getboolean('User settings', 'showIcon')
 	except:
 		delay = 30
 		urlPing = 'google.com'
 		distUpgrade = True
 		autoStart = True
+		showIcon = False
 	try:
 		timerMin = config.getfloat('User settings', 'timerMin')
 		timerHours = config.getfloat('User settings', 'timerHours')
@@ -569,11 +578,13 @@ def savePref(widget):
 	urlPing = glade.get_object('url_ping').get_text().strip()
 	distUpgrade = glade.get_object('check_dist_upgrade').get_active()
 	autoStart = glade.get_object('check_auto_start').get_active()
+	showIcon = glade.get_object('check_show_icon').get_active()
 	checkEnableProxy = glade.get_object('enable_proxy').get_active()
 	timerMin = glade.get_object('timer_min').get_value_as_int()
 	timerHours = glade.get_object('timer_hours').get_value_as_int()
 	timerDays = glade.get_object('timer_days').get_value_as_int()
 	config.set('User settings', 'delay', spinDelay)
+	config.set('User settings', 'showIcon', showIcon)
 	config.set('User settings', 'url', urlPing)
 	config.set('User settings', 'distUpgrade', distUpgrade)
 	config.set('User settings', 'autoStart', autoStart)
@@ -733,6 +744,7 @@ try:
 	statusIcon.set_from_file(busy)
 	statusIcon.connect('popup-menu', submenu, menu)
 	statusIcon.connect('activate', onActivate)
+	statusIcon.set_visible(showIcon)
 
 	cellRender = gtk.CellRendererToggle()
 	cellRender.connect('toggled', toggled, treeviewUpdate)

@@ -266,6 +266,19 @@
                         <property name="border_width">3</property>
                         <property name="spacing">3</property>
                         <child>
+                          <object class="GtkCheckButton" id="check_show_icon">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkCheckButton" id="check_auto_start">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
@@ -276,7 +289,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">0</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
@@ -312,7 +325,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">1</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                         <child>
@@ -344,7 +357,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">2</property>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                         <child>
@@ -358,7 +371,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">3</property>
+                            <property name="position">4</property>
                           </packing>
                         </child>
                         <child>
@@ -373,7 +386,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
-                            <property name="position">4</property>
+                            <property name="position">5</property>
                           </packing>
                         </child>
                       </object>
@@ -873,7 +886,7 @@
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <property name="program_name">Tuquito Update</property>
-    <property name="version">1.0-14</property>
+    <property name="version">1.0-15</property>
     <property name="copyright" translatable="yes">Copyright &#xA9; 2010 - Tuquito Team!</property>
     <property name="website">http://www.tuquito.org.ar</property>
     <property name="website_label" translatable="yes">Tuquito Team!</property>
