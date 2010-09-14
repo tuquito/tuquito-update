@@ -4,11 +4,11 @@ export TEXTDOMAINDIR="/usr/share/tuquito/locale"
 TUQUITOUPDATE=`ps -A | grep update-manager | wc -l`
 if [ $TUQUITOUPDATE != 0 ]; then
 	if [ "`whoami`" != "root" ]; then
-		zenity --error --text="$(gettext 'Another update-manager is already running.\nTry running on the console: sudo tuquito-update')" --title="Tuquito Update - Error" --window-icon=/usr/lib/tuquito/tuquito-update/logo.png
+		zenity --error --text="$(gettext '<b><big>Error</big></b>\nAnother update-manager is already running.\nTry running on the console: <b>sudo tuquito-update</b>')" --title="Tuquito Update - Error" --window-icon=/usr/lib/tuquito/tuquito-update/logo.png
 		exit 1
 	else
 		killall update-manager.py
 	fi
 fi
-gksu --desktop /usr/share/applications/tuquito-update.desktop /usr/lib/tuquito/tuquito-update/update-manager.py show &
-
+gksu --desktop /usr/share/applications/tuquito-update.desktop /usr/lib/tuquito/tuquito-update/update-manager.py show 0
+exit 0

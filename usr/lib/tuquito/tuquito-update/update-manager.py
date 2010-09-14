@@ -114,7 +114,7 @@ class RefreshThread(threading.Thread):
 		self.statusIcon.set_tooltip(_('Checking for updates...'))
 		gtk.gdk.threads_leave()
 		try:
-			if os.getuid() == 0 :
+			if uid == 0 :
 				if self.synaptic or showWindow:
 					from subprocess import Popen, PIPE
 					cmd = 'gksu "/usr/sbin/synaptic --hide-main-window --update-at-startup --non-interactive" -D /usr/share/applications/synaptic.desktop'
@@ -396,7 +396,7 @@ def onActivate(widget):
 			window.hide()
 			return True
 		else:
-			if os.getuid() != 0:
+			if uid != 0:
 				try:
 					log.writelines('++ Launching Tuquito Update in root mode, waiting for it to kill us...\n')
 					log.flush()
@@ -412,7 +412,7 @@ def refresh(widget, data=False):
 	hide(widget)
 	statusIcon.set_from_file(busy)
 	statusIcon.set_visible(showIcon)
-	if os.getuid() == 0 and showWindow:
+	if uid == 0 and showWindow:
 		refresh = RefreshThread(True, glade, False)
 	else:
 		refresh = RefreshThread(False, glade, False)
@@ -516,7 +516,7 @@ def readPref(widget=None):
 	global httpProxyPort, ftpProxyPort, gopherProxyPort
 	global configFile, autoStart, home
 	config = ConfigParser.ConfigParser()
-	if os.getuid() == 0 :
+	if uid == 0 :
 		home = '/home/' + os.environ.get('SUDO_USER')
 	else:
 		from user import home
@@ -653,10 +653,13 @@ try:
 except Exception, d:
 	arg = False
 
+uid = os.getuid()
+
 if arg != False:
-	if autoStart or os.getuid() == 0:
-		if arg == 'time':
-			time.sleep(delay)
+	if uid == 0:
+		showIcon = True
+	if (autoStart or uid == 0) and arg == 'time':
+		time.sleep(delay)
 	else:
 		sys.exit(0)
 
@@ -676,14 +679,14 @@ if len(sys.argv) > 2:
 		os.system('kill -9 ' + parentPid)
 pid = os.getpid()
 logdir = '/tmp/tuquito-update/'
-if os.getuid() == 0 :
+if uid == 0 :
 	mode = 'root'
 else:
 	mode = 'user'
 os.system('mkdir -p ' + logdir)
 log = tempfile.NamedTemporaryFile(prefix=logdir, delete=False)
 logFile = log.name
-log.writelines('++ Launching Tuquito Update whith uid: ' + str(os.getuid()) + '\n')
+log.writelines('++ Launching Tuquito Update whith uid: ' + str(uid) + '\n')
 log.flush()
 log.writelines('++ Launching Tuquito Update in ' + mode + ' mode\n')
 log.flush()
