@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.0-16
+ Tuquito Update Manager 1.1-1
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -32,6 +32,7 @@ import time
 import ConfigParser
 
 APP_PATH = '/usr/lib/tuquito/tuquito-update/'
+uid = os.getuid()
 
 # i18n
 gettext.install('tuquito-update', '/usr/share/tuquito/locale')
@@ -653,15 +654,11 @@ try:
 except Exception, d:
 	arg = False
 
-uid = os.getuid()
-
 if arg != False:
 	if uid == 0:
 		showIcon = True
 	if (autoStart or uid == 0) and arg == 'time':
 		time.sleep(delay)
-	else:
-		sys.exit(0)
 
 while True:
 	if os.path.exists('/tmp/tuquito-update.tmp'):

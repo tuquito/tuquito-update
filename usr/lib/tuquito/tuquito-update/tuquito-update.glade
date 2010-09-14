@@ -858,26 +858,22 @@
     <property name="upper">3600</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustment_min">
     <property name="value">59</property>
     <property name="upper">59</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustment_hours">
     <property name="upper">23</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAdjustment" id="adjustment_days">
     <property name="upper">365</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
   <object class="GtkAboutDialog" id="about">
     <property name="border_width">5</property>
@@ -886,7 +882,7 @@
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <property name="program_name">Tuquito Update</property>
-    <property name="version">1.0-16</property>
+    <property name="version">1.1-1</property>
     <property name="copyright" translatable="yes">Copyright &#xA9; 2010 - Tuquito Team!</property>
     <property name="website">http://www.tuquito.org.ar</property>
     <property name="website_label" translatable="yes">Tuquito Team!</property>
