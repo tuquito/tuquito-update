@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-10 17:39-0300\n"
+"POT-Creation-Date: 2010-09-13 22:28-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgid "Description"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:184
-#: usr/lib/tuquito/tuquito-update/update-manager.py:761
+#: usr/lib/tuquito/tuquito-update/update-manager.py:764
 msgid "Size"
 msgstr ""
 
@@ -211,40 +211,40 @@ msgid "Port:"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:481
-#: usr/lib/tuquito/tuquito-update/update-manager.py:727
+#: usr/lib/tuquito/tuquito-update/update-manager.py:730
 msgid "Software sources"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:703
+#: usr/lib/tuquito/tuquito-update/update-manager.py:706
 msgid "Update Manager"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:707
+#: usr/lib/tuquito/tuquito-update/update-manager.py:710
 msgid "Check"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:708
+#: usr/lib/tuquito/tuquito-update/update-manager.py:711
 msgid "Description of package"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:743
+#: usr/lib/tuquito/tuquito-update/update-manager.py:746
 msgid "Connecting..."
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:751
+#: usr/lib/tuquito/tuquito-update/update-manager.py:754
 msgid "Level"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:754
+#: usr/lib/tuquito/tuquito-update/update-manager.py:757
 msgid "Upgrade"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager.py:758
+#: usr/lib/tuquito/tuquito-update/update-manager.py:761
 msgid "Package"
 msgstr ""
 
 #: usr/bin/tuquito-update:7
 msgid ""
-"Another update-manager is already running.\\nTry running on the console: "
-"sudo tuquito-update"
+"<b><big>Error</big></b>\\nAnother update-manager is already running.\\nTry "
+"running on the console: <b>sudo tuquito-update</b>"
 msgstr ""

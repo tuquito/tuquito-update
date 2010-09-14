@@ -6,4 +6,3 @@ Exec=/usr/lib/tuquito/tuquito-update/update-manager.py
 Terminal=false
 Type=Application
 Categories=Utility;
-
