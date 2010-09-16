@@ -1,3 +1,9 @@
+tuquito-update (1.1-2) lucid; urgency=low
+
+  * rebranded to maverick
+
+ -- Mario Colque <mario@tuquito.org.ar>  Wed, 15 Sep 2010 20:58:09 -0300
+
 tuquito-update (1.1-1) lucid; urgency=low
 
   * new version
