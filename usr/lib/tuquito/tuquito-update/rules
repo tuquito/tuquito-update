@@ -3,8 +3,6 @@
 *linux-image-2.6|*|4||
 *linux-headers-2.6|*|4||
 *linux-restricted-modules-2.6|*|4||
-linux-libc-dev|2.6.22-14.52|3||
-linux-restricted-modules-common|2.6.22.4-14.10|3||
 *xorg|*|4||
 hal|*|5||
 *hal-|*|5||

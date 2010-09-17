@@ -154,10 +154,10 @@ class RefreshThread(threading.Thread):
 		rules = rulesFile.readlines()
 		rulesFile.close()
 		goOn = True
-		foundPackageRule = False
 		totalSize = 0
 		model = gtk.TreeStore(str, str, gtk.gdk.Pixbuf, str, int, str, str, str, int)
 		for pkg in changes:
+			foundPackageRule = False
 			package = pkg.name
 			newVersion = pkg.candidateVersion
 			oldVersion = pkg.installedVersion
@@ -316,8 +316,9 @@ class InstallThread(threading.Thread):
 				self.statusIcon.set_tooltip(_('Checking for updates...'))
 				self.glade.get_object('window').window.set_cursor(None)
 				self.glade.get_object('window').set_sensitive(True)
-				global showWindow
+				global showWindow, ready
 				showWindow = False
+				ready = False
 				self.glade.get_object('window').hide()
 				gtk.gdk.threads_leave()
 				refresh = RefreshThread(self.treeView, self.glade)
@@ -420,8 +421,14 @@ def refresh(widget, data=False):
 	refresh.start()
 
 def install(widget, treeView, glade):
-	install = InstallThread(treeView, glade)
-	install.start()
+	global advancedActive
+	if express or advancedActive:
+		install = InstallThread(treeView, glade)
+		install.start()
+	else:
+		advancedActive = True
+		glade.get_object('notebook').next_page()
+		glade.get_object('pkgSelected').set_visible(True)
 
 def openRepo(widget):
 	if os.path.exists('/usr/bin/software-properties-gtk'):
@@ -643,6 +650,10 @@ def updateProxyPort(widget):
 		glade.get_object('ftp_proxy_port').set_text(widget.get_text())
 		glade.get_object('gopher_proxy_port').set_text(widget.get_text())
 
+def setModeExpress(widget, data=None):
+	global express
+	express = widget.get_active()
+
 def hidePref(widget, data=None):
 	glade.get_object('windowPref').hide()
 	return True
@@ -668,6 +679,8 @@ while True:
 # Flags
 ready = False
 showWindow  = False
+advancedActive = False
+express = True
 
 parentPid = '0'
 if len(sys.argv) > 2:
@@ -705,11 +718,18 @@ try:
 	treeviewUpdate = glade.get_object('treeview')
 	statusIcon = glade.get_object('statusicon')
 	glade.get_object('labelRefresh').set_label(_('Check'))
-	glade.get_object('expanderLabel').set_label(_('Description of package'))
+	glade.get_object('expanderLabel').set_label(_('Details of package'))
+	glade.get_object('label12').set_label('<big><b>%s</b></big>' % _('How do you want to install updates?'))
+	glade.get_object('radiobutton_recomendaded').set_label(_('Express install (Recomended)'))
+	glade.get_object('label13').set_label(_('The easy way to update your computer. This will ensure that your computer is up to date with the latest software.'))
+	glade.get_object('radiobutton_advanced').set_label(_('Custom install (Advanced)'))
+	glade.get_object('label15').set_label(_('Select what you want to update manually. You will have more detailed information on the packages.'))
+	glade.get_object('pkgSelected').set_visible(False)
 
 	glade.get_object('preference').connect('clicked', openPref)
 	glade.get_object('refresh').connect('clicked', refresh, True)
 	glade.get_object('apply').connect('clicked', install, treeviewUpdate, glade)
+	glade.get_object('radiobutton_recomendaded').connect('toggled', setModeExpress)
 
 	menu = glade.get_object('menu')
 	window.connect('delete-event', hide)
