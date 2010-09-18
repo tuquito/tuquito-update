@@ -1,3 +1,9 @@
+tuquito-update (1.1-5) maverick; urgency=low
+
+  * zenity added
+
+ -- Mario Colque <mario@tuquito.org.ar>  Sat, 18 Sep 2010 02:03:44 -0300
+
 tuquito-update (1.1-4) maverick; urgency=low
 
   * new rules file
