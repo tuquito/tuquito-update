@@ -203,8 +203,8 @@ class RefreshThread(threading.Thread):
 		if self.glade.get_object('data').get_label() == '':
 			self.glade.get_object('data').set_markup(_('<b>Select a package to see its information</b>'))
 		gtk.gdk.threads_leave()
-		ready = True
 		if cant > 0:
+			ready = True
 			if self.synaptic:
 				showWindow = True
 				gtk.gdk.threads_enter()
@@ -316,9 +316,8 @@ class InstallThread(threading.Thread):
 				self.statusIcon.set_tooltip(_('Checking for updates...'))
 				self.glade.get_object('window').window.set_cursor(None)
 				self.glade.get_object('window').set_sensitive(True)
-				global showWindow, ready
+				global showWindow
 				showWindow = False
-				ready = False
 				self.glade.get_object('window').hide()
 				gtk.gdk.threads_leave()
 				refresh = RefreshThread(self.treeView, self.glade)
