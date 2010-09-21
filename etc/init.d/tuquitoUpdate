@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
- Tuquito Update Manager 1.1-3
+ Tuquito Update Manager 1.1-6
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -54,4 +54,3 @@ if commands.getoutput('mount | grep "aufs"') == '':
 		sys.exit(1)
 os.system('touch /tmp/tuquito-update.tmp')
 sys.exit(0)
-

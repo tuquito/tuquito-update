@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.1-5
+ Tuquito Update Manager 1.1-6
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -126,7 +126,7 @@ class RefreshThread(threading.Thread):
 					cache.update()
 			cache = apt.Cache()
 			cache.upgrade(checkEnableProxy)
-			changes = cache.getChanges()
+			changes = cache.get_changes()
 		except Exception, detail:
 			print detail
 			sys.exit(1)
@@ -404,7 +404,7 @@ def onActivate(widget):
 					log.close()
 				except:
 					pass
-				os.system('gksu ' + APP_PATH + 'update-manager.py show ' + str(pid) + ' -D /usr/share/applications/tuquito-update.desktop &')
+				os.system('gksu ' + APP_PATH + 'update-manager ' + str(pid) + ' -D /usr/share/applications/tuquito-update.desktop &')
 			else:
 				showWindow = True
 				window.show()
@@ -800,4 +800,3 @@ except Exception, detail:
 	log.writelines('-- Exception occured in main thread: ' + str(detail) + '\n')
 	log.flush()
 	log.close()
-

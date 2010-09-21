@@ -1,3 +1,11 @@
+tuquito-update (1.1-6) maverick; urgency=low
+
+  * script renamed
+  * method deprecated deleted
+  * new translatios
+
+ -- Mario Colque <mario@tuquito.org.ar>  Tue, 21 Sep 2010 17:23:34 -0300
+
 tuquito-update (1.1-5) maverick; urgency=low
 
   * zenity added
