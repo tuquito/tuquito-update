@@ -1,3 +1,12 @@
+tuquito-update (1.1-7) maverick; urgency=low
+
+  * Don't run in live mode
+  * Don't inanition in autostart
+  * process renamed
+  * new config file with showicon value
+
+ -- Mario Colque <mario@tuquito.org.ar>  Sat, 25 Sep 2010 12:19:31 -0300
+
 tuquito-update (1.1-6) maverick; urgency=low
 
   * script renamed
