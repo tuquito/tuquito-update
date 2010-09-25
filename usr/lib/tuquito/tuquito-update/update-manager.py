@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.1-6
+ Tuquito Update Manager 1.1-7
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -36,6 +36,16 @@ uid = os.getuid()
 
 # i18n
 gettext.install('tuquito-update', '/usr/share/tuquito/locale')
+
+architecture = commands.getoutput("uname -a")
+if architecture.find("x86_64") >= 0:
+	import ctypes
+	libc = ctypes.CDLL('libc.so.6')
+	libc.prctl(15, 'update-manager', 0, 0, 0)
+else:
+	import dl
+	libc = dl.open('/lib/libc.so.6')
+	libc.call('prctl', 15, 'update-manager', 0, 0, 0)
 
 gtk.gdk.threads_init()
 
@@ -404,7 +414,7 @@ def onActivate(widget):
 					log.close()
 				except:
 					pass
-				os.system('gksu ' + APP_PATH + 'update-manager ' + str(pid) + ' -D /usr/share/applications/tuquito-update.desktop &')
+				os.system('gksu ' + APP_PATH + 'update-manager.py ' + str(pid) + ' -D /usr/share/applications/tuquito-update.desktop &')
 			else:
 				showWindow = True
 				window.show()
@@ -657,6 +667,7 @@ def hidePref(widget, data=None):
 	glade.get_object('windowPref').hide()
 	return True
 
+## Init
 readPref()
 
 try:
@@ -670,9 +681,7 @@ if arg != False:
 	if (autoStart or uid == 0) and arg == 'time':
 		time.sleep(delay)
 
-while True:
-	if os.path.exists('/tmp/tuquito-update.tmp'):
-		break
+while not os.path.exists('/tmp/tuquito-update.tmp'):
 	time.sleep(10)
 
 # Flags

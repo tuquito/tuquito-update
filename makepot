@@ -1,5 +1,5 @@
 #!/bin/bash
-xgettext --language=Python --keyword=_ --output=po/tuquito-update.pot usr/lib/tuquito/tuquito-update/update-manager --from-code=utf-8
+xgettext --language=Python --keyword=_ --output=po/tuquito-update.pot usr/lib/tuquito/tuquito-update/update-manager.py --from-code=utf-8
 xgettext --language=Shell --output=po/tuquito-update.pot usr/bin/tuquito-update --from-code=utf-8 -j
 cd po
 msgmerge es.po tuquito-update.pot -o es.po

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tuquito-update 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-21 17:22-0300\n"
+"POT-Creation-Date: 2010-09-25 12:18-0300\n"
 "PO-Revision-Date: 2010-08-18 22:54-0300\n"
 "Last-Translator: Mario Colque <mario@tuquito.org.ar>\n"
 "Language-Team: Spanish\n"
@@ -16,131 +16,131 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:87
+#: usr/lib/tuquito/tuquito-update/update-manager.py:97
 msgid "Checking connection..."
 msgstr "Comprobando la conexión..."
 
-#: usr/lib/tuquito/tuquito-update/update-manager:98
+#: usr/lib/tuquito/tuquito-update/update-manager.py:108
 msgid "Could not connect to the Internet"
 msgstr "No se pudo conectar a Internet"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:115
-#: usr/lib/tuquito/tuquito-update/update-manager:316
+#: usr/lib/tuquito/tuquito-update/update-manager.py:125
+#: usr/lib/tuquito/tuquito-update/update-manager.py:326
 msgid "Checking for updates..."
 msgstr "Comprobando actualizaciones..."
 
-#: usr/lib/tuquito/tuquito-update/update-manager:139
+#: usr/lib/tuquito/tuquito-update/update-manager.py:149
 msgid "You have 1 update available"
 msgstr "Hay 1 actualización disponible"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:145
+#: usr/lib/tuquito/tuquito-update/update-manager.py:155
 #, python-format
 msgid "You have %d updates available"
 msgstr "Hay %d actualizaciones disponibles"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:150
+#: usr/lib/tuquito/tuquito-update/update-manager.py:160
 msgid "Your system is up to date!"
 msgstr "¡Su sistema está al día!"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:185
+#: usr/lib/tuquito/tuquito-update/update-manager.py:195
 msgid "Description"
 msgstr "Descripción"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:185
-#: usr/lib/tuquito/tuquito-update/update-manager:780
+#: usr/lib/tuquito/tuquito-update/update-manager.py:195
+#: usr/lib/tuquito/tuquito-update/update-manager.py:789
 msgid "Size"
 msgstr "Tamaño"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:185
+#: usr/lib/tuquito/tuquito-update/update-manager.py:195
 msgid "Installed Version"
 msgstr "Versión Instalada"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:185
+#: usr/lib/tuquito/tuquito-update/update-manager.py:195
 msgid "New Version"
 msgstr "Nueva Versión"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:200
+#: usr/lib/tuquito/tuquito-update/update-manager.py:210
 #, python-format
 msgid "<big><b>You have %d packages to update</b></big>"
 msgstr "<big><b>Tiene %d paquetes para actualizar</b></big>"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:201
-#: usr/lib/tuquito/tuquito-update/update-manager:376
+#: usr/lib/tuquito/tuquito-update/update-manager.py:211
+#: usr/lib/tuquito/tuquito-update/update-manager.py:386
 #, python-format
 msgid "Packages selected: <b>%d</b>"
 msgstr "Paquetes seleccionados: <b>%d</b>"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:202
-#: usr/lib/tuquito/tuquito-update/update-manager:377
+#: usr/lib/tuquito/tuquito-update/update-manager.py:212
+#: usr/lib/tuquito/tuquito-update/update-manager.py:387
 #, python-format
 msgid "Download size: <b>%s</b>"
 msgstr "Tamaño de la descarga: <b>%s</b>"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:204
+#: usr/lib/tuquito/tuquito-update/update-manager.py:214
 msgid "<b>Select a package to see its information</b>"
 msgstr "<b>Seleccione un paquete para ver su información</b>"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:293
+#: usr/lib/tuquito/tuquito-update/update-manager.py:303
 msgid "Installing updates"
 msgstr "Instalando actualizaciones"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:299
+#: usr/lib/tuquito/tuquito-update/update-manager.py:309
 msgid "Please wait, this can take some time"
 msgstr "Por favor espere, esto puede tomar tiempo"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:301
+#: usr/lib/tuquito/tuquito-update/update-manager.py:311
 msgid "Update is complete"
 msgstr "Actualización completa"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:336
+#: usr/lib/tuquito/tuquito-update/update-manager.py:346
 msgid "Could not install the security updates"
 msgstr "No se pudo instalar las actualizaciones de seguridad"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:344
+#: usr/lib/tuquito/tuquito-update/update-manager.py:354
 msgid "B"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager:346
+#: usr/lib/tuquito/tuquito-update/update-manager.py:356
 msgid "KB"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager:348
+#: usr/lib/tuquito/tuquito-update/update-manager.py:358
 msgid "MB"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager:350
+#: usr/lib/tuquito/tuquito-update/update-manager.py:360
 msgid "GB"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager:443
+#: usr/lib/tuquito/tuquito-update/update-manager.py:453
 msgid "Update Manager for Tuquito"
 msgstr "Gestor de actualizaciones para Tuquito"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:461
+#: usr/lib/tuquito/tuquito-update/update-manager.py:471
 msgid "Tuquito Update preferences"
 msgstr "Preferencias de Tuquito Update"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:462
+#: usr/lib/tuquito/tuquito-update/update-manager.py:472
 msgid "Refresh the list of updates every:"
 msgstr "Actualizar la lista de actualizaciones cada:"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:463
+#: usr/lib/tuquito/tuquito-update/update-manager.py:473
 msgid "Auto Refresh"
 msgstr "Auto Actualizar"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:464
+#: usr/lib/tuquito/tuquito-update/update-manager.py:474
 msgid "minutes"
 msgstr "minutos"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:465
+#: usr/lib/tuquito/tuquito-update/update-manager.py:475
 msgid "Startup delay (in seconds): "
 msgstr "Demora en el inicio (en segundos): "
 
-#: usr/lib/tuquito/tuquito-update/update-manager:466
+#: usr/lib/tuquito/tuquito-update/update-manager.py:476
 msgid "Internet check (domain name or IP address): "
 msgstr "Verificación de Internet (nombre de dominio o dirección IP): "
 
-#: usr/lib/tuquito/tuquito-update/update-manager:467
+#: usr/lib/tuquito/tuquito-update/update-manager.py:477
 msgid ""
 "<i>Note: The dist-upgrade option, in addition to performing the function of "
 "upgrade, also intelligently handles changing dependencies with new versions "
@@ -157,23 +157,23 @@ msgstr ""
 "automáticamente y las versiones más recientes de paquetes cuyas dependencias "
 "requieren instalación de este tipo son simplemente ignoradas.</i>"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:468
+#: usr/lib/tuquito/tuquito-update/update-manager.py:478
 msgid "hours"
 msgstr "horas"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:469
+#: usr/lib/tuquito/tuquito-update/update-manager.py:479
 msgid "General"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager:470
+#: usr/lib/tuquito/tuquito-update/update-manager.py:480
 msgid "Proxy"
 msgstr ""
 
-#: usr/lib/tuquito/tuquito-update/update-manager:471
+#: usr/lib/tuquito/tuquito-update/update-manager.py:481
 msgid "days"
 msgstr "días"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:472
+#: usr/lib/tuquito/tuquito-update/update-manager.py:482
 msgid ""
 "<i>Note: The list only gets refreshed while the mintUpdate window is closed "
 "(system tray mode).</i>"
@@ -181,70 +181,70 @@ msgstr ""
 "<i>Nota: La lista sólo se actualiza mientras que la ventana de Tuquito "
 "Update esté cerrada (modo de bandeja del sistema).</i>"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:473
+#: usr/lib/tuquito/tuquito-update/update-manager.py:483
 msgid "Include dist-upgrade packages?"
 msgstr "¿Incluir paquetes de dist-upgrade?"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:474
+#: usr/lib/tuquito/tuquito-update/update-manager.py:484
 msgid "Auto start"
 msgstr "Inicio automático"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:475
+#: usr/lib/tuquito/tuquito-update/update-manager.py:485
 msgid "Show icon only when updates are available"
 msgstr "Mostrar ícono sólo cuando haya actualizaciones disponibles"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:476
+#: usr/lib/tuquito/tuquito-update/update-manager.py:486
 msgid "Manual proxy configuration"
 msgstr "Configuración manual del proxy"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:477
+#: usr/lib/tuquito/tuquito-update/update-manager.py:487
 msgid "Use the same proxy for all protocols"
 msgstr "Usar el mismo proxy para todos los protocolos"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:478
+#: usr/lib/tuquito/tuquito-update/update-manager.py:488
 msgid "HTTP Proxy:"
 msgstr "Proxy HTTP:"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:479
+#: usr/lib/tuquito/tuquito-update/update-manager.py:489
 msgid "FTP Proxy:"
 msgstr "Proxy FTP:"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:480
+#: usr/lib/tuquito/tuquito-update/update-manager.py:490
 msgid "Gopher Proxy:"
 msgstr "Proxy Gopher:"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:481
-#: usr/lib/tuquito/tuquito-update/update-manager:482
-#: usr/lib/tuquito/tuquito-update/update-manager:483
+#: usr/lib/tuquito/tuquito-update/update-manager.py:491
+#: usr/lib/tuquito/tuquito-update/update-manager.py:492
+#: usr/lib/tuquito/tuquito-update/update-manager.py:493
 msgid "Port:"
 msgstr "Puerto:"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:488
-#: usr/lib/tuquito/tuquito-update/update-manager:746
+#: usr/lib/tuquito/tuquito-update/update-manager.py:498
+#: usr/lib/tuquito/tuquito-update/update-manager.py:755
 msgid "Software sources"
 msgstr "Orígenes del Software"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:715
+#: usr/lib/tuquito/tuquito-update/update-manager.py:724
 msgid "Update Manager"
 msgstr "Gestor de actualizaciones"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:719
+#: usr/lib/tuquito/tuquito-update/update-manager.py:728
 msgid "Check"
 msgstr "Comprobar"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:720
+#: usr/lib/tuquito/tuquito-update/update-manager.py:729
 msgid "Details of package"
 msgstr "Detalles del paquete"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:721
+#: usr/lib/tuquito/tuquito-update/update-manager.py:730
 msgid "How do you want to install updates?"
 msgstr "¿Cómo desea instalar las actualizaciones?"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:722
+#: usr/lib/tuquito/tuquito-update/update-manager.py:731
 msgid "Express install (Recomended)"
 msgstr "Instalación rápida (Recomendada)"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:723
+#: usr/lib/tuquito/tuquito-update/update-manager.py:732
 msgid ""
 "The easy way to update your computer. This will ensure that your computer is "
 "up to date with the latest software."
@@ -252,11 +252,11 @@ msgstr ""
 "La manera fácil de actualizar el equipo. Esto asegurará que el equipo está "
 "al día con el software más reciente."
 
-#: usr/lib/tuquito/tuquito-update/update-manager:724
+#: usr/lib/tuquito/tuquito-update/update-manager.py:733
 msgid "Custom install (Advanced)"
 msgstr "Instalación personalizada (Avanzada)"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:725
+#: usr/lib/tuquito/tuquito-update/update-manager.py:734
 msgid ""
 "Select what you want to update manually. You will have more detailed "
 "information on the packages."
@@ -264,23 +264,23 @@ msgstr ""
 "Seleccione lo que desea actualizar manualmente. Tendrá información más "
 "detallada de los paquetes."
 
-#: usr/lib/tuquito/tuquito-update/update-manager:762
+#: usr/lib/tuquito/tuquito-update/update-manager.py:771
 msgid "Connecting..."
 msgstr "Conectando..."
 
-#: usr/lib/tuquito/tuquito-update/update-manager:770
+#: usr/lib/tuquito/tuquito-update/update-manager.py:779
 msgid "Level"
 msgstr "Nivel"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:773
+#: usr/lib/tuquito/tuquito-update/update-manager.py:782
 msgid "Upgrade"
 msgstr "Actualizar"
 
-#: usr/lib/tuquito/tuquito-update/update-manager:777
+#: usr/lib/tuquito/tuquito-update/update-manager.py:786
 msgid "Package"
 msgstr "Paquete"
 
-#: usr/bin/tuquito-update:7
+#: usr/bin/tuquito-update:8
 msgid ""
 "<b><big>Error</big></b>\\nAnother update-manager is already running, maybe "
 "in hidden mode.\\nTry running on the console: <b>sudo tuquito-update</b>"
@@ -288,6 +288,6 @@ msgstr ""
 "<b><big>Error</big></b>\\nOtro update-manager ya está en ejecución, tal vez "
 "en modo oculto.\\nPruebe ejecutando en la consola: <b>sudo tuquito-update</b>"
 
-#: usr/bin/tuquito-update:7
+#: usr/bin/tuquito-update:8
 msgid "Tuquito Update - Error"
 msgstr ""
