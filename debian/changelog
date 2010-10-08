@@ -1,3 +1,9 @@
+tuquito-update (1.1-8) maverick; urgency=low
+
+  * autokill fixed
+
+ -- Mario Colque <mario@tuquito.org.ar>  Thu, 07 Oct 2010 21:29:56 -0300
+
 tuquito-update (1.1-7) maverick; urgency=low
 
   * Don't run in live mode
