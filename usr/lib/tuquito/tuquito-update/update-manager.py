@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.1-7
+ Tuquito Update Manager 1.1-8
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -414,7 +414,7 @@ def onActivate(widget):
 					log.close()
 				except:
 					pass
-				os.system('gksu ' + APP_PATH + 'update-manager.py ' + str(pid) + ' -D /usr/share/applications/tuquito-update.desktop &')
+				os.system('gksu ' + APP_PATH + 'update-manager.py show ' + str(pid) + ' -D /usr/share/applications/tuquito-update.desktop &')
 			else:
 				showWindow = True
 				window.show()
