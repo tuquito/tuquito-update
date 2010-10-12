@@ -1,3 +1,10 @@
+tuquito-update (1.1-9) maverick; urgency=low
+
+  * new templates
+  * kill fixed
+
+ -- Mario Colque <mario@tuquito.org.ar>  Mon, 11 Oct 2010 22:53:31 -0300
+
 tuquito-update (1.1-8) maverick; urgency=low
 
   * autokill fixed
