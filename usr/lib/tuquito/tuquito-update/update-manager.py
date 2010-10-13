@@ -215,7 +215,7 @@ class RefreshThread(threading.Thread):
 		gtk.gdk.threads_leave()
 		if cant > 0:
 			ready = True
-			if self.synaptic:
+			if self.synaptic and uid == 0:
 				showWindow = True
 				gtk.gdk.threads_enter()
 				self.window.show()
@@ -304,7 +304,7 @@ class InstallThread(threading.Thread):
 				gtk.gdk.threads_leave()
 				log.writelines('++ Ready to launch synaptic\n')
 				log.flush()
-				cmd = ['sudo', '/usr/sbin/synaptic', '--hide-main-window', '--non-interactive']
+				cmd = ['gksu', '/usr/sbin/synaptic', '--hide-main-window', '--non-interactive']
 				cmd.append('--progress-str')
         			cmd.append('"' + _('Please wait, this can take some time') + '"')
 				cmd.append('--finish-str')
@@ -552,7 +552,7 @@ def readPref(widget=None):
 		urlPing = config.get('User settings', 'url')
 		distUpgrade = config.getboolean('User settings', 'distUpgrade')
 		autoStart = config.getboolean('User settings', 'autoStart')
-		showIcon = not config.getboolean('User settings', 'showIcon')
+		showIcon = config.getboolean('User settings', 'showIcon')
 	except:
 		delay = 30
 		urlPing = 'google.com'
@@ -595,7 +595,7 @@ def savePref(widget):
 	urlPing = glade.get_object('url_ping').get_text().strip()
 	distUpgrade = glade.get_object('check_dist_upgrade').get_active()
 	autoStart = glade.get_object('check_auto_start').get_active()
-	showIcon = glade.get_object('check_show_icon').get_active()
+	showIcon = not glade.get_object('check_show_icon').get_active()
 	checkEnableProxy = glade.get_object('enable_proxy').get_active()
 	timerMin = glade.get_object('timer_min').get_value_as_int()
 	timerHours = glade.get_object('timer_hours').get_value_as_int()
