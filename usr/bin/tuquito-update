@@ -11,6 +11,6 @@ if [ "`mount | grep "aufs"`" = "" ]; then
 			killall updateManager
 		fi
 	fi
-	/usr/lib/tuquito/tuquito-update/update-manager.py
+	/usr/lib/tuquito/tuquito-update/update-manager.py &
 fi
 exit 0

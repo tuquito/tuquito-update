@@ -63,10 +63,10 @@ class RefreshThread(threading.Thread):
 	def checkDependencies(self, changes, cache):
 		foundSomething = False
 		for pkg in changes:
-			for dep in pkg.candidateDependencies:
+			for dep in pkg.versions[0].dependencies:
 				for o in dep.or_dependencies:
 					try:
-						if cache[o.name].isUpgradable:
+						if cache[o.name].is_upgradable:
 							pkgFound = False
 							for pkg2 in changes:
 								if o.name == pkg2.name:
@@ -171,10 +171,10 @@ class RefreshThread(threading.Thread):
 		for pkg in changes:
 			foundPackageRule = False
 			package = pkg.name
-			newVersion = pkg.candidateVersion
-			oldVersion = pkg.installedVersion
-			size = pkg.packageSize
-			description = pkg.description
+			newVersion = pkg.versions[0].version
+			oldVersion = pkg.installed.version
+			size = pkg.versions[0].size
+			description = pkg.versions[0].description
 			totalSize +=  size
 			for rule in rules:
 				if goOn:
