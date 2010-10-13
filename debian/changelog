@@ -1,3 +1,11 @@
+tuquito-update (1.1-11) maverick; urgency=low
+
+  * deprecated functions changed
+  * new autorun
+  * new translations
+
+ -- Mario Colque <mario@tuquito.org.ar>  Wed, 13 Oct 2010 20:30:08 -0300
+
 tuquito-update (1.1-10) maverick; urgency=low
 
   * new translations
