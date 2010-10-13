@@ -31,21 +31,23 @@ from subprocess import Popen, PIPE
 import time
 import ConfigParser
 
+#globals
 APP_PATH = '/usr/lib/tuquito/tuquito-update/'
+logdir = '/tmp/tuquito-update/'
 uid = os.getuid()
 
 # i18n
 gettext.install('tuquito-update', '/usr/share/tuquito/locale')
 
-architecture = commands.getoutput("uname -a")
-if architecture.find("x86_64") >= 0:
+architecture = commands.getoutput('uname -a')
+if architecture.find('x86_64') >= 0:
 	import ctypes
 	libc = ctypes.CDLL('libc.so.6')
-	libc.prctl(15, 'update-manager', 0, 0, 0)
+	libc.prctl(15, 'updateManager', 0, 0, 0)
 else:
 	import dl
 	libc = dl.open('/lib/libc.so.6')
-	libc.call('prctl', 15, 'update-manager', 0, 0, 0)
+	libc.call('prctl', 15, 'updateManager', 0, 0, 0)
 
 gtk.gdk.threads_init()
 
@@ -135,7 +137,7 @@ class RefreshThread(threading.Thread):
 					cache = apt.Cache()
 					cache.update()
 			cache = apt.Cache()
-			cache.upgrade(checkEnableProxy)
+			cache.upgrade(distUpgrade)
 			changes = cache.get_changes()
 		except Exception, detail:
 			print detail
@@ -304,7 +306,7 @@ class InstallThread(threading.Thread):
 				gtk.gdk.threads_leave()
 				log.writelines('++ Ready to launch synaptic\n')
 				log.flush()
-				cmd = ['gksu', '/usr/sbin/synaptic', '--hide-main-window', '--non-interactive']
+				cmd = ['gksu', '\'/usr/sbin/synaptic', '--hide-main-window', '--non-interactive']
 				cmd.append('--progress-str')
         			cmd.append('"' + _('Please wait, this can take some time') + '"')
 				cmd.append('--finish-str')
@@ -313,7 +315,8 @@ class InstallThread(threading.Thread):
 				for pkg in packages:
         			    f.write('%s\tinstall\n' % pkg)
         			cmd.append('--set-selections-file')
-        			cmd.append('%s' % f.name)
+        			cmd.append('%s\'' % f.name)
+        			cmd.append('-D /usr/share/applications/synaptic.desktop')
         			f.flush()
         			comnd = Popen(' '.join(cmd), stdout=log, stderr=log, shell=True)
 				returnCode = comnd.wait()
@@ -414,13 +417,12 @@ def onActivate(widget):
 					log.close()
 				except:
 					pass
-				os.system('gksu ' + APP_PATH + 'update-manager.py show ' + str(pid) + ' -D /usr/share/applications/tuquito-update.desktop &')
+				os.system('gksu tuquito-update -D /usr/share/applications/tuquito-update.desktop &')
 			else:
 				showWindow = True
 				window.show()
 
 def refresh(widget, data=False):
-	hide(widget)
 	statusIcon.set_from_file(busy)
 	statusIcon.set_visible(showIcon)
 	if uid == 0 and showWindow:
@@ -428,6 +430,7 @@ def refresh(widget, data=False):
 	else:
 		refresh = RefreshThread(False, glade, False)
 	refresh.start()
+	hide(widget)
 
 def install(widget, treeView, glade):
 	global advancedActive
@@ -464,7 +467,7 @@ def hide(widget, data=None):
 	return True
 
 def quit(widget):
-	os.system('kill -9 ' + str(pid))
+	os.system('kill -9 ' + str(os.getpid()))
 
 def openPref(widget):
 	windowPref = glade.get_object('windowPref')
@@ -564,7 +567,7 @@ def readPref(widget=None):
 		timerHours = config.getfloat('User settings', 'timerHours')
 		timerDays = config.getfloat('User settings', 'timerDays')
 	except:
-		timerMin = 0
+		timerMin = 30
 		timerHours = 0
 		timerDays = 0
 
@@ -670,19 +673,15 @@ def hidePref(widget, data=None):
 ## Init
 readPref()
 
-try:
-	arg = sys.argv[1].strip()
-except Exception, d:
-	arg = False
-
-if arg != False:
-	if uid == 0:
-		showIcon = True
-	if (autoStart or uid == 0) and arg == 'time':
-		time.sleep(delay)
-
-while not os.path.exists('/tmp/tuquito-update.tmp'):
-	time.sleep(10)
+if uid == 0:
+	showIcon = True
+	mode = 'root'
+else:
+	if not autoStart:
+		sys.exit(0)
+	mode = 'user'
+	while not os.path.exists('/tmp/tuquito-update.tmp'):
+		time.sleep(10)
 
 # Flags
 ready = False
@@ -690,18 +689,9 @@ showWindow  = False
 advancedActive = False
 express = True
 
-parentPid = '0'
-if len(sys.argv) > 2:
-	parentPid = sys.argv[2]
-	if parentPid != '0':
-		os.system('kill -9 ' + parentPid)
-pid = os.getpid()
-logdir = '/tmp/tuquito-update/'
-if uid == 0 :
-	mode = 'root'
-else:
-	mode = 'user'
-os.system('mkdir -p ' + logdir)
+if not os.path.exists(logdir):
+	os.system('mkdir -p ' + logdir)
+
 log = tempfile.NamedTemporaryFile(prefix=logdir, delete=False)
 logFile = log.name
 log.writelines('++ Launching Tuquito Update whith uid: ' + str(uid) + '\n')
@@ -710,13 +700,12 @@ log.writelines('++ Launching Tuquito Update in ' + mode + ' mode\n')
 log.flush()
 
 try:
-	global updated, busy, errorConnecting, error, newUpdates, newUpgrade
+	global updated, busy, errorConnecting, error, newUpdates
 	updated = os.path.join(APP_PATH, 'icons/updated.png')
 	busy = os.path.join(APP_PATH, 'icons/busy.png')
 	error = os.path.join(APP_PATH, 'icons/error.png')
 	errorConnecting = os.path.join(APP_PATH, 'icons/errorConnecting.png')
 	newUpdates = os.path.join(APP_PATH, 'icons/newUpdates.png')
-	newUpgrade = os.path.join(APP_PATH, 'icons/newUpgrade.png')
 
 	glade = gtk.Builder()
 	glade.add_from_file('/usr/lib/tuquito/tuquito-update/tuquito-update.glade')
@@ -798,8 +787,9 @@ try:
 	selection = treeviewUpdate.get_selection()
 	selection.connect('changed', displaySelectedPackage)
 
-	if len(sys.argv) > 1 and sys.argv[1] == 'show':
+	if uid == 0:
 		refresh = RefreshThread(True, glade)
+		showWindow = True
 	else:
 		refresh = RefreshThread(False, glade)
 	refresh.start()

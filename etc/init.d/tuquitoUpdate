@@ -35,11 +35,13 @@ if commands.getoutput('mount | grep "aufs"') == '':
 			configFile =  os.path.join(home, '.tuquito/tuquito-update/tuquito-update.conf')
 			if os.path.exists(configFile):
 				config.read(configFile)
+				delay = config.getint('User settings', 'delay')
+				distUpgrade = config.getboolean('User settings', 'distUpgrade')
+				autoStart = config.getboolean('User settings', 'autoStart')
 			else:
-				config.read('/etc/tuquito/tuquito-update.conf')
-			delay = config.getint('User settings', 'delay')
-			distUpgrade = config.getboolean('User settings', 'distUpgrade')
-			autoStart = config.getboolean('User settings', 'autoStart')
+				delay = 30
+				distUpgrade = True
+				autoStart = True
 		except:
 			delay = 30
 			distUpgrade = True
