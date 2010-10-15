@@ -5,7 +5,7 @@ if [ "`mount | grep "aufs"`" = "" ]; then
 	TUQUITOUPDATE=`ps -A | grep updateManager | wc -l`
 	if [ $TUQUITOUPDATE != 0 ]; then
 		if [ "`whoami`" != "root" ]; then
-			zenity --error --text="$(gettext '<b><big>Error</big></b>\nAnother update-manager is already running, maybe in hidden mode.\nTry running on the console: <b>sudo tuquito-update</b>')" --title="$(gettext 'Tuquito Update - Error')" --window-icon=/usr/lib/tuquito/tuquito-update/logo.png
+			zenity --error --text="$(gettext '<b><big>Error</big></b>\nAnother updateManager is already running, maybe in hidden mode.\nTry running on the console: <b>sudo tuquito-update</b>')" --title="$(gettext 'Tuquito Update - Error')" --window-icon=/usr/lib/tuquito/tuquito-update/logo.png
 			exit 1
 		else
 			killall updateManager

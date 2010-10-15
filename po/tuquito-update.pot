@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-13 20:31-0300\n"
+"POT-Creation-Date: 2010-10-15 12:04-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -269,8 +269,8 @@ msgstr ""
 
 #: usr/bin/tuquito-update:8
 msgid ""
-"<b><big>Error</big></b>\\nAnother update-manager is already running, maybe "
-"in hidden mode.\\nTry running on the console: <b>sudo tuquito-update</b>"
+"<b><big>Error</big></b>\\nAnother updateManager is already running, maybe in "
+"hidden mode.\\nTry running on the console: <b>sudo tuquito-update</b>"
 msgstr ""
 
 #: usr/bin/tuquito-update:8

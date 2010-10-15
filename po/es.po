@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tuquito-update 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-13 20:31-0300\n"
+"POT-Creation-Date: 2010-10-15 12:04-0300\n"
 "PO-Revision-Date: 2010-08-18 22:54-0300\n"
 "Last-Translator: Mario Colque <mario@tuquito.org.ar>\n"
 "Language-Team: Spanish\n"
@@ -282,10 +282,10 @@ msgstr "Paquete"
 
 #: usr/bin/tuquito-update:8
 msgid ""
-"<b><big>Error</big></b>\\nAnother update-manager is already running, maybe "
-"in hidden mode.\\nTry running on the console: <b>sudo tuquito-update</b>"
+"<b><big>Error</big></b>\\nAnother updateManager is already running, maybe in "
+"hidden mode.\\nTry running on the console: <b>sudo tuquito-update</b>"
 msgstr ""
-"<b><big>Error</big></b>\\nOtro update-manager ya está en ejecución, tal vez "
+"<b><big>Error</big></b>\\nOtro updateManager ya está en ejecución, tal vez "
 "en modo oculto.\\nPruebe ejecutando en la consola: <b>sudo tuquito-update</b>"
 
 #: usr/bin/tuquito-update:8
