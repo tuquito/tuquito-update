@@ -1,3 +1,9 @@
+tuquito-update (1.1-12) maverick; urgency=low
+
+  * translations fixed
+
+ -- Mario Colque <mario@tuquito.org.ar>  Fri, 15 Oct 2010 12:05:55 -0300
+
 tuquito-update (1.1-11) maverick; urgency=low
 
   * deprecated functions changed
