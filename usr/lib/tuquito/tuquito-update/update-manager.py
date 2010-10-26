@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.1-8
+ Tuquito Update Manager 1.1-14
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -470,7 +470,8 @@ def hide(widget, data=None):
 	return True
 
 def quit(widget):
-	os.system('kill -9 ' + str(os.getpid()))
+	pid = os.getpid()
+	os.system('kill -9 %d &' % pid)
 
 def openPref(widget):
 	windowPref = glade.get_object('windowPref')

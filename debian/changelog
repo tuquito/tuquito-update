@@ -1,3 +1,9 @@
+tuquito-update (1.1-14) maverick; urgency=low
+
+  * faster closing
+
+ -- Mario Colque <mario@tuquito.org.ar>  Tue, 26 Oct 2010 15:02:36 -0300
+
 tuquito-update (1.1-13) maverick; urgency=low
 
   * fixed bug when get package data
