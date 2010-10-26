@@ -172,7 +172,10 @@ class RefreshThread(threading.Thread):
 			foundPackageRule = False
 			package = pkg.name
 			newVersion = pkg.versions[0].version
-			oldVersion = pkg.installed.version
+			try:
+				oldVersion = pkg.installed.version
+			except:
+				oldVersion = 'None'
 			size = pkg.versions[0].size
 			description = pkg.versions[0].description
 			totalSize +=  size
