@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-27 14:25-0300\n"
+"POT-Creation-Date: 2010-10-27 16:33-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -168,8 +168,8 @@ msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:489
 msgid ""
-"<i>Note: The list only gets refreshed while the mintUpdate window is closed "
-"(system tray mode).</i>"
+"<i>Note: The list only gets refreshed while the Tuquito Update window is "
+"closed (system tray mode).</i>"
 msgstr ""
 
 #: usr/lib/tuquito/tuquito-update/update-manager.py:490

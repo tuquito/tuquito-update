@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.1-15
+ Tuquito Update Manager 1.1-16
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -486,7 +486,7 @@ def openPref(widget):
 	glade.get_object('label8').set_label(_('General'))
 	glade.get_object('label9').set_label(_('Proxy'))
 	glade.get_object('label10').set_label(_('days'))
-	glade.get_object('label11').set_markup(_('<i>Note: The list only gets refreshed while the mintUpdate window is closed (system tray mode).</i>'))
+	glade.get_object('label11').set_markup(_('<i>Note: The list only gets refreshed while the Tuquito Update window is closed (system tray mode).</i>'))
 	glade.get_object('check_dist_upgrade').set_label(_('Include dist-upgrade packages?'))
 	glade.get_object('check_auto_start').set_label(_('Auto start'))
 	glade.get_object('check_show_icon').set_label(_('Show icon only when updates are available'))

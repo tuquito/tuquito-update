@@ -1,3 +1,9 @@
+tuquito-update (1.1-16) maverick; urgency=low
+
+  * translations fixed
+
+ -- Mario Colque <mario@tuquito.org.ar>  Wed, 27 Oct 2010 16:34:26 -0300
+
 tuquito-update (1.1-15) maverick; urgency=low
 
   * new translations
