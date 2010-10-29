@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.1-16
+ Tuquito Update Manager 1.1-17
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
@@ -30,11 +30,16 @@ import apt
 from subprocess import Popen, PIPE
 import time
 import ConfigParser
+import pynotify
+
+if not pynotify.init ('Update-Manager'):
+	sys.exit(1)
 
 #globals
 APP_PATH = '/usr/lib/tuquito/tuquito-update/'
 logdir = '/tmp/tuquito-update/'
 uid = os.getuid()
+notifyStatus = True
 
 # i18n
 gettext.install('tuquito-update', '/usr/share/tuquito/locale')
@@ -150,12 +155,16 @@ class RefreshThread(threading.Thread):
 			self.statusIcon.set_from_file(newUpdates)
 			self.statusIcon.set_tooltip(_('You have 1 update available'))
 			gtk.gdk.threads_leave()
+			if showNotification:
+				notify(_('You have 1 update available'))
 		elif cant > 1:
 			gtk.gdk.threads_enter()
 			self.statusIcon.set_visible(True)
 			self.statusIcon.set_from_file(newUpdates)
 			self.statusIcon.set_tooltip(_('You have %d updates available') % cant)
 			gtk.gdk.threads_leave()
+			if showNotification:
+				notify(_('You have %d updates available') % cant)
 		else:
 			gtk.gdk.threads_enter()
 			self.statusIcon.set_from_file(updated)
@@ -490,6 +499,7 @@ def openPref(widget):
 	glade.get_object('check_dist_upgrade').set_label(_('Include dist-upgrade packages?'))
 	glade.get_object('check_auto_start').set_label(_('Auto start'))
 	glade.get_object('check_show_icon').set_label(_('Show icon only when updates are available'))
+	glade.get_object('check_notification').set_label(_('Show notifications when updates are available'))
 	glade.get_object('enable_proxy').set_label(_('Manual proxy configuration'))
 	glade.get_object('check_same_proxy').set_label(_('Use the same proxy for all protocols'))
 	glade.get_object('label_http_proxy').set_label(_('HTTP Proxy:'))
@@ -520,6 +530,7 @@ def openPref(widget):
 	glade.get_object('check_dist_upgrade').set_active(distUpgrade)
 	glade.get_object('check_auto_start').set_active(autoStart)
 	glade.get_object('check_show_icon').set_active(not showIcon)
+	glade.get_object('check_notification').set_active(showNotification)
 	if checkEnableProxy:
 		glade.get_object('enable_proxy').set_active(True)
 		glade.get_object('check_same_proxy').set_active(checkSameProxy)
@@ -538,7 +549,7 @@ def readPref(widget=None):
 	global timerMin, timerHours, timerDays
 	global httpProxy, ftpProxy, gopherProxy
 	global httpProxyPort, ftpProxyPort, gopherProxyPort
-	global configFile, autoStart, home
+	global configFile, autoStart, home, showNotification
 	config = ConfigParser.ConfigParser()
 	if uid == 0 :
 		home = '/home/' + os.environ.get('SUDO_USER')
@@ -560,12 +571,14 @@ def readPref(widget=None):
 		distUpgrade = config.getboolean('User settings', 'distUpgrade')
 		autoStart = config.getboolean('User settings', 'autoStart')
 		showIcon = config.getboolean('User settings', 'showIcon')
+		showNotification = config.getboolean('User settings', 'showNotification')
 	except:
 		delay = 30
 		urlPing = 'google.com'
 		distUpgrade = True
 		autoStart = True
 		showIcon = False
+		showNotification = True
 	try:
 		timerMin = config.getfloat('User settings', 'timerMin')
 		timerHours = config.getfloat('User settings', 'timerHours')
@@ -603,12 +616,14 @@ def savePref(widget):
 	distUpgrade = glade.get_object('check_dist_upgrade').get_active()
 	autoStart = glade.get_object('check_auto_start').get_active()
 	showIcon = not glade.get_object('check_show_icon').get_active()
+	showNotification = glade.get_object('check_notification').get_active()
 	checkEnableProxy = glade.get_object('enable_proxy').get_active()
 	timerMin = glade.get_object('timer_min').get_value_as_int()
 	timerHours = glade.get_object('timer_hours').get_value_as_int()
 	timerDays = glade.get_object('timer_days').get_value_as_int()
 	config.set('User settings', 'delay', spinDelay)
 	config.set('User settings', 'showIcon', showIcon)
+	config.set('User settings', 'showNotification', showNotification)
 	config.set('User settings', 'url', urlPing)
 	config.set('User settings', 'distUpgrade', distUpgrade)
 	config.set('User settings', 'autoStart', autoStart)
@@ -673,6 +688,13 @@ def setModeExpress(widget, data=None):
 def hidePref(widget, data=None):
 	glade.get_object('windowPref').hide()
 	return True
+
+def notify(text):
+	global notifyStatus
+	if showNotification and notifyStatus:
+		n = pynotify.Notification(_('Update Manager'), text, newUpdates)
+		n.show()
+		notifyStatus = False
 
 ## Init
 readPref()

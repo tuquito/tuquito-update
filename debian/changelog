@@ -1,3 +1,10 @@
+tuquito-update (1.1-17) maverick; urgency=low
+
+  * Notifications added
+  * new preferences
+
+ -- Mario Colque <mario@tuquito.org.ar>  Thu, 28 Oct 2010 22:09:47 -0300
+
 tuquito-update (1.1-16) maverick; urgency=low
 
   * translations fixed
