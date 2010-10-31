@@ -691,7 +691,7 @@ def hidePref(widget, data=None):
 
 def notify(text):
 	global notifyStatus
-	if showNotification and notifyStatus:
+	if showNotification and notifyStatus and uid != 0:
 		n = pynotify.Notification(_('Update Manager'), text, newUpdates)
 		n.show()
 		notifyStatus = False

@@ -10,7 +10,7 @@ hal|*|5||
 *dbus|*|4||Crucial to Linux components working with one another. Do not install unless you are experiencing a problem which you believe the upgrade will solve
 *libdbus|*|4||Crucial to Linux components working with one another. Do not install unless you are experiencing a problem which you believe the upgrade will solve
 *tuquito|*|3||
-tuquito-update|*|5||
+tuquito-update|*|4||
 tuquito-system|*|5||
 *firefox|*|2||
 *xulrunner|*|2||

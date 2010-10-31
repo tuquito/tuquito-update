@@ -1,3 +1,9 @@
+tuquito-update (1.1-18) maverick; urgency=low
+
+  * notification fixed in root mode
+
+ -- Mario Colque <mario@tuquito.org.ar>  Sun, 31 Oct 2010 20:47:59 -0300
+
 tuquito-update (1.1-17) maverick; urgency=low
 
   * Notifications added
