@@ -1,3 +1,11 @@
+tuquito-update (1.1-19) maverick; urgency=low
+
+  * fixed preferences
+  * fixed showIcon var
+  * fixed showWindow when update process is run
+
+ -- Mario Colque <mario@tuquito.org.ar>  Thu, 30 Dec 2010 19:42:44 -0300
+
 tuquito-update (1.1-18) maverick; urgency=low
 
   * notification fixed in root mode

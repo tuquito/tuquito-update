@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
@@ -442,7 +442,7 @@
                               <object class="GtkSpinButton" id="spin_delay">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                                 <property name="adjustment">adjustment</property>
                                 <property name="snap_to_ticks">True</property>
                                 <property name="numeric">True</property>
@@ -478,7 +478,7 @@
                               <object class="GtkEntry" id="url_ping">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -576,7 +576,7 @@
                               <object class="GtkSpinButton" id="timer_min">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                                 <property name="adjustment">adjustment_min</property>
                               </object>
                               <packing>
@@ -597,7 +597,7 @@
                               <object class="GtkSpinButton" id="timer_hours">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                                 <property name="adjustment">adjustment_hours</property>
                               </object>
                               <packing>
@@ -622,7 +622,7 @@
                               <object class="GtkSpinButton" id="timer_days">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                                 <property name="adjustment">adjustment_days</property>
                               </object>
                               <packing>
@@ -732,7 +732,7 @@
                               <object class="GtkEntry" id="http_proxy">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -757,7 +757,7 @@
                               <object class="GtkEntry" id="http_proxy_port">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -781,7 +781,7 @@
                               <object class="GtkEntry" id="ftp_proxy">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -806,7 +806,7 @@
                               <object class="GtkEntry" id="ftp_proxy_port">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -830,7 +830,7 @@
                               <object class="GtkEntry" id="gopher_proxy">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -855,7 +855,7 @@
                               <object class="GtkEntry" id="gopher_proxy_port">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="invisible_char">&#x25CF;</property>
+                                <property name="invisible_char">●</property>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -1012,10 +1012,9 @@
     <property name="window_position">center</property>
     <property name="icon">/usr/lib/tuquito/tuquito-update/logo.png</property>
     <property name="type_hint">normal</property>
-    <property name="has_separator">False</property>
     <property name="program_name">Tuquito Update</property>
-    <property name="version">1.1-17</property>
-    <property name="copyright" translatable="yes">Copyright &#xA9; 2010 - Tuquito Team!</property>
+    <property name="version">1.1</property>
+    <property name="copyright" translatable="yes">Copyright © 2010 - Tuquito Team!</property>
     <property name="website">http://www.tuquito.org.ar</property>
     <property name="website_label" translatable="yes">Tuquito Team!</property>
     <property name="license" translatable="yes">		    GNU GENERAL PUBLIC LICENSE
@@ -1360,7 +1359,7 @@ Public License instead of this License.
 </property>
     <property name="authors">Mario Colque &lt;mario@tuquito.org.ar&gt;</property>
     <property name="translator_credits" translatable="yes">Mario Colque &lt;mario@tuquito.org.ar&gt;
-Carlos Felipe P. de Ara&#xFA;jo &lt;carlosfelipe@tuquito.org.ar&gt;</property>
+Carlos Felipe P. de Araújo &lt;carlosfelipe@tuquito.org.ar&gt;</property>
     <property name="logo">/usr/lib/tuquito/tuquito-update/logo.png</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
