@@ -1,3 +1,9 @@
+tuquito-update (1.1-20) maverick; urgency=low
+
+  * synaptic integration fixed
+
+ -- Mario Colque <mario@tuquito.org.ar>  Sat, 01 Jan 2011 20:25:54 -0300
+
 tuquito-update (1.1-19) maverick; urgency=low
 
   * fixed preferences

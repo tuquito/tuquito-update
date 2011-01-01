@@ -327,11 +327,11 @@ class InstallThread(threading.Thread):
                 f = tempfile.NamedTemporaryFile()
                 for pkg in packages:
                     f.write('%s\tinstall\n' % pkg)
-                    cmd.append('--set-selections-file')
-                    cmd.append('%s\'' % f.name)
-                    cmd.append('-D /usr/share/applications/synaptic.desktop')
-                    f.flush()
-                    comnd = Popen(' '.join(cmd), stdout=log, stderr=log, shell=True)
+                cmd.append('--set-selections-file')
+                cmd.append('%s\'' % f.name)
+                cmd.append('-D /usr/share/applications/synaptic.desktop')
+                f.flush()
+                comnd = Popen(' '.join(cmd), stdout=log, stderr=log, shell=True)
                 returnCode = comnd.wait()
                 log.writelines('++ Return code: ' + str(returnCode) + '\n')
                 f.close()
@@ -447,13 +447,12 @@ def refresh(widget, data=False):
     hide(widget)
 
 def install(widget, treeView, glade):
-    global advancedActive
+    global advancedActive, showWindow
     if express or advancedActive:
         showWindow = False
         window.hide()
         install = InstallThread(treeView, glade)
         install.start()
-        return True
     else:
         advancedActive = True
         glade.get_object('notebook').next_page()
