@@ -51,8 +51,12 @@ if architecture.find('x86_64') >= 0:
     libc.prctl(15, 'updateManager', 0, 0, 0)
 else:
     import dl
-    libc = dl.open('/lib/libc.so.6')
-    libc.call('prctl', 15, 'updateManager', 0, 0, 0)
+    if os.path.exists('/lib/libc.so.6'):
+        libc = dl.open('/lib/libc.so.6')
+        libc.call('prctl', 15, 'updateManager', 0, 0, 0)
+    elif os.path.exists('/lib/i386-linux-gnu/libc.so.6'):
+        libc = dl.open('/lib/i386-linux-gnu/libc.so.6')
+        libc.call('prctl', 15, 'updateManager', 0, 0, 0)
 
 gtk.gdk.threads_init()
 
@@ -337,16 +341,31 @@ class InstallThread(threading.Thread):
                 f.close()
                 log.writelines('++ Install finished\n')
                 log.flush()
-                gtk.gdk.threads_enter()
-                self.statusIcon.set_from_file(busy)
-                self.statusIcon.set_tooltip(_('Checking for updates...'))
-                self.glade.get_object('window').window.set_cursor(None)
-                self.glade.get_object('window').set_sensitive(True)
-                showWindow = False
-                self.glade.get_object('window').hide()
-                gtk.gdk.threads_leave()
-                refresh = RefreshThread(self.treeView, self.glade)
-                refresh.start()
+                if 'tuquito-update' in packages:
+                    # Restart
+                    gtk.gdk.threads_enter()
+                    showWindow = False
+                    self.glade.get_object('window').hide()
+                    gtk.gdk.threads_leave()
+                    try:
+                        log.writelines("++ Tuquito Update was updated, restarting it in root mode...\n")
+                        log.flush()
+                        log.close()
+                    except:
+                        pass #cause we might have closed it already
+                    os.system('gksudo /usr/lib/tuquito/tuquito-update/update-manager.py show &')
+                else:
+                    # Refresh
+                    gtk.gdk.threads_enter()
+                    self.statusIcon.set_from_file(busy)
+                    self.statusIcon.set_tooltip(_('Checking for updates...'))
+                    self.glade.get_object('window').window.set_cursor(None)
+                    self.glade.get_object('window').set_sensitive(True)
+                    showWindow = False
+                    self.glade.get_object('window').hide()
+                    gtk.gdk.threads_leave()
+                    refresh = RefreshThread(self.treeView, self.glade)
+                    refresh.start()
             else:
                 gtk.gdk.threads_enter()
                 self.glade.get_object('window').window.set_cursor(None)
