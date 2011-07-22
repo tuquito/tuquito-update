@@ -1,3 +1,9 @@
+tuquito-update (1.1-21) natty; urgency=low
+
+  * Pampa branch
+
+ -- Mario Colque <mario@tuquito.org.ar>  Fri, 22 Jul 2011 13:33:27 -0300
+
 tuquito-update (1.1-20) maverick; urgency=low
 
   * synaptic integration fixed
