@@ -1,8 +1,8 @@
 *base-files|*|5||Overwrites the Tuquito LSB info
 *linux-|*|5||May damage your system. In particular, if you have used envy to install nVidia or ATI proprietary drivers, do not install unless you understand how those drivers work.
-*linux-image-2.6|*|4||
-*linux-headers-2.6|*|4||
-*linux-restricted-modules-2.6|*|4||
+*linux-image-3.2|*|4||
+*linux-headers-3.2|*|4||
+*linux-restricted-modules-3.2|*|4||
 *xorg|*|4||
 hal|*|5||
 *hal-|*|5||
@@ -12,6 +12,7 @@ hal|*|5||
 *tuquito|*|3||
 tuquito-update|*|4||
 tuquito-system|*|5||
+*mate|*|2||
 *firefox|*|2||
 *xulrunner|*|2||
 *language-pack|*|2||

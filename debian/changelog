@@ -1,3 +1,9 @@
+tuquito-update (1.1-22) precise; urgency=low
+
+  * Guaraní branch
+
+ -- Mario Colque <mario@tuquito.org.ar>  Tue, 22 May 2012 14:14:04 -0300
+
 tuquito-update (1.1-21) natty; urgency=low
 
   * Pampa branch

@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 """
- Tuquito Update Manager 1.1
+ Tuquito Update Manager
  Copyright (C) 2010
  Author: Mario Colque <mario@tuquito.org.ar>
  Tuquito Team! - www.tuquito.org.ar
