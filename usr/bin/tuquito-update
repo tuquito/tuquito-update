@@ -1,8 +1,9 @@
 #!/bin/bash
 export TEXTDOMAIN="tuquito-update"
 export TEXTDOMAINDIR="/usr/share/tuquito/locale"
-if [ "`mount | grep "aufs"`" = "" ]; then
-	TUQUITOUPDATE=`ps -A | grep updateManager | wc -l`
+LIVE=`grep -cE "boot=(casper|live)" /proc/cmdline`
+if [ $LIVE = 0 ]; then
+	TUQUITOUPDATE=`ps -A | grep -c updateManager`
 	if [ $TUQUITOUPDATE != 0 ]; then
 		if [ "`whoami`" != "root" ]; then
 			zenity --error --text="$(gettext '<b><big>Error</big></b>\nAnother updateManager is already running, maybe in hidden mode.\nTry running on the console: <b>sudo tuquito-update</b>')" --title="$(gettext 'Tuquito Update - Error')" --window-icon=/usr/lib/tuquito/tuquito-update/logo.png
